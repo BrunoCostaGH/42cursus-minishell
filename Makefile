@@ -1,6 +1,6 @@
 CC=cc
 CFLAGS=-Wall -Werror -Wextra
-DEPS=
+DEPS=libft/libft.a
 
 SRCS=prompt.c
 OBJS=$(SRCS:.c=.o)
