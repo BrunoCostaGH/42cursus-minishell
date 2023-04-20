@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/20 20:39:48 by bsilva-c         ###   ########.fr       */
+/*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
+/*   Updated: 2023/04/20 20:33:08 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+void	shell_exit(void)
 {
-	char	*prompt;
-
-	while (1)
-	{
-		prompt = 0;
-		ft_printf("(Minishell) $");
-		prompt = readline(prompt);
-		if (!ft_strncmp(prompt, "exit", ft_strlen("exit")))
-			shell_exit();
-		ft_printf("%s\n", prompt);
-	}
+	exit(0);
 }
