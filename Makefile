@@ -1,17 +1,18 @@
 CC=cc
 CFLAGS=-Wall -Werror -Wextra
-DEPS=libft/libft.a
+DEPS=
 
-SRCS=
+SRCS=prompt.c
 OBJS=$(SRCS:.c=.o)
 NAME=minishell
+
+LIBFT=libft/libft.a
 
 all: deps $(NAME)
 deps:
 	$(MAKE) -C ./libft
 $(NAME): $(OBJS) $(DEPS)
-	$(MAKE) $@ -C ./libft
-	@$(CC) $(OBJS) $(DEPS) -pthread -o $(NAME)
+	@$(CC) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
 clean:
 	$(MAKE) $@ -C ./libft
 	@rm $(OBJS)
