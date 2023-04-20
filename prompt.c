@@ -19,7 +19,7 @@ int	main(void)
 	while (1)
 	{
 		prompt = 0;
-		ft_printf("(Minishell) $");
+		ft_printf("\x1B[1;32m(Minishell)$ \x1B[0m");
 		prompt = readline(prompt);
 		ft_printf("%s\n", prompt);
 	}
