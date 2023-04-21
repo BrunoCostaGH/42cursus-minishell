@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/20 20:39:48 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/21 20:24:12 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	main(void)
 			shell_exit();
 		if (!ft_strncmp(prompt, "pwd", ft_strlen("pwd")))
 			pwd();
+		if (!ft_strncmp(prompt, "$", ft_strlen("$")))
+			getenv(ft_strtrim(prompt, "$"));
 		if (prompt[0] == '\0')
 			ft_printf("\n");
 		else
