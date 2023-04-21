@@ -23,6 +23,8 @@ int	main(void)
 		prompt = readline(prompt);
 		if (!ft_strncmp(prompt, "exit", ft_strlen("exit")))
 			shell_exit();
+		if (!ft_strncmp(prompt, "cd", ft_strlen("cd")))
+			change_dir(prompt);
 		if (!ft_strncmp(prompt, "pwd", ft_strlen("pwd")))
 			pwd();
 		if (!ft_strncmp(prompt, "$", ft_strlen("$")))
