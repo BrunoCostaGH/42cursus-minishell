@@ -1,35 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   change_dir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/20 20:39:48 by bsilva-c         ###   ########.fr       */
+/*   Created: 2023/04/21 20:10:17 by tabreia-          #+#    #+#             */
+/*   Updated: 2023/04/21 20:10:17 by tabreia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+void	change_dir(char *prompt)
 {
-	char	*prompt;
+	char	*path;
+	char	**prompt_arr;
 
-	while (1)
-	{
-		prompt = 0;
-		ft_printf("\x1B[1;32m(Minishell)$ \x1B[0m");
-		prompt = readline(prompt);
-		if (!ft_strncmp(prompt, "exit", ft_strlen("exit")))
-			shell_exit();
-		if (!ft_strncmp(prompt, "cd", ft_strlen("cd")))
-			change_dir(prompt);
-		if (!ft_strncmp(prompt, "pwd", ft_strlen("pwd")))
-			pwd();
-		if (prompt[0] == '\0')
-			ft_printf("\n");
-		else
-			add_history(prompt);
-	}
+
+	prompt_arr = ft_split(prompt, ' ');
+	if (!prompt_arr[1])
+		path = getenv("HOME");
+	else
+		path = ft_strtrim(prompt, "cd ");
+	chdir(path);
 }
