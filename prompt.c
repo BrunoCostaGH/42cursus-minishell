@@ -23,10 +23,11 @@ int	main(void)
 		prompt = readline(prompt);
 		if (!ft_strncmp(prompt, "exit", ft_strlen("exit")))
 			shell_exit();
+		if (!ft_strncmp(prompt, "pwd", ft_strlen("pwd")))
+			pwd();
 		if (prompt[0] == '\0')
 			ft_printf("\n");
 		else
 			add_history(prompt);
-		ft_printf("%s\n", prompt);
 	}
 }
