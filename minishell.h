@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/20 20:33:45 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/22 18:13:31 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <readline/history.h>
 # include <unistd.h>
 
-void	shell_exit(void);
+void	shell_exit(char *prompt);
 void	change_dir(char *prompt);
 void	pwd(void);
 
