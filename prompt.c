@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/22 18:23:27 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/22 18:37:23 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(void)
 			change_dir(prompt);
 		else if (!ft_strncmp(prompt, "pwd", ft_strlen("pwd")))
 			pwd();
-		if (!ft_strncmp(prompt, "$", ft_strlen("$")))
+		else if (!ft_strncmp(prompt, "$", ft_strlen("$")))
 		{
 			temp = ft_strtrim(prompt, "$");
 			getenv(temp);
