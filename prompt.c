@@ -22,9 +22,9 @@ int	main(void)
 		prompt = readline("\x1B[1;32m(Minishell)$ \x1B[0m");
 		if (!ft_strncmp(prompt, "exit", ft_strlen("exit")))
 			shell_exit(prompt);
-		if (!ft_strncmp(prompt, "cd", ft_strlen("cd")))
+		else if (!ft_strncmp(prompt, "cd", ft_strlen("cd")))
 			change_dir(prompt);
-		if (!ft_strncmp(prompt, "pwd", ft_strlen("pwd")))
+		else if (!ft_strncmp(prompt, "pwd", ft_strlen("pwd")))
 			pwd();
 		if (!ft_strncmp(prompt, "$", ft_strlen("$")))
 		{
@@ -32,6 +32,8 @@ int	main(void)
 			getenv(temp);
 			free(temp);
 		}
+		else
+			run_executable(prompt);
 		if (prompt[0] != '\0')
 			add_history(prompt);
 	}
