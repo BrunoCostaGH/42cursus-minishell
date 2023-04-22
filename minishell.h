@@ -26,7 +26,9 @@ char	**set_argv(const char *prompt);
 
 void	pwd(void);
 void	shell_exit(void);
+void	shell_exit(void);
 void	free_darr(void **arr);
+void	change_dir(char *prompt);
 void	run_executable(char *prompt);
 
 void	*str_toupper(char *str);
