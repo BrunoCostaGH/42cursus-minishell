@@ -6,14 +6,14 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/24 19:30:42 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/24 19:46:21 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Check if argv[0] is an environment variable and if true set argv[0] as the
- * address in the environment.
+/* Check if argv[0] is a file in any of the folders specified by $PATH and if
+ * true return the program's path.
  */
 static char	*check_environment(char *fname)
 {
