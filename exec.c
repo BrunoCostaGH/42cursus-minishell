@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/22 16:21:56 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:20:53 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	check_environment(void *path)
 	if (!path)
 		return ;
 	env = ft_calloc(ft_strlen(path) + 1, sizeof(char));
+	if (!env)
+		return ;
 	env = (char *)ft_memcpy(env, path, ft_strlen(path));
 	env = (char *)str_toupper(env);
 	final_path = getenv(env);
@@ -46,12 +48,14 @@ void	run_executable(char *prompt)
 		pid = fork();
 		if (!pid)
 		{
-			if (execve(argv[0], argv, NULL))
+			if (execve(argv[0], argv, NULL) == -1)
 				perror("Error");
 			exit(0);
 		}
 		else
 		{
+			if (pid == -1)
+				perror("Error");
 			while (waitpid(-1, NULL, 0) != -1)
 				;
 			free_darr((void **)argv);
