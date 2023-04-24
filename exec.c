@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/24 18:55:57 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/24 19:30:42 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@ static char	*check_environment(char *fname)
 	char	*path;
 	char	**little_path;
 
-	i = 0;
+	i = -1;
 	name = 0;
-	path = getenv("PATH");
-	little_path = ft_split(path, ':');
-	while (little_path[i])
+	little_path = ft_split(getenv("PATH"), ':');
+	while (little_path[++i])
 	{
 		path = ft_strjoin(little_path[i], "/");
 		name = ft_strjoin(path, fname);
@@ -35,15 +34,14 @@ static char	*check_environment(char *fname)
 			break ;
 		free(name);
 		name = 0;
-		i++;
 	}
 	if (name)
 	{
 		free(fname);
-		fname = name;
+		return (name);
 	}
 	free_darr((void **)little_path);
-	return (name);
+	return (fname);
 }
 
 void	run_executable(char *prompt)
@@ -54,7 +52,7 @@ void	run_executable(char *prompt)
 	if (prompt && *prompt)
 	{
 		argv = set_argv(prompt);
-		check_environment(argv[0]);
+		argv[0] = check_environment(argv[0]);
 		pid = fork();
 		if (!pid)
 		{
