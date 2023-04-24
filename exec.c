@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/24 19:46:21 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/24 20:06:20 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*check_environment(char *fname)
 	if (name)
 	{
 		free(fname);
-		return (name);
+		fname = name;
 	}
 	free_darr((void **)little_path);
 	return (fname);
