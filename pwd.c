@@ -19,4 +19,5 @@ void	pwd(void)
 	path = NULL;
 	path = getcwd(path, 0);
 	ft_printf("%s\n", path);
+	free(path);
 }
