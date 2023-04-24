@@ -21,4 +21,5 @@ void	pwd(void)
 	if (path == NULL)
 		perror("Error");
 	ft_printf("%s\n", path);
+	free(path);
 }
