@@ -26,6 +26,7 @@ typedef struct s_data
 {
 	int		exit_status;
 	char	*prompt;
+	char	**envp;
 }	t_data;
 
 char	*get_env_var(char *prompt);
@@ -37,8 +38,9 @@ void	free_darr(void **arr);
 void	shell_exit(t_data *data);
 void	change_dir(char *prompt);
 void	run_executable(char *prompt);
+void	env(char **envp);
 
-void	*init_struct(void);
+void	*init_struct(char **envp);
 void	*str_toupper(char *str);
 
 #endif
