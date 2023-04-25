@@ -36,6 +36,7 @@ void	free_darr(void **arr);
 void	change_dir(char *prompt);
 void	run_executable(char *prompt);
 
+void	*init_struct(void);
 void	*str_toupper(char *str);
 
 #endif
