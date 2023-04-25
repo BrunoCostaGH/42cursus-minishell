@@ -31,7 +31,7 @@ int	main(int ac, char **av, char **envp)
 		else if (!ft_strncmp(data->prompt, "$", ft_strlen("$")))
 			get_env_var(data->prompt);
 		else if (!ft_strncmp(data->prompt, "env", ft_strlen("env")))
-			env(envp);
+			env(data->envp);
 		else
 			run_executable(data->prompt);
 		if (*data->prompt)
