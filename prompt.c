@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/25 14:23:12 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:43:51 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	main(void)
 {
-	char	*temp;
 	t_data	*data;
 
 	data = init_struct();
@@ -28,11 +27,7 @@ int	main(void)
 		else if (!ft_strncmp(data->prompt, "pwd", ft_strlen("pwd")))
 			pwd();
 		else if (!ft_strncmp(data->prompt, "$", ft_strlen("$")))
-		{
-			temp = ft_strtrim(data->prompt, "$");
-			getenv(temp);
-			free(temp);
-		}
+			get_env_var(data->prompt);
 		else
 			run_executable(data->prompt);
 		if (*data->prompt)

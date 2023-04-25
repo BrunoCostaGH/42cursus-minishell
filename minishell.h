@@ -28,6 +28,8 @@ typedef struct s_data
 	char	*prompt;
 }	t_data;
 
+char	*get_env_var(char *prompt);
+
 char	**set_argv(const char *prompt);
 
 void	pwd(void);
