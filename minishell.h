@@ -37,7 +37,7 @@ char	*get_env_var(t_data *data);
 
 char	**set_argv(const char *prompt);
 
-void	env(char **envp);
+void	env(t_data *data);
 void	pwd(t_data *data);
 void	free_darr(void **arr);
 void	shell_exit(t_data *data);

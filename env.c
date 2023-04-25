@@ -6,25 +6,31 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/25 17:47:42 by tabreia-         ###   ########.fr       */
+/*   Updated: 2023/04/25 19:01:34 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	env(char **envp)
+void	env(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (envp[i] != NULL)
+	if (!data->envp)
 	{
-		printf("%s\n", envp[i]);
+		data->exit_status = 1;
+		return ;
+	}
+	while (data->envp[i] != NULL)
+	{
+		printf("%s\n", data->envp[i]);
 		i++;
 	}
+	data->exit_status = 0;
 }
 
-char	*get_env_var(char *prompt)
+char	*get_env_var(t_data *data)
 {
 	char	*res;
 	char	*var;

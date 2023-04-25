@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/25 18:49:34 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 19:01:04 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int ac, char **av, char **envp)
 		else if (!ft_strncmp(data->prompt, "$", ft_strlen("$")))
 			get_env_var(data);
 		else if (!ft_strncmp(data->prompt, "env", ft_strlen("env")))
-			env(data->envp);
+			env(data);
 		else
 			run_executable(data);
 		if (*data->prompt)
