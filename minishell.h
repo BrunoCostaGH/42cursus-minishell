@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/25 14:47:48 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 18:31:47 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 
 # include "libft/libft.h"
 # include <stdio.h>
+# include <errno.h>
 # include <stdlib.h>
 # include <dirent.h>
+# include <unistd.h>
+# include <signal.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <unistd.h>
 
 typedef struct s_data
 {
@@ -29,16 +31,18 @@ typedef struct s_data
 	char	**envp;
 }	t_data;
 
-char	*get_env_var(char *prompt);
+int		get_exit_status(t_data *data);
+
+char	*get_env_var(t_data *data);
 
 char	**set_argv(const char *prompt);
 
-void	pwd(void);
+void	env(char **envp);
+void	pwd(t_data *data);
 void	free_darr(void **arr);
 void	shell_exit(t_data *data);
-void	change_dir(char *prompt);
-void	run_executable(char *prompt);
-void	env(char **envp);
+void	change_dir(t_data *data);
+void	run_executable(t_data *data);
 
 void	*init_struct(char **envp);
 void	*str_toupper(char *str);

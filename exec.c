@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/24 20:06:20 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 18:48:23 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,29 +44,29 @@ static char	*check_environment(char *fname)
 	return (fname);
 }
 
-void	run_executable(char *prompt)
+void	run_executable(t_data *data)
 {
 	char	**argv;
 	pid_t	pid;
 
-	if (prompt && *prompt)
+	if (data->prompt && *data->prompt)
 	{
-		argv = set_argv(prompt);
+		argv = set_argv(data->prompt);
 		argv[0] = check_environment(argv[0]);
 		pid = fork();
 		if (!pid)
 		{
 			if (execve(argv[0], argv, NULL) == -1)
 				perror("Error");
-			exit(0);
+			exit(127);
 		}
 		else
 		{
 			if (pid == -1)
 				perror("Error");
-			while (waitpid(-1, NULL, 0) != -1)
+			while (waitpid(pid, &data->exit_status, 0) != -1)
 				;
-			free_darr((void **)argv);
+			data->exit_status >>= 8;
 		}
 	}
 }

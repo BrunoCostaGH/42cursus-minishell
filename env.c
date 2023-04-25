@@ -30,10 +30,11 @@ char	*get_env_var(char *prompt)
 	char	*var;
 	char	**arguments;
 
-	arguments = ft_split(prompt, ' ');
+	arguments = ft_split(data->prompt, ' ');
 	var = ft_strtrim(arguments[0], "$");
 	res = getenv(var);
 	free_darr((void **)arguments);
 	free(var);
+	data->exit_status = 0;
 	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/25 14:43:51 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 18:49:34 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@ int	main(int ac, char **av, char **envp)
 		if (!ft_strncmp(data->prompt, "exit", ft_strlen("exit")))
 			shell_exit(data);
 		else if (!ft_strncmp(data->prompt, "cd", ft_strlen("cd")))
-			change_dir(data->prompt);
+			change_dir(data);
 		else if (!ft_strncmp(data->prompt, "pwd", ft_strlen("pwd")))
-			pwd();
+			pwd(data);
+		else if (!ft_strncmp(data->prompt, "$?", ft_strlen("$?")))
+			get_exit_status(data);
 		else if (!ft_strncmp(data->prompt, "$", ft_strlen("$")))
-			get_env_var(data->prompt);
+			get_env_var(data);
 		else if (!ft_strncmp(data->prompt, "env", ft_strlen("env")))
 			env(data->envp);
 		else
-			run_executable(data->prompt);
+			run_executable(data);
 		if (*data->prompt)
 			add_history(data->prompt);
 	}

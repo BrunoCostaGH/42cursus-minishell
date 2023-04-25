@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/25 15:40:42 by bsilva-c         ###   ########.fr       */
+/*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
+/*   Updated: 2023/04/25 17:17:01 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	shell_exit(t_data *data)
+int	get_exit_status(t_data *data)
 {
-	rl_clear_history();
-	free(data->prompt);
-	free(data);
-	exit(0);
+	return (data->exit_status);
 }
