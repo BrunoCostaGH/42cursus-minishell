@@ -12,11 +12,13 @@
 
 #include "minishell.h"
 
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
 	t_data	*data;
 
-	data = init_struct();
+	data = init_struct(envp);
+	(void)ac;
+	(void)av;
 	while (1)
 	{
 		data->prompt = readline("\x1B[1;32m(Minishell)$ \x1B[0m");
@@ -30,6 +32,8 @@ int	main(void)
 			get_exit_status(data);
 		else if (!ft_strncmp(data->prompt, "$", ft_strlen("$")))
 			get_env_var(data);
+		else if (!ft_strncmp(data->prompt, "env", ft_strlen("env")))
+			env(data->envp);
 		else
 			run_executable(data);
 		if (*data->prompt)
