@@ -44,14 +44,14 @@ static char	*check_environment(char *fname)
 	return (fname);
 }
 
-void	run_executable(char *prompt)
+void	run_executable(t_data *data)
 {
 	char	**argv;
 	pid_t	pid;
 
-	if (prompt && *prompt)
+	if (data->prompt && *data->prompt)
 	{
-		argv = set_argv(prompt);
+		argv = set_argv(data->prompt);
 		argv[0] = check_environment(argv[0]);
 		pid = fork();
 		if (!pid)
@@ -64,8 +64,11 @@ void	run_executable(char *prompt)
 		{
 			if (pid == -1)
 				perror("Error");
+			else
+				data->interactive = FALSE;
 			while (waitpid(-1, NULL, 0) != -1)
 				;
+			data->interactive = TRUE;
 			free_darr((void **)argv);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/25 14:43:51 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 20:50:08 by tabreia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,16 @@ int	main(void)
 	t_data	*data;
 
 	data = init_struct();
+	set_handle_struct();
+	execute_sig_action(0, data);
 	while (1)
 	{
 		data->prompt = readline("\x1B[1;32m(Minishell)$ \x1B[0m");
+		if (data->prompt == NULL)
+		{
+			printf("\n");
+			shell_exit(data);
+		}
 		if (!ft_strncmp(data->prompt, "exit", ft_strlen("exit")))
 			shell_exit(data);
 		else if (!ft_strncmp(data->prompt, "cd", ft_strlen("cd")))
@@ -29,7 +36,7 @@ int	main(void)
 		else if (!ft_strncmp(data->prompt, "$", ft_strlen("$")))
 			get_env_var(data->prompt);
 		else
-			run_executable(data->prompt);
+			run_executable(data);
 		if (*data->prompt)
 			add_history(data->prompt);
 	}

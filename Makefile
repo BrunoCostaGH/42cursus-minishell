@@ -2,8 +2,8 @@ CC=cc
 CFLAGS=-Wall -Werror -Wextra
 DEPS=libft/libft.a
 
-SRCS=prompt.c exit.c exec.c pwd.c change_dir.c exec_utils.c minishell_utils.c \
- init.c env.c
+SRCS=main.c exit.c exec.c pwd.c change_dir.c exec_utils.c minishell_utils.c \
+ init.c env.c signals.c
 OBJS=$(SRCS:.c=.o)
 NAME=minishell
 
