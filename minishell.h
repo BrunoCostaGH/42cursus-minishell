@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/25 14:30:43 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:43:31 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ typedef struct s_data
 	int		exit_status;
 	char	*prompt;
 }	t_data;
+
+char	*get_env_var(char *prompt);
 
 char	**set_argv(const char *prompt);
 
