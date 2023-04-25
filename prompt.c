@@ -22,7 +22,7 @@ int	main(void)
 	{
 		data->prompt = readline("\x1B[1;32m(Minishell)$ \x1B[0m");
 		if (!ft_strncmp(data->prompt, "exit", ft_strlen("exit")))
-			shell_exit(data->prompt);
+			shell_exit(data);
 		else if (!ft_strncmp(data->prompt, "cd", ft_strlen("cd")))
 			change_dir(data->prompt);
 		else if (!ft_strncmp(data->prompt, "pwd", ft_strlen("pwd")))
