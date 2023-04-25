@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/25 14:43:31 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:47:48 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ char	*get_env_var(char *prompt);
 char	**set_argv(const char *prompt);
 
 void	pwd(void);
-void	shell_exit(char *prompt);
 void	free_darr(void **arr);
+void	shell_exit(t_data *data);
 void	change_dir(char *prompt);
 void	run_executable(char *prompt);
 
