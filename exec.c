@@ -64,8 +64,12 @@ void	run_executable(t_data *data)
 		{
 			if (pid == -1)
 				perror("Error");
+			else
+				data->interactive = FALSE;
 			while (waitpid(pid, &data->exit_status, 0) != -1)
 				;
+			data->interactive = TRUE;
+			free_darr((void **)argv);
 			data->exit_status >>= 8;
 		}
 	}

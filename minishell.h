@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/25 18:31:47 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 20:49:51 by tabreia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,17 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# ifndef TRUE
+#  define TRUE 1
+# endif
+
+# ifndef FALSE
+#  define FALSE 0
+# endif
+
 typedef struct s_data
 {
+	int		interactive;
 	int		exit_status;
 	char	*prompt;
 	char	**envp;
@@ -43,6 +52,8 @@ void	free_darr(void **arr);
 void	shell_exit(t_data *data);
 void	change_dir(t_data *data);
 void	run_executable(t_data *data);
+void	set_handle_struct(void);
+void	execute_sig_action(int sig, void *data);
 
 void	*init_struct(char **envp);
 void	*str_toupper(char *str);
