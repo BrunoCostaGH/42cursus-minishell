@@ -33,7 +33,7 @@ char	*get_env_var(char *prompt)
 	arguments = ft_split(prompt, ' ');
 	var = ft_strtrim(arguments[0], "$");
 	res = getenv(var);
-	free_darr((void **) arguments);
+	free_darr((void **)arguments);
 	free(var);
 	return (res);
 }
