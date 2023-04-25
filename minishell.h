@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/22 18:13:31 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:30:43 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
+
+typedef struct s_data
+{
+	int		exit_status;
+	char	*prompt;
+}	t_data;
 
 char	**set_argv(const char *prompt);
 
