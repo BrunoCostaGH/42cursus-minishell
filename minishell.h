@@ -15,13 +15,14 @@
 
 # include "libft/libft.h"
 # include <stdio.h>
+# include <errno.h>
 # include <stdlib.h>
 # include <dirent.h>
+# include <unistd.h>
+# include <signal.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <unistd.h>
-# include <signal.h>
 
 # ifndef TRUE
 #  define TRUE 1
@@ -36,21 +37,25 @@ typedef struct s_data
 	int		interactive;
 	int		exit_status;
 	char	*prompt;
+	char	**envp;
 }	t_data;
 
-char	*get_env_var(char *prompt);
+int		get_exit_status(t_data *data);
+
+char	*get_env_var(t_data *data);
 
 char	**set_argv(const char *prompt);
 
-void	pwd(void);
+void	env(t_data *data);
+void	pwd(t_data *data);
 void	free_darr(void **arr);
 void	shell_exit(t_data *data);
-void	change_dir(char *prompt);
+void	change_dir(t_data *data);
 void	run_executable(t_data *data);
 void	set_handle_struct(void);
 void	execute_sig_action(int sig, void *data);
 
-void	*init_struct(void);
+void	*init_struct(char **envp);
 void	*str_toupper(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/24 20:06:20 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 18:48:23 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	run_executable(t_data *data)
 		{
 			if (execve(argv[0], argv, NULL) == -1)
 				perror("Error");
-			exit(0);
+			exit(127);
 		}
 		else
 		{
@@ -66,10 +66,11 @@ void	run_executable(t_data *data)
 				perror("Error");
 			else
 				data->interactive = FALSE;
-			while (waitpid(-1, NULL, 0) != -1)
+			while (waitpid(pid, &data->exit_status, 0) != -1)
 				;
 			data->interactive = TRUE;
 			free_darr((void **)argv);
+			data->exit_status >>= 8;
 		}
 	}
 }

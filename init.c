@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	*init_struct(void)
+void	*init_struct(char **envp)
 {
 	t_data	*data;
 
@@ -22,5 +22,6 @@ void	*init_struct(void)
 	data->interactive = TRUE;
 	data->exit_status = 0;
 	data->prompt = NULL;
+	data->envp = envp;
 	return (data);
 }
