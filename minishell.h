@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/25 20:49:51 by tabreia-         ###   ########.fr       */
+/*   Updated: 2023/04/26 16:19:50 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ typedef struct s_data
 	int		exit_status;
 	char	*prompt;
 	char	**envp;
+	char	**argv;
 }	t_data;
 
-int		get_exit_status(t_data *data);
 
 char	*get_env_var(t_data *data);
 
@@ -51,8 +51,9 @@ void	pwd(t_data *data);
 void	free_darr(void **arr);
 void	shell_exit(t_data *data);
 void	change_dir(t_data *data);
-void	run_executable(t_data *data);
 void	set_handle_struct(void);
+void	run_executable(t_data *data);
+void	check_variables(t_data *data);
 void	execute_sig_action(int sig, void *data);
 
 void	*init_struct(char **envp);
