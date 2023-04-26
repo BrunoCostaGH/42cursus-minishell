@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:17:40 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/25 20:50:33 by tabreia-         ###   ########.fr       */
+/*   Updated: 2023/04/26 16:07:36 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,8 @@ void	execute_sig_action(int sig, void *data)
 		}
 	}
 	if (static_data && !(static_data->interactive))
-	{
 		if (sig == SIGINT)
-		{
 			ft_printf("\n");
-		}
-	}
 }
 
 void	handle(int sig)
