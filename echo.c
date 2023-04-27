@@ -1,45 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/27 13:37:38 by bsilva-c         ###   ########.fr       */
+/*   Created: 2023/04/27 13:34:08 by bsilva-c          #+#    #+#             */
+/*   Updated: 2023/04/27 14:15:35 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	env(t_data *data)
+void	echo(t_data *data)
 {
 	int	i;
 
-	i = 0;
-	if (!data->envp)
+	if (data->argv[1][0] == '-' && data->argv[1][1] == 'n' && !data->argv[1][2])
 	{
-		data->exit_status = 1;
-		return ;
+		i = 2;
+		while (data->argv[i])
+		{
+			if (data->argv[i][ft_strlen(data->argv[i]) - 1] == '\n')
+				break ;
+			if (data->argv[i][ft_strlen(data->argv[i]) - 1] == '\r')
+				break ;
+			ft_printf("%s ", data->argv[i++]);
+		}
+		ft_printf("\b");
 	}
-	while (data->envp[i] != NULL)
+	else
 	{
-		printf("%s\n", data->envp[i]);
-		i++;
+		i = 1;
+		while (data->argv[i])
+			ft_printf("%s ", data->argv[i++]);
+		ft_printf("\b\n");
 	}
 	data->exit_status = 0;
-}
-
-char	*get_env_var(t_data *data)
-{
-	char	*res;
-	char	*var;
-	char	**arguments;
-
-	arguments = ft_split(data->prompt, ' ');
-	var = ft_strtrim(arguments[0], "$");
-	res = getenv(var);
-	free_darr((void **)arguments);
-	free(var);
-	return (res);
 }
