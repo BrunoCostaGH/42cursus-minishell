@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/25 19:01:34 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/27 13:37:38 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,5 @@ char	*get_env_var(t_data *data)
 	res = getenv(var);
 	free_darr((void **)arguments);
 	free(var);
-	data->exit_status = 0;
 	return (res);
 }
