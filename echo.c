@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:34:08 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/27 14:12:29 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/27 14:15:35 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	echo(t_data *data)
 		while (data->argv[i])
 		{
 			if (data->argv[i][ft_strlen(data->argv[i]) - 1] == '\n')
+				break ;
+			if (data->argv[i][ft_strlen(data->argv[i]) - 1] == '\r')
 				break ;
 			ft_printf("%s ", data->argv[i++]);
 		}
