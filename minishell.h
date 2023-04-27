@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/27 13:36:13 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/27 15:06:16 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_data
 }	t_data;
 
 
-char	*get_env_var(t_data *data);
+char	*get_env_var(char *data);
 
 char	**set_argv(const char *prompt);
 
