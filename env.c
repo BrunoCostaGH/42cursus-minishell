@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/27 13:37:38 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/27 15:06:29 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,13 @@ void	env(t_data *data)
 	data->exit_status = 0;
 }
 
-char	*get_env_var(t_data *data)
+char	*get_env_var(char *data)
 {
 	char	*res;
 	char	*var;
-	char	**arguments;
 
-	arguments = ft_split(data->prompt, ' ');
-	var = ft_strtrim(arguments[0], "$");
+	var = ft_strtrim(data, "$");
 	res = getenv(var);
-	free_darr((void **)arguments);
 	free(var);
 	return (res);
 }

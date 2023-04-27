@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:34:08 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/27 14:12:29 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/27 14:55:11 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,27 @@ void	echo(t_data *data)
 {
 	int	i;
 
-	if (data->argv[1][0] == '-' && data->argv[1][1] == 'n' && !data->argv[1][2])
+	if (data->argv[1])
 	{
-		i = 2;
-		while (data->argv[i])
+		if (!ft_strncmp(data->argv[1], "-n", 3) && data->argv[2])
 		{
-			if (data->argv[i][ft_strlen(data->argv[i]) - 1] == '\n')
-				break ;
-			ft_printf("%s ", data->argv[i++]);
+			i = 2;
+			while (data->argv[i])
+			{
+				if (data->argv[i][ft_strlen(data->argv[i]) - 1] == '\n' || \
+				data->argv[i][ft_strlen(data->argv[i]) - 1] == '\r')
+					break ;
+				ft_printf("%s ", data->argv[i++]);
+			}
+			ft_printf("\b");
 		}
-		ft_printf("\b");
-	}
-	else
-	{
-		i = 1;
-		while (data->argv[i])
-			ft_printf("%s ", data->argv[i++]);
-		ft_printf("\b\n");
+		else
+		{
+			i = 1;
+			while (data->argv[i])
+				ft_printf("%s ", data->argv[i++]);
+			ft_printf("\b\n");
+		}
 	}
 	data->exit_status = 0;
 }
