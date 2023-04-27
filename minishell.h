@@ -53,7 +53,7 @@ void	free_darr(void **arr);
 void	set_handle_struct(void);
 void	shell_exit(t_data *data);
 void	change_dir(t_data *data);
-void	run_executable(t_data *data);
+void	run_executable(t_data *data, char **argv);
 void	check_variables(t_data *data);
 void	execute_sig_action(int sig, void *data);
 

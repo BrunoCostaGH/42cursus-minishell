@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/27 13:33:58 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/27 17:46:25 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int ac, char **av, char **envp)
 		else if (!ft_strncmp(data->prompt, "echo", ft_strlen("echo")))
 			echo(data);
 		else
-			run_executable(data);
+			run_executable(data, data->argv);
 		if (*data->prompt)
 			add_history(data->prompt);
 		free_darr((void **)data->argv);

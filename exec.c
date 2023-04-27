@@ -6,13 +6,13 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/27 13:42:20 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/27 17:45:54 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	set_error_status(t_data *data)
+static void	set_error_status(t_data *data, char **argv)
 {
 	int	temp_error;
 
@@ -28,7 +28,7 @@ static void	set_error_status(t_data *data)
 	if (errno == 2)
 	{
 		write(2, "command not found: ", 19);
-		write(2, data->argv[0], ft_strlen(data->argv[0]));
+		write(2, argv[0], ft_strlen(argv[0]));
 		write(2, "\n", 1);
 		data->exit_status = 127;
 	}
@@ -66,19 +66,19 @@ static char	*check_environment(char *fname)
 	return (fname);
 }
 
-void	run_executable(t_data *data)
+void	run_executable(t_data *data, char **argv)
 {
 	pid_t	pid;
 
-	if (data->prompt && *data->prompt)
+	if (argv && *argv)
 	{
-		data->argv[0] = check_environment(data->argv[0]);
+		argv[0] = check_environment(argv[0]);
 		pid = fork();
 		if (pid == -1)
 			perror("Error");
 		if (!pid)
 		{
-			if (execve(data->argv[0], data->argv, data->envp) == -1)
+			if (execve(argv[0], argv, data->envp) == -1)
 				if (errno != 2)
 					perror("Error");
 			exit(1);
@@ -89,7 +89,7 @@ void	run_executable(t_data *data)
 			while (waitpid(pid, &data->exit_status, WUNTRACED) == -1)
 				;
 			data->interactive = TRUE;
-			set_error_status(data);
+			set_error_status(data, argv);
 		}
 	}
 }
