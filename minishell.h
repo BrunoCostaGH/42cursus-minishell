@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/27 15:06:16 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/28 13:59:49 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,17 @@ typedef struct s_data
 
 char	*get_env_var(char *data);
 
-char	**set_argv(const char *prompt);
-
 void	env(t_data *data);
 void	pwd(t_data *data);
 void	echo(t_data *data);
 void	free_darr(void **arr);
+void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	shell_exit(t_data *data);
 void	change_dir(t_data *data);
-void	run_executable(t_data *data, char **argv);
 void	check_variables(t_data *data);
 void	execute_sig_action(int sig, void *data);
+void	run_executable(t_data *data, char **argv);
 
 void	*init_struct(char **envp);
 void	*str_toupper(char *str);

@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/27 17:46:25 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/28 13:59:28 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ int	main(int ac, char **av, char **envp)
 			printf("\n");
 			shell_exit(data);
 		}
-		data->argv = set_argv(data->prompt);
-		check_variables(data);
+		set_argv(data);
 		if (!ft_strncmp(data->prompt, "exit", ft_strlen("exit")))
 			shell_exit(data);
 		else if (!ft_strncmp(data->prompt, "cd", ft_strlen("cd")))
