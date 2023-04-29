@@ -52,6 +52,7 @@ void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	shell_exit(t_data *data);
 void	change_dir(t_data *data);
+void	unset(t_data *data, char **argv);
 void	check_variables(t_data *data);
 void	export(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
