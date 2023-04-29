@@ -12,6 +12,34 @@
 
 #include "minishell.h"
 
+void	export(t_data *data, char **argv)
+{
+	int		argv_count;
+	int		env_count;
+	int		index_argv;
+	int		index_env;
+	char	**temp_envp;
+
+	argv_count = 0;
+	env_count = 0;
+	index_argv = 0;
+	index_env = 0;
+	while (argv[argv_count])
+		argv_count++;
+	while (data->envp[env_count])
+		env_count++;
+	temp_envp = ft_calloc(argv_count + env_count + 1, sizeof(char *));
+	while (data->envp[index_env])
+	{
+		temp_envp[index_env] = data->envp[index_env];
+		index_env++;
+	}
+	while (argv[++index_argv])
+		temp_envp[index_env++] = ft_strdup(argv[index_argv]);
+	free(data->envp);
+	data->envp = temp_envp;
+}
+
 void	env(t_data *data)
 {
 	int	i;
