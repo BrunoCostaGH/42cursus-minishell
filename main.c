@@ -30,15 +30,15 @@ int	main(int ac, char **av, char **envp)
 			shell_exit(data);
 		}
 		set_argv(data);
-		if (!ft_strncmp(data->prompt, "exit", ft_strlen("exit")))
+		if (!ft_strncmp(data->argv[0], "exit", ft_strlen("exit")))
 			shell_exit(data);
-		else if (!ft_strncmp(data->prompt, "cd", ft_strlen("cd")))
+		else if (!ft_strncmp(data->argv[0], "cd", ft_strlen("cd")))
 			change_dir(data);
-		else if (!ft_strncmp(data->prompt, "pwd", ft_strlen("pwd")))
+		else if (!ft_strncmp(data->argv[0], "pwd", ft_strlen("pwd")))
 			pwd(data);
-		else if (!ft_strncmp(data->prompt, "env", ft_strlen("env")))
+		else if (!ft_strncmp(data->argv[0], "env", ft_strlen("env")))
 			env(data);
-		else if (!ft_strncmp(data->prompt, "echo", ft_strlen("echo")))
+		else if (!ft_strncmp(data->argv[0], "echo", ft_strlen("echo")))
 			echo(data);
 		else
 			run_executable(data, data->argv);
