@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/27 15:06:29 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/29 20:10:53 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,39 @@ void	export(t_data *data, char **argv)
 		temp_envp[index_env++] = ft_strdup(argv[index_argv]);
 	free(data->envp);
 	data->envp = temp_envp;
+}
+
+void	unset(t_data *data, char **argv)
+{
+	int		index_argv;
+	int		index_env;
+	char	*name;
+
+	index_argv = 0;
+	index_env = 0;
+	while (argv[++index_argv])
+	{
+		name = ft_strjoin(argv[index_argv], "=");
+		while (data->envp[index_env] && ft_strncmp(data->envp[index_env], \
+			name, ft_strlen(name)))
+			index_env++;
+		if (data->envp[index_env])
+		{
+			free(data->envp[index_env]);
+			data->envp[index_env] = 0;
+			if (data->envp[index_env + 1])
+			{
+				while (data->envp[index_env + 1])
+				{
+					data->envp[index_env] = data->envp[index_env + 1];
+					index_env++;
+				}
+				data->envp[index_env] = NULL;
+			}
+		}
+		free(name);
+	}
+	data->exit_status = 0;
 }
 
 void	env(t_data *data)

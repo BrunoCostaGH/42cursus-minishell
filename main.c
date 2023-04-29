@@ -42,6 +42,8 @@ int	main(int ac, char **av, char **envp)
 			env(data);
 		else if (!ft_strncmp(data->argv[0], "echo", ft_strlen(data->argv[0])))
 			echo(data);
+		else if (!ft_strncmp(data->argv[0], "unset", ft_strlen(data->argv[0])))
+			unset(data, data->argv);
 		else if (!ft_strncmp(data->argv[0], "export", ft_strlen(data->argv[0])))
 			export(data, data->argv);
 		else
