@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/28 21:01:10 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/29 17:00:13 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,18 @@
 //return numbers of split strings
 static int	string_count(char const *prompt)
 {
-	char	*str;
 	int		i;
+	int		quote;
 
 	i = 0;
-	str = (char *)prompt;
-	while (*str)
+	quote = FALSE;
+	while (*prompt)
 	{
-		if (*str++ == ' ')
+		if ((*prompt == 34 || *prompt == 39) && quote)
+			quote = FALSE;
+		else if (*prompt == 34 || *prompt == 39)
+			quote = TRUE;
+		if (*prompt++ == ' ' && !quote)
 			i++;
 	}
 	return (++i);

@@ -29,6 +29,8 @@ int	main(int ac, char **av, char **envp)
 			printf("\n");
 			shell_exit(data);
 		}
+		if (*data->prompt)
+			add_history(data->prompt);
 		set_argv(data);
 		if (!ft_strncmp(data->argv[0], "exit", ft_strlen(data->argv[0])))
 			shell_exit(data);
