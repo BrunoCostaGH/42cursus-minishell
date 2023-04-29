@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/28 13:59:28 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/29 16:01:22 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ int	main(int ac, char **av, char **envp)
 			shell_exit(data);
 		}
 		set_argv(data);
-		if (!ft_strncmp(data->argv[0], "exit", ft_strlen("exit")))
+		if (!ft_strncmp(data->argv[0], "exit", ft_strlen(data->argv[0])))
 			shell_exit(data);
-		else if (!ft_strncmp(data->argv[0], "cd", ft_strlen("cd")))
+		else if (!ft_strncmp(data->argv[0], "cd", ft_strlen(data->argv[0])))
 			change_dir(data);
-		else if (!ft_strncmp(data->argv[0], "pwd", ft_strlen("pwd")))
+		else if (!ft_strncmp(data->argv[0], "pwd", ft_strlen(data->argv[0])))
 			pwd(data);
-		else if (!ft_strncmp(data->argv[0], "env", ft_strlen("env")))
+		else if (!ft_strncmp(data->argv[0], "env", ft_strlen(data->argv[0])))
 			env(data);
-		else if (!ft_strncmp(data->argv[0], "echo", ft_strlen("echo")))
+		else if (!ft_strncmp(data->argv[0], "echo", ft_strlen(data->argv[0])))
 			echo(data);
 		else
 			run_executable(data, data->argv);
