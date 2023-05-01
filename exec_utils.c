@@ -6,14 +6,14 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/29 17:00:13 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/01 14:12:19 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //return numbers of split strings
-static int	string_count(char const *prompt)
+static int	string_count(const char *prompt)
 {
 	int		i;
 	int		quote;
@@ -33,7 +33,7 @@ static int	string_count(char const *prompt)
 }
 
 //return numbers of current string characters
-static int	char_count(char const *prompt)
+static int	char_count(const char *prompt)
 {
 	int		i;
 	int		quote;
@@ -65,11 +65,11 @@ static int	special_treatment(const char *prompt, char **result, int index_res)
 	{
 		if ((prompt[i] == 34 || prompt[i] == 39) && quote)
 			quote = FALSE;
-		else if (*prompt == 34 || *prompt == 39)
+		else if (prompt[i] == 34 || prompt[i] == 39)
 			quote = TRUE;
 		result[index_res][k++] = prompt[i++];
 	}
-	return (++i);
+	return (i);
 }
 
 void	set_result(const char *prompt, char **result)
@@ -79,9 +79,9 @@ void	set_result(const char *prompt, char **result)
 	i = -1;
 	while (*prompt)
 	{
-		while (*prompt == ' ' && *prompt)
+		while (*prompt && *prompt == ' ')
 			prompt++;
-		if (*prompt != ' ' && *prompt)
+		if (*prompt && *prompt != ' ')
 		{
 			result[++i] = ft_calloc(char_count(prompt) + 1, sizeof(char));
 			if (!result[i])

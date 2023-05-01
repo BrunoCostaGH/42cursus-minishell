@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/29 17:21:21 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/01 13:58:07 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,26 @@ int	main(int ac, char **av, char **envp)
 		if (*data->prompt)
 			add_history(data->prompt);
 		set_argv(data);
-		if (!ft_strncmp(data->argv[0], "exit", ft_strlen(data->argv[0])))
-			shell_exit(data);
-		else if (!ft_strncmp(data->argv[0], "cd", ft_strlen(data->argv[0])))
-			change_dir(data);
-		else if (!ft_strncmp(data->argv[0], "pwd", ft_strlen(data->argv[0])))
-			pwd(data);
-		else if (!ft_strncmp(data->argv[0], "env", ft_strlen(data->argv[0])))
-			env(data);
-		else if (!ft_strncmp(data->argv[0], "echo", ft_strlen(data->argv[0])))
-			echo(data);
-		else if (!ft_strncmp(data->argv[0], "unset", ft_strlen(data->argv[0])))
-			unset(data, data->argv);
-		else if (!ft_strncmp(data->argv[0], "export", ft_strlen(data->argv[0])))
-			export(data, data->argv);
-		else
-			run_executable(data, data->argv);
-		free_darr((void **)data->argv);
-		data->argv = 0;
+		if (data->argv && *data->argv)
+		{
+			if (!ft_strncmp(data->argv[0], "exit", ft_strlen(data->argv[0])))
+				shell_exit(data);
+			else if (!ft_strncmp(data->argv[0], "cd", ft_strlen(data->argv[0])))
+				change_dir(data);
+			else if (!ft_strncmp(data->argv[0], "pwd", ft_strlen(data->argv[0])))
+				pwd(data);
+			else if (!ft_strncmp(data->argv[0], "env", ft_strlen(data->argv[0])))
+				env(data);
+			else if (!ft_strncmp(data->argv[0], "echo", ft_strlen(data->argv[0])))
+				echo(data);
+			else if (!ft_strncmp(data->argv[0], "unset", ft_strlen(data->argv[0])))
+				unset(data, data->argv);
+			else if (!ft_strncmp(data->argv[0], "export", ft_strlen(data->argv[0])))
+				export(data, data->argv);
+			else
+				run_executable(data, data->argv);
+			free_darr((void **)data->argv);
+			data->argv = 0;
+		}
 	}
 }
