@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/04/29 15:46:47 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/01 16:28:04 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,16 @@ typedef struct s_data
 }	t_data;
 
 
-char	*get_env_var(char *data);
+char	*get_env_var(t_data *data, char *var_name);
 
 void	env(t_data *data);
 void	pwd(t_data *data);
-void	echo(t_data *data);
+void	echo(t_data *data, char **argv);
 void	free_darr(void **arr);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	shell_exit(t_data *data);
-void	change_dir(t_data *data);
+void	change_dir(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
 void	check_variables(t_data *data);
 void	export(t_data *data, char **argv);
