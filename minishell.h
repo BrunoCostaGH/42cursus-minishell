@@ -46,12 +46,12 @@ char	*get_env_var(char *data);
 
 void	env(t_data *data);
 void	pwd(t_data *data);
-void	echo(t_data *data);
+void	echo(t_data *data, char **argv);
 void	free_darr(void **arr);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	shell_exit(t_data *data);
-void	change_dir(t_data *data);
+void	change_dir(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
 void	check_variables(t_data *data);
 void	export(t_data *data, char **argv);

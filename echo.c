@@ -6,35 +6,35 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:34:08 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/27 17:02:46 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/01 15:34:18 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	echo(t_data *data)
+void	echo(t_data *data, char **argv)
 {
 	int	i;
 
-	if (data->argv[1])
+	if (argv[1])
 	{
-		if (!ft_strncmp(data->argv[1], "-n", 3) && data->argv[2])
+		if (!ft_strncmp(argv[1], "-n", 3) && argv[2])
 		{
 			i = 2;
-			while (data->argv[i])
+			while (argv[i])
 			{
-				if (data->argv[i][ft_strlen(data->argv[i]) - 1] == '\n' || \
-				data->argv[i][ft_strlen(data->argv[i]) - 1] == '\r')
+				if (argv[i][ft_strlen(argv[i]) - 1] == '\n' || \
+				argv[i][ft_strlen(argv[i]) - 1] == '\r')
 					break ;
-				ft_printf("%s ", data->argv[i++]);
+				ft_printf("%s ", argv[i++]);
 			}
 			ft_printf("\b");
 		}
 		else
 		{
 			i = 1;
-			while (data->argv[i])
-				ft_printf("%s ", data->argv[i++]);
+			while (argv[i])
+				ft_printf("%s ", argv[i++]);
 			ft_printf("\b\n");
 		}
 	}
