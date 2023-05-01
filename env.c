@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/29 20:10:53 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/01 16:36:20 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,17 @@ void	env(t_data *data)
 	data->exit_status = 0;
 }
 
-char	*get_env_var(char *data)
+char	*get_env_var(t_data *data, char *var_name)
 {
-	char	*res;
-	char	*var;
+	int		index;
+	char	*var_value;
 
-	var = ft_strtrim(data, "$");
-	res = getenv(var);
-	free(var);
-	return (res);
+	index = 0;
+	var_value = NULL;
+	while (data->envp[index] && ft_strncmp(data->envp[index], \
+		var_name, ft_strlen(var_name)))
+		index++;
+	if (data->envp[index - 1])
+		var_value = ft_strchr(data->envp[index - 1], '=') + 1;
+	return (var_value);
 }

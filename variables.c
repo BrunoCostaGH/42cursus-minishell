@@ -28,7 +28,7 @@ static void	set_env_var(t_data *data, int i)
 	}
 	var_name = ft_calloc(k + 1, sizeof(char));
 	ft_strlcpy(var_name, temp, k + 1);
-	env_var = get_env_var(var_name);
+	env_var = get_env_var(data, var_name);
 	if (!env_var)
 		env_var = "(null)";
 	temp = ft_fndnrepl(data->argv[i], var_name, env_var);
