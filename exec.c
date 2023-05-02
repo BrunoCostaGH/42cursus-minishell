@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/27 17:54:53 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/02 18:54:40 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@ static void	set_error_status(t_data *data, char **argv)
 	temp_error = data->exit_status;
 	if ((data->exit_status >> 7) & 0x01)
 		write(2, "Quit (core dump)\n", 17);
-	temp_error <<= 8;
-	temp_error >>= 8;
-	if (!temp_error && ((data->exit_status >> 8)))
-		data->exit_status >>= 8;
-	else
-		data->exit_status = temp_error;
-	if (errno == 2)
+	else if (access(argv[0], F_OK))
 	{
 		write(2, "command not found: ", 19);
 		write(2, argv[0], ft_strlen(argv[0]));
 		write(2, "\n", 1);
 		data->exit_status = 127;
 	}
+	temp_error <<= 8;
+	temp_error >>= 8;
+	if (!temp_error && ((data->exit_status >> 8)))
+		data->exit_status >>= 8;
+	else
+		data->exit_status = temp_error;
 }
 
 /* Check if argv[0] is a file in any of the folders specified by $PATH and if
