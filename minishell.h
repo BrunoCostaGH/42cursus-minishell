@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/01 16:28:04 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:54:30 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ typedef struct s_data
 	char	**argv;
 }	t_data;
 
-
-char	*get_env_var(t_data *data, char *var_name);
+char	*get_env_var(t_data *data, const char *var_name);
 
 void	env(t_data *data);
 void	pwd(t_data *data);

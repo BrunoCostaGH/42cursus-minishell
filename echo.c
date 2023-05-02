@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:34:08 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/01 15:34:18 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:35:48 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	echo(t_data *data, char **argv)
 
 	if (argv[1])
 	{
-		if (!ft_strncmp(argv[1], "-n", 3) && argv[2])
+		if ((!ft_strncmp(argv[1], "-n", 3) || !ft_strncmp(argv[1], "-n ", 3)))
 		{
 			i = 2;
 			while (argv[i])

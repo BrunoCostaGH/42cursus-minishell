@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/01 16:36:20 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:58:15 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	export(t_data *data, char **argv)
 	env_count = 0;
 	index_argv = 0;
 	index_env = 0;
+	if (!*argv[1] || !ft_strrchr(argv[1], '='))
+		return ;
 	while (argv[argv_count])
 		argv_count++;
 	while (data->envp[env_count])
@@ -91,17 +93,18 @@ void	env(t_data *data)
 	data->exit_status = 0;
 }
 
-char	*get_env_var(t_data *data, char *var_name)
+char	*get_env_var(t_data *data, const char *var_name)
 {
 	int		index;
 	char	*var_value;
 
 	index = 0;
 	var_value = NULL;
+	var_name = var_name + 1;
 	while (data->envp[index] && ft_strncmp(data->envp[index], \
 		var_name, ft_strlen(var_name)))
 		index++;
-	if (data->envp[index - 1])
-		var_value = ft_strchr(data->envp[index - 1], '=') + 1;
+	if (data->envp[index])
+		var_value = ft_strrchr(data->envp[index], '=') + 1;
 	return (var_value);
 }
