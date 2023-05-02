@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/02 18:51:27 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/03 00:04:21 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	check_variables(t_data *data);
 void	export(t_data *data, char **argv);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
-void 	create_pipes(t_data *data, int id);
 void	run_executable(t_data *data, char **argv);
 
 int		check_for_pipes(t_data *data);

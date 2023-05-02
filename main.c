@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/02 19:15:55 by tabreia-         ###   ########.fr       */
+/*   Updated: 2023/05/02 23:46:50 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,8 @@ void	find_command(t_data *data, char **argv)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_data	*data;
-	static int		i;
-	//char	**first;
-	//char	**second;
+	t_data		*data;
 
-	i = 0;
 	data = init_struct(envp);
 	set_handle_struct();
 	execute_sig_action(0, data);
@@ -50,7 +46,6 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	while (1)
 	{
-		//ft_printf("%d 1\n", getpid());
 		data->prompt = readline("\x1B[1;32m(Minishell)$ \x1B[0m");
 		if (data->prompt == NULL)
 		{
@@ -58,21 +53,10 @@ int	main(int ac, char **av, char **envp)
 			shell_exit(data);
 		}
 		get_s_argv(data);
-		//ft_printf("%d 2\n", getpid());
 		if (data->prompt && *data->prompt)
 			add_history(data->prompt);
-		//ft_printf("%d 3\n", getpid());
 		if (check_for_pipes(data))
-		{
-			//ft_printf("4\n");
-			//while (i < data->n_of_pipes)
-			//{
-			create_pipes(data, i);
-			//i++;
-			//}
 			continue ;
-		}
-		ft_printf("oiiiii\n");
 		set_argv(data);
 		find_command(data, data->argv);
 		free_darr((void **)data->argv);
