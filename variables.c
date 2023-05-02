@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/01 15:31:27 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:09:41 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	check_variables(t_data *data)
 	int	i;
 
 	i = 0;
-	while (data->argv[i])
+	while (data->argv && data->argv[i])
 	{
 		if (data->argv[i][0] != 39)
 		{
