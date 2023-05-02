@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:10:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/01 15:35:59 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/02 20:43:45 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ void	change_dir(t_data *data, char **argv)
 {
 	char	*path;
 
+	if (argv[2])
+	{
+		write(2, "cd: too many arguments\n", 24);
+		data->exit_status = 1;
+		return ;
+	}
 	path = argv[1];
 	if (!path)
 		path = getenv("HOME");

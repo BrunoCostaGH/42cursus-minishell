@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/02 14:58:15 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/02 20:47:11 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,21 @@ void	unset(t_data *data, char **argv)
 		}
 		free(name);
 	}
+	if (!argv[1])
+	{
+		write(2, "unset: not enough arguments\n", 24);
+		data->exit_status = 1;
+		return ;
+	}
 	data->exit_status = 0;
 }
 
-void	env(t_data *data)
+void	env(t_data *data, char **argv)
 {
 	int	i;
 
 	i = 0;
-	if (!data->envp)
+	if (!data->envp || argv[1])
 	{
 		data->exit_status = 1;
 		return ;
