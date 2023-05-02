@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/02 14:54:30 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/02 18:51:27 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	change_dir(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
 void	check_variables(t_data *data);
 void	export(t_data *data, char **argv);
+void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
 
