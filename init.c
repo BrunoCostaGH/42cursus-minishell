@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/29 17:23:39 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/26 16:11:40 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,14 @@ void	*init_struct(char **envp)
 		return (0);
 	data->interactive = TRUE;
 	data->exit_status = 0;
+	data->n_of_pipes = 0;
+	data->pipein = -1;
+	data->pipeout = -1;
+	data->pid_child = -1;
+	data->pid_parent = -1;
 	data->prompt = NULL;
 	data->argv = NULL;
+	data->s_argv = NULL;
 	init_envp(data, envp);
 	return (data);
 }
