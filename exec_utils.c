@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/02 14:09:52 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:51:27 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	string_count(const char *prompt)
 
 	i = 0;
 	quote = FALSE;
-	while (*prompt)
+	while (prompt && *prompt)
 	{
 		if ((*prompt == 34 || *prompt == 39) && quote)
 			quote = FALSE;
@@ -40,7 +40,7 @@ static int	char_count(const char *prompt)
 
 	i = 0;
 	quote = FALSE;
-	while (*prompt && (*prompt != ' ' || quote))
+	while (prompt && *prompt && (*prompt != ' ' || quote))
 	{
 		if ((*prompt == 34 || *prompt == 39) && quote)
 			quote = FALSE;
@@ -61,7 +61,7 @@ static int	special_treatment(const char *prompt, char **result, int index_res)
 	i = 0;
 	k = 0;
 	quote = FALSE;
-	while (*prompt && (*prompt != ' ' || quote))
+	while (prompt && *prompt && (*prompt != ' ' || quote))
 	{
 		if ((*prompt == 34 || *prompt == 39) && quote)
 			quote = FALSE;

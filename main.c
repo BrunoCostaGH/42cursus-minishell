@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/01 15:34:18 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:52:14 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	main(int ac, char **av, char **envp)
 			printf("\n");
 			shell_exit(data);
 		}
-		if (*data->prompt)
+		if (data->prompt && *data->prompt)
 			add_history(data->prompt);
 		set_argv(data);
 		find_command(data, data->argv);
