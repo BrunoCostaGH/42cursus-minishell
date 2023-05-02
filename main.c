@@ -21,9 +21,9 @@ void	find_command(t_data *data, char **argv)
 		else if (!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
 			change_dir(data, argv);
 		else if (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
-			pwd(data);
+			pwd(data, argv);
 		else if (!ft_strncmp(argv[0], "env", ft_strlen(argv[0])))
-			env(data);
+			env(data, argv);
 		else if (!ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
 			echo(data, argv);
 		else if (!ft_strncmp(argv[0], "unset", ft_strlen(argv[0])))
