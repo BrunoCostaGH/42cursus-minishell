@@ -50,7 +50,7 @@ typedef struct s_data
 char	*get_env_var(t_data *data, const char *var_name);
 
 void	env(t_data *data, char **argv);
-void	get_s_argv(t_data *data);
+void	set_s_argv(t_data *data);
 void	pwd(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	free_darr(void **arr);
