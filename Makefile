@@ -26,7 +26,7 @@ all: deps $(NAME)
 deps:
 	$(MAKE) -C ./libft
 $(NAME): $(OBJS) $(DEPS)
-	@$(CC) $(OBJS) $(LIBFT) -lreadline -lncurses -o $(NAME)
+	@$(CC) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
 clean:
 	$(MAKE) $@ -C ./libft
 	@rm $(OBJS)
