@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/03 00:04:21 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/04 20:04:53 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,24 @@
 #  define FALSE 0
 # endif
 
+/*	TYPES
+ * 0 = regular
+ * 1 = pipes
+ * 2 = redirections
+ * */
+typedef struct s_args
+{
+	int		*type;
+	char	**argv;
+}	t_args;
+
 typedef struct s_data
 {
-	int		interactive;
-	int		exit_status;
-	int		n_of_pipes;
-	int		pipein;
-	int		pipeout;
-	int		pid_child;
-	int		pid_parent;
-	char	*prompt;
-	char	**envp;
-	char	**argv;
-	char	***s_argv;
+	int				interactive;
+	int				exit_status;
+	char			*prompt;
+	char			**envp;
+	struct s_args	argv;
 }	t_data;
 
 char	*get_env_var(t_data *data, const char *var_name);
