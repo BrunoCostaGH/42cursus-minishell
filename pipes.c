@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/03 16:13:59 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:17:39 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ void	set_s_argv(t_data *data)
 		}
 		i++;
 	}
-
 }
 
 int	check_for_pipes(t_data *data)
@@ -133,9 +132,9 @@ int	check_for_pipes(t_data *data)
 		return (0);
 	set_s_argv(data);
 	pipe_amount = 0;
-	while (data->s_argv[pipe_amount])
+	while (data->s_argv[pipe_amount + 1])
 		pipe_amount++;
-	if (pipe_amount)
+	if (pipe_amount++)
 	{
 		pipe_fd = ft_calloc(pipe_amount + 1, sizeof(int *));
 		create_pipes(data, pipe_fd);
