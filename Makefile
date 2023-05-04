@@ -11,11 +11,12 @@
 # **************************************************************************** #
 
 CC=cc
-CFLAGS=-Wall -Werror -Wextra
+CFLAGS=-Wall -Werror -Wextra -g
 DEPS=libft/libft.a
 
 SRCS=main.c exit.c exec.c pwd.c change_dir.c exec_utils.c minishell_utils.c \
- init.c env.c signals.c variables.c echo.c
+ init.c env.c signals.c variables.c pipes.c echo.c
+
 OBJS=$(SRCS:.c=.o)
 NAME=minishell
 
