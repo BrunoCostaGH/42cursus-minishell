@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/04 14:17:39 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/05 15:26:25 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ void	create_pipes(t_data *data, int **pipe_fd)
 	{
 		dup2(pipe_fd[id][1], STDOUT_FILENO);
 		close_pipes(pipe_fd, id);
-		find_command(data, data->s_argv[id]);
+		find_command(data, data->argv.args[id]);
 		exit(0);
 	}
 	else
 	{
-		while (data->s_argv[++id])
+		while (data->argv.args[++id])
 		{
-			if (data->s_argv[id + 1])
+			if (data->argv.args[id + 1])
 			{
 				pipe_fd[id] = malloc(sizeof(int) * 2);
 				pipe(pipe_fd[id]);
@@ -57,69 +57,10 @@ void	create_pipes(t_data *data, int **pipe_fd)
 					dup2(pipe_fd[id][1], STDOUT_FILENO);
 				dup2(pipe_fd[id - 1][0], STDIN_FILENO);
 				close_pipes(pipe_fd, id);
-				find_command(data, data->s_argv[id]);
+				find_command(data, data->argv.args[id]);
 				exit(0);
 			}
 		}
-	}
-}
-
-int	count_args(char **argv, int id)
-{
-	int	i;
-	int	k;
-	int	count;
-
-	i = 0;
-	k = 0;
-	count = 0;
-	while (argv && argv[i])
-	{
-		if (!ft_strncmp(argv[i], "| ", 2))
-			count++;
-		if (count == id && ft_strncmp(argv[i], "| ", 2))
-			k++;
-		i++;
-	}
-	return (k);
-}
-
-void	set_s_argv(t_data *data)
-{
-	int		i;
-	int		k;
-	int		count;
-
-	i = 0;
-	count = 2;
-	while (data->argv && data->argv[i])
-	{
-		if (!ft_strncmp(data->argv[i], "|", 2))
-			count++;
-		i++;
-	}
-	data->n_of_pipes = count;
-	data->s_argv = ft_calloc(count + 1, sizeof(char **));
-	i = 0;
-	k = 0;
-	count = count_args(data->argv, k);
-	data->s_argv[k] = ft_calloc(count + 1, sizeof(char *));
-	count = 0;
-	while (data->argv && data->argv[i])
-	{
-		if (ft_strncmp(data->argv[i], "|", 2))
-		{
-			data->s_argv[k][count] = data->argv[i];
-			count++;
-		}
-		else
-		{
-			k++;
-			count = count_args(data->argv, k);
-			data->s_argv[k] = ft_calloc(count + 1, sizeof(char *));
-			count = 0;
-		}
-		i++;
 	}
 }
 
@@ -130,9 +71,8 @@ int	check_for_pipes(t_data *data)
 
 	if (!data->prompt)
 		return (0);
-	set_s_argv(data);
 	pipe_amount = 0;
-	while (data->s_argv[pipe_amount + 1])
+	while (data->argv.args[pipe_amount + 1])
 		pipe_amount++;
 	if (pipe_amount++)
 	{
