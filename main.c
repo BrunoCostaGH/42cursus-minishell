@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/03 15:31:07 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/05 19:15:54 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ int	main(int ac, char **av, char **envp)
 			add_history(data->prompt);
 		if (check_for_pipes(data))
 			continue ;
-		find_command(data, data->argv);
-		free_darr((void **)data->argv);
-		data->argv = 0;
+		find_command(data, *data->argv.args);
+		argv_clear(data);
 	}
 }
