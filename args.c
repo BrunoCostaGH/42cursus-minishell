@@ -6,11 +6,30 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/05 19:47:22 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/11 18:22:19 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	check_for_special_char(t_data *data, char *prompt, int id, int i)
+{
+	if (i && !ft_strncmp(prompt, "|", 1))
+		data->argv.type[id + 1] = PIPE;
+	else if (i && !ft_strncmp(prompt, ">>", 2))
+		data->argv.type[id + 1] = REDR_APPEND;
+	else if (i && !ft_strncmp(prompt, ">", 1))
+		data->argv.type[id + 1] = REDR_OUTPUT;
+	else if (i && !ft_strncmp(prompt, "<<", 2))
+		data->argv.type[id + 1] = REDR_DELIM;
+	else if (i && !ft_strncmp(prompt, "<", 1))
+		data->argv.type[id + 1] = REDR_INPUT;
+	if (data->argv.type[id + 1] % 2 == 0)
+		return (2);
+	else if (data->argv.type[id + 1])
+		return (1);
+	return (0);
+}
 
 static int	special_treatment(const char *prompt, char **result, int index_res)
 {
@@ -27,6 +46,10 @@ static int	special_treatment(const char *prompt, char **result, int index_res)
 			quote = FALSE;
 		else if (*prompt == 34 || *prompt == 39)
 			quote = TRUE;
+		if (!ft_strncmp(prompt, "|", 1) || !ft_strncmp(prompt, ">>", 2) || \
+			!ft_strncmp(prompt, ">", 1) || !ft_strncmp(prompt, "<<", 2) || \
+			!ft_strncmp(prompt, "<", 1))
+			break ;
 		result[index_res][k++] = *prompt++;
 		i++;
 	}
@@ -42,33 +65,9 @@ static void	set_result(t_data *data, const char *prompt, char ***result)
 	id = 0;
 	while (prompt && *prompt)
 	{
-		while (*prompt && *prompt == ' ')
+		while (*prompt && (*prompt == ' ' || *prompt == '\t'))
 			prompt++;
-		if (i && !ft_strncmp(prompt, "| ", 2))
-		{
-			data->argv.type[id + 1] = PIPE;
-			prompt++;
-		}
-		else if (i && !ft_strncmp(prompt, "< ", 2))
-		{
-			data->argv.type[id + 1] = REDR_INPUT;
-			prompt++;
-		}
-		else if (i && !ft_strncmp(prompt, "> ", 2))
-		{
-			data->argv.type[id + 1] = REDR_OUTPUT;
-			prompt++;
-		}
-		else if (i && !ft_strncmp(prompt, ">> ", 3))
-		{
-			data->argv.type[id + 1] = REDR_APPEND;
-			prompt += 2;
-		}
-		else if (i && !ft_strncmp(prompt, "<< ", 3))
-		{
-			data->argv.type[id + 1] = REDR_DELIM;
-			prompt += 2;
-		}
+		prompt += check_for_special_char(data, (char *)prompt, id, i);
 		if (data->argv.type[id + 1])
 		{
 			result[++id] = ft_calloc(string_count(prompt) + 1, sizeof(char *));

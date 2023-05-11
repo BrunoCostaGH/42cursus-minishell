@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:51:41 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/05 15:34:03 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/11 18:14:21 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	group_count(const char *prompt)
 	i = 0;
 	while (prompt && *prompt)
 	{
-		if (!ft_strncmp(prompt, " | ", 3) || !ft_strncmp(prompt, " < ", 3) || \
-			!ft_strncmp(prompt, " > ", 3) || !ft_strncmp(prompt, " >> ", 4) || \
-			!ft_strncmp(prompt, " << ", 4))
+		if (!ft_strncmp(prompt, "|", 1) || !ft_strncmp(prompt, ">>", 2) || \
+			!ft_strncmp(prompt, ">", 1) || !ft_strncmp(prompt, "<<", 2) || \
+			!ft_strncmp(prompt, "<", 1))
 			i++;
 		prompt++;
 	}
@@ -42,6 +42,10 @@ int	string_count(const char *prompt)
 			quote = FALSE;
 		else if (*prompt == 34 || *prompt == 39)
 			quote = TRUE;
+		if (!ft_strncmp(prompt, "|", 1) || !ft_strncmp(prompt, ">>", 2) || \
+			!ft_strncmp(prompt, ">", 1) || !ft_strncmp(prompt, "<<", 2) || \
+			!ft_strncmp(prompt, "<", 1))
+			break ;
 		if (*prompt++ == ' ' && !quote)
 			i++;
 	}
@@ -62,6 +66,10 @@ int	char_count(const char *prompt)
 			quote = FALSE;
 		else if (*prompt == 34 || *prompt == 39)
 			quote = TRUE;
+		if (!ft_strncmp(prompt, "|", 1) || !ft_strncmp(prompt, ">>", 2) || \
+			!ft_strncmp(prompt, ">", 1) || !ft_strncmp(prompt, "<<", 2) || \
+			!ft_strncmp(prompt, "<", 1))
+			break ;
 		prompt++;
 		i++;
 	}
