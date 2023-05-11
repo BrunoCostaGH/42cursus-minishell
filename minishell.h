@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/11 18:00:26 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:09:29 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int		string_count(const char *prompt);
 char	*get_env_var(t_data *data, const char *var_name);
 
 void	env(t_data *data, char **argv);
-void	set_s_argv(t_data *data);
 void	pwd(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	free_darr(void **arr);
