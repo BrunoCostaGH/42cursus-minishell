@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/11 19:09:29 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:42:57 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ int		check_for_pipes(t_data *data);
 int		char_count(const char *prompt);
 int		group_count(const char *prompt);
 int		string_count(const char *prompt);
+int		count_quotes(const char *prompt);
+int		check_for_special_char(t_data *data, char *prompt, int id, int i);
 
 char	*get_env_var(t_data *data, const char *var_name);
 

@@ -6,30 +6,11 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/11 19:02:44 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:04:40 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	check_for_special_char(t_data *data, char *prompt, int id, int i)
-{
-	if (i && !ft_strncmp(prompt, "|", 1))
-		data->argv.type[id + 1] = PIPE;
-	else if (i && !ft_strncmp(prompt, ">>", 2))
-		data->argv.type[id + 1] = REDR_APPEND;
-	else if (i && !ft_strncmp(prompt, ">", 1))
-		data->argv.type[id + 1] = REDR_OUTPUT;
-	else if (i && !ft_strncmp(prompt, "<<", 2))
-		data->argv.type[id + 1] = REDR_DELIM;
-	else if (i && !ft_strncmp(prompt, "<", 1))
-		data->argv.type[id + 1] = REDR_INPUT;
-	if (data->argv.type[id + 1] && data->argv.type[id + 1] % 2 == 0)
-		return (2);
-	else if (data->argv.type[id + 1])
-		return (1);
-	return (0);
-}
 
 static int	special_treatment(const char *prompt, char **result, int index_res)
 {
@@ -40,7 +21,8 @@ static int	special_treatment(const char *prompt, char **result, int index_res)
 	i = 0;
 	k = 0;
 	quote = FALSE;
-	while (prompt && *prompt && (*prompt != ' ' || quote))
+	while (prompt && *prompt && (*prompt != ' ' || (quote && \
+			count_quotes(prompt))))
 	{
 		if ((*prompt == 34 || *prompt == 39) && quote)
 			quote = FALSE;
