@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/11 18:22:19 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:02:44 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	check_for_special_char(t_data *data, char *prompt, int id, int i)
 		data->argv.type[id + 1] = REDR_DELIM;
 	else if (i && !ft_strncmp(prompt, "<", 1))
 		data->argv.type[id + 1] = REDR_INPUT;
-	if (data->argv.type[id + 1] % 2 == 0)
+	if (data->argv.type[id + 1] && data->argv.type[id + 1] % 2 == 0)
 		return (2);
 	else if (data->argv.type[id + 1])
 		return (1);
