@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/27 20:00:06 by tabreia-         ###   ########.fr       */
+/*   Updated: 2023/05/11 18:18:14 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	run_executable(t_data *data, char **argv)
 		pid = fork();
 		if (pid == -1)
 			perror("Error");
-		errno = 0;
 		if (!pid)
 		{
 			if (execve(argv[0], argv, data->envp) == -1)
