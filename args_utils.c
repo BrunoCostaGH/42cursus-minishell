@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:51:41 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/11 20:04:15 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:11:56 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ int	count_quotes(const char *prompt)
 int	check_for_special_char(t_data *data, char *prompt, int id, int i)
 {
 	if (i && !ft_strncmp(prompt, "|", 1))
-		data->argv.type[id + 1] = PIPE;
+		data->argv.type[id] = PIPE;
 	else if (i && !ft_strncmp(prompt, ">>", 2))
-		data->argv.type[id + 1] = REDR_APPEND;
+		data->argv.type[id] = REDR_APPEND;
 	else if (i && !ft_strncmp(prompt, ">", 1))
-		data->argv.type[id + 1] = REDR_OUTPUT;
+		data->argv.type[id] = REDR_OUTPUT;
 	else if (i && !ft_strncmp(prompt, "<<", 2))
-		data->argv.type[id + 1] = REDR_DELIM;
+		data->argv.type[id] = REDR_DELIM;
 	else if (i && !ft_strncmp(prompt, "<", 1))
-		data->argv.type[id + 1] = REDR_INPUT;
-	if (data->argv.type[id + 1] && data->argv.type[id + 1] % 2 == 0)
+		data->argv.type[id] = REDR_INPUT;
+	if (data->argv.type[id] && data->argv.type[id] % 2 == 0)
 		return (2);
 	else if (data->argv.type[id + 1])
 		return (1);
