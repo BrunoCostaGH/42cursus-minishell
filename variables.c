@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/05 19:33:37 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:30:38 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,21 @@ static void	set_env_var(t_data *data, int id, int i)
 	free(var_name);
 }
 
+static void	set_home_var(t_data *data, int id, int i)
+{
+	char	*temp;
+	char	*env_var;
+
+	env_var = get_env_var(data, "$HOME");
+	env_var = ft_strjoin(env_var, "/");
+	if (!env_var)
+		env_var = "(null)";
+	temp = ft_fndnrepl(data->argv.args[id][i], "~/", env_var);
+	free(data->argv.args[id][i]);
+	data->argv.args[id][i] = temp;
+	free(env_var);
+}
+
 static void	set_exit_status(t_data *data, int id, int i)
 {
 	char	*temp;
@@ -59,22 +74,16 @@ void	check_variables(t_data *data)
 		i = 0;
 		while (data->argv.args[id][i])
 		{
-			if (data->argv.args[id][i][0] != 39)
-			{
-				if (ft_strnstr(data->argv.args[id][i], "$?", \
+			if (ft_strnstr(data->argv.args[id][i], "~/", \
 					ft_strlen(data->argv.args[id][i])))
-				{
-					set_exit_status(data, id, i);
-					continue ;
-				}
-				if (ft_strnstr(data->argv.args[id][i], "$", \
+				set_home_var(data, id, i);
+			else if (ft_strnstr(data->argv.args[id][i], "$?", \
+					ft_strlen(data->argv.args[id][i])))
+				set_exit_status(data, id, i);
+			else if (ft_strnstr(data->argv.args[id][i], "$", \
 					ft_strlen(data->argv.args[id][i])) && \
 					data->argv.args[id][i][1])
-				{
-					set_env_var(data, id, i);
-					continue ;
-				}
-			}
+				set_env_var(data, id, i);
 			i++;
 		}
 		id++;
