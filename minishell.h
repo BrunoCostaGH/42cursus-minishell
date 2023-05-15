@@ -76,7 +76,6 @@ typedef struct s_data
 	struct s_args	argv;
 }	t_data;
 
-
 int		check_for_pipes(t_data *data);
 int		char_count(const char *prompt);
 int		group_count(const char *prompt);
