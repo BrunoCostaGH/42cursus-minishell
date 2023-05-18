@@ -6,37 +6,52 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:34:08 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/02 14:35:48 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:07:17 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	go_to_text(char **argv, char flag)
+{
+	int	i;
+	int	k;
+
+	i = 1;
+	while (argv[i])
+	{
+		k = 1;
+		while (argv[i][0] == '-' && argv[i][k] == flag)
+			k++;
+		if (argv[i][0] != '-' || argv[i][k])
+			break ;
+		i++;
+	}
+	return (--i);
+}
+
 void	echo(t_data *data, char **argv)
 {
 	int	i;
 
-	if (argv[1])
+	i = go_to_text(argv, 'n');
+	if (i)
 	{
-		if ((!ft_strncmp(argv[1], "-n", 3) || !ft_strncmp(argv[1], "-n ", 3)))
+		while (argv[i])
 		{
-			i = 2;
-			while (argv[i])
-			{
-				if (argv[i][ft_strlen(argv[i]) - 1] == '\n' || \
-				argv[i][ft_strlen(argv[i]) - 1] == '\r')
-					break ;
-				ft_printf("%s ", argv[i++]);
-			}
-			ft_printf("\b");
+			if (argv[i][ft_strlen(argv[i]) - 1] == '\n' || \
+			argv[i][ft_strlen(argv[i]) - 1] == '\r')
+				break ;
+			printf("%s ", argv[i++]);
 		}
-		else
-		{
-			i = 1;
-			while (argv[i])
-				ft_printf("%s ", argv[i++]);
-			ft_printf("\b\n");
-		}
+		printf("\b");
+	}
+	else
+	{
+		i = 1;
+		while (argv[i])
+			printf("%s ", argv[i++]);
+		printf("\b\n");
 	}
 	data->exit_status = 0;
 }
