@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/05 19:50:18 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:17:31 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,22 @@
 static void	init_envp(t_data *data, char **envp)
 {
 	int		len;
+	char	**temp;
 
 	len = 0;
 	while (envp[len])
 		len++;
-	data->envp = ft_calloc(len + 1, sizeof(char *));
+	data->envp = ft_calloc(len + 1, sizeof(char **));
 	if (!data->envp)
 		return ;
 	while (len-- > 0)
-		data->envp[len] = ft_strdup(envp[len]);
+	{
+		data->envp[len] = malloc(sizeof(char *) * 2);
+		temp = ft_split(envp[len], '=');
+		data->envp[len][0] = temp[0];
+		data->envp[len][1] = temp[1];
+		free(temp);
+	}
 }
 
 void	*init_struct(char **envp)

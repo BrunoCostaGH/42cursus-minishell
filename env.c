@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/02 20:47:11 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:18:46 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,60 @@
 
 void	export(t_data *data, char **argv)
 {
-	int		argv_count;
-	int		env_count;
 	int		index_argv;
 	int		index_env;
-	char	**temp_envp;
+	char	**temp;
+	char	***temp_envp;
 
-	argv_count = 0;
-	env_count = 0;
-	index_argv = 0;
 	index_env = 0;
-	if (!*argv[1] || !ft_strrchr(argv[1], '='))
+	if (!argv[1])
+	{
+		while (data->envp[index_env])
+		{
+			printf("%s %s", "declare -x", data->envp[index_env][0]);
+			if (data->envp[index_env][1])
+				printf("=\"%s\"", data->envp[index_env][1]);
+			printf("\n");
+			index_env++;
+		}
 		return ;
-	while (argv[argv_count])
-		argv_count++;
-	while (data->envp[env_count])
-		env_count++;
-	temp_envp = ft_calloc(argv_count + env_count + 1, sizeof(char *));
+	}
+	index_argv = 0;
+	while (argv[1][index_argv] && argv[1][index_argv] != '=')
+	{
+		if (!ft_isalpha(argv[1][index_argv]) && argv[1][index_argv] != '_')
+		{
+			write(2, "export: not a valid identifier\n", 31);
+			data->exit_status = 1;
+			return ;
+		}
+		index_argv++;
+	}
+	index_argv = 0;
+	while (argv[index_argv])
+		index_argv++;
+	index_env = 0;
+	while (data->envp[index_env])
+		index_env++;
+	temp_envp = ft_calloc(index_argv + index_env + 1, sizeof(char **));
+	index_env = 0;
 	while (data->envp[index_env])
 	{
-		temp_envp[index_env] = data->envp[index_env];
+		temp_envp[index_env] = ft_calloc(2, sizeof(char *));
+		temp_envp[index_env][0] = data->envp[index_env][0];
+		temp_envp[index_env][1] = data->envp[index_env][1];
 		index_env++;
 	}
+	index_argv = 0;
 	while (argv[++index_argv])
-		temp_envp[index_env++] = ft_strdup(argv[index_argv]);
+	{
+		temp = ft_split(argv[index_argv], '=');
+		temp_envp[index_env] = ft_calloc(2, sizeof(char *));
+		temp_envp[index_env][0] = ft_strdup(temp[0]);
+		temp_envp[index_env][1] = ft_strdup(temp[1]);
+		free_darr((void **)temp);
+		index_env++;
+	}
 	free(data->envp);
 	data->envp = temp_envp;
 }
@@ -46,19 +76,17 @@ void	unset(t_data *data, char **argv)
 {
 	int		index_argv;
 	int		index_env;
-	char	*name;
 
 	index_argv = 0;
 	index_env = 0;
 	while (argv[++index_argv])
 	{
-		name = ft_strjoin(argv[index_argv], "=");
-		while (data->envp[index_env] && ft_strncmp(data->envp[index_env], \
-			name, ft_strlen(name)))
+		while (data->envp[index_env] && ft_strncmp(data->envp[index_env][0], \
+			argv[index_argv], ft_strlen(argv[index_argv])))
 			index_env++;
 		if (data->envp[index_env])
 		{
-			free(data->envp[index_env]);
+			free_darr((void **)data->envp[index_env]);
 			data->envp[index_env] = 0;
 			if (data->envp[index_env + 1])
 			{
@@ -70,7 +98,6 @@ void	unset(t_data *data, char **argv)
 				data->envp[index_env] = NULL;
 			}
 		}
-		free(name);
 	}
 	if (!argv[1])
 	{
@@ -93,7 +120,8 @@ void	env(t_data *data, char **argv)
 	}
 	while (data->envp[i] != NULL)
 	{
-		printf("%s\n", data->envp[i]);
+		if (data->envp[i][1])
+			printf("%s=%s\n", data->envp[i][0], data->envp[i][1]);
 		i++;
 	}
 	data->exit_status = 0;
@@ -107,10 +135,10 @@ char	*get_env_var(t_data *data, const char *var_name)
 	index = 0;
 	var_value = NULL;
 	var_name = var_name + 1;
-	while (data->envp[index] && ft_strncmp(data->envp[index], \
+	while (data->envp[index] && ft_strncmp(data->envp[index][0], \
 		var_name, ft_strlen(var_name)))
 		index++;
 	if (data->envp[index])
-		var_value = ft_strrchr(data->envp[index], '=') + 1;
+		var_value = data->envp[index][1];
 	return (var_value);
 }
