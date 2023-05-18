@@ -29,7 +29,7 @@ void	pwd(t_data *data, char **argv)
 		data->exit_status = errno;
 		return ;
 	}
-	ft_printf("%s\n", path);
+	printf("%s\n", path);
 	free(path);
 	data->exit_status = 0;
 }
