@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/05 19:15:54 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/18 17:40:12 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	find_command(t_data *data, char **argv)
 	if (argv && *argv)
 	{
 		if (!ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
-			shell_exit(data);
+			shell_exit(data, argv);
 		else if (!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
 			change_dir(data, argv);
 		else if (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
@@ -49,12 +49,12 @@ int	main(int ac, char **av, char **envp)
 		data->prompt = readline("\x1B[1;32m(Minishell)$ \x1B[0m");
 		if (data->prompt == NULL)
 		{
-			printf("\n");
-			shell_exit(data);
+			printf("exit\n");
+			data->prompt = ft_strdup("exit");
 		}
-		set_argv(data);
 		if (data->prompt && *data->prompt)
 			add_history(data->prompt);
+		set_argv(data);
 		if (check_for_pipes(data))
 			continue ;
 		find_command(data, *data->argv.args);
