@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/11 19:42:57 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:12:44 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_data
 	int				interactive;
 	int				exit_status;
 	char			*prompt;
-	char			**envp;
+	char			***envp;
 	struct s_args	argv;
 }	t_data;
 
@@ -92,7 +92,7 @@ void	free_darr(void **arr);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	argv_clear(t_data *data);
-void	shell_exit(t_data *data);
+void	shell_exit(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
 void	check_variables(t_data *data);
