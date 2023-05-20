@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/11 18:18:14 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/19 18:15:12 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,27 @@ static void	set_error_status(t_data *data, char **argv)
 		data->exit_status >>= 8;
 	else
 		data->exit_status = temp_error;
+}
+
+static void	build_envp(t_data *data)
+{
+	int		len;
+	char	*temp;
+
+	len = 0;
+	while (data->envp.envp[len] && data->envp.envp[len][1])
+		len++;
+	if (data->envp.exec_envp)
+		free_darr((void **)data->envp.exec_envp);
+	data->envp.exec_envp = ft_calloc(sizeof(char *), len + 1);
+	if (!data->envp.exec_envp)
+		return ;
+	while (len > 0 && data->envp.envp[--len])
+	{
+		temp = ft_strjoin(data->envp.envp[len][0], "=");
+		data->envp.exec_envp[len] = ft_strjoin(temp, data->envp.envp[len][1]);
+		free(temp);
+	}
 }
 
 /* Check if argv[0] is a file in any of the folders specified by $PATH and if
@@ -73,12 +94,13 @@ void	run_executable(t_data *data, char **argv)
 	if (argv && *argv)
 	{
 		argv[0] = check_environment(argv[0]);
+		build_envp(data);
 		pid = fork();
 		if (pid == -1)
 			perror("Error");
 		if (!pid)
 		{
-			if (execve(argv[0], argv, data->envp) == -1)
+			if (execve(argv[0], argv, data->envp.exec_envp) == -1)
 				if (errno != 2)
 					perror("Error");
 			exit(1);

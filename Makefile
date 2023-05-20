@@ -16,7 +16,7 @@ DEPS=libft/libft.a
 
 SRCS=main.c free_n_exit.c exec.c pwd.c change_dir.c args.c args_utils.c \
 minishell_utils.c init.c env.c signals.c variables.c pipes.c echo.c \
-error.c
+error.c export.c
 
 OBJS=$(SRCS:.c=.o)
 NAME=minishell

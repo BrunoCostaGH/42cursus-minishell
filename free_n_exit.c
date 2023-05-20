@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/18 20:27:57 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 13:43:12 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,26 @@ static int	check_argv(t_data *data, char **argv)
 	return (data->exit_status);
 }
 
+static void	envp_clear(t_data *data)
+{
+	int	id;
+
+	id = 0;
+	while (data->envp.envp && data->envp.envp[id])
+	{
+		free_darr((void **)data->envp.envp[id]);
+		data->envp.envp[id] = 0;
+		id++;
+	}
+	free(data->envp.envp);
+	data->envp.envp = 0;
+	if (data->envp.exec_envp)
+	{
+		free_darr((void **) data->envp.exec_envp);
+		data->envp.exec_envp = 0;
+	}
+}
+
 void	argv_clear(t_data *data)
 {
 	int	id;
@@ -44,31 +64,27 @@ void	argv_clear(t_data *data)
 		data->argv.args[id] = 0;
 		id++;
 	}
-	free(data->argv.type);
+	free(data->argv.args);
 	data->argv.args = 0;
-	data->argv.type = 0;
+	if (data->argv.type)
+	{
+		free(data->argv.type);
+		data->argv.type = 0;
+	}
 }
 
 void	shell_exit(t_data *data, char **argv)
 {
-	int	i;
 	int	exit_status;
 
 	if (argv && check_argv(data, argv) == 1)
 		return ;
+	exit_status = data->exit_status;
 	rl_clear_history();
 	if (data->prompt)
 		free(data->prompt);
-	if (data->argv.args)
-		argv_clear(data);
-	i = 0;
-	if (data->envp)
-	{
-		while (data->envp[i])
-			free_darr((void **) data->envp[i++]);
-		free(data->envp);
-	}
-	exit_status = data->exit_status;
+	argv_clear(data);
+	envp_clear(data);
 	free(data);
 	exit(exit_status);
 }
