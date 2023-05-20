@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/18 16:12:44 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 13:38:06 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,12 @@
 #  define REDR_DELIM 4
 # endif
 
+typedef struct s_envp
+{
+	char	**exec_envp;
+	char	***envp;
+}	t_envp;
+
 typedef struct s_args
 {
 	int		*type;
@@ -72,10 +78,11 @@ typedef struct s_data
 	int				interactive;
 	int				exit_status;
 	char			*prompt;
-	char			***envp;
+	struct s_envp	envp;
 	struct s_args	argv;
 }	t_data;
 
+int		len_darr(void **arr);
 int		check_for_pipes(t_data *data);
 int		char_count(const char *prompt);
 int		group_count(const char *prompt);
@@ -85,23 +92,22 @@ int		check_for_special_char(t_data *data, char *prompt, int id, int i);
 
 char	*get_env_var(t_data *data, const char *var_name);
 
-void	env(t_data *data, char **argv);
-void	pwd(t_data *data, char **argv);
-void	echo(t_data *data, char **argv);
 void	free_darr(void **arr);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	argv_clear(t_data *data);
+void	check_variables(t_data *data);
+void	env(t_data *data, char **argv);
+void	pwd(t_data *data, char **argv);
+void	echo(t_data *data, char **argv);
+void	unset(t_data *data, char **argv);
+void	export(t_data *data, char **argv);
 void	shell_exit(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);
-void	unset(t_data *data, char **argv);
-void	check_variables(t_data *data);
-void	export(t_data *data, char **argv);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
 
 void	*init_struct(char **envp);
-void	*str_toupper(char *str);
 
 #endif
