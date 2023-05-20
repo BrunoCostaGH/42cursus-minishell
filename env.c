@@ -101,8 +101,7 @@ void	unset(t_data *data, char **argv)
 	}
 	if (!argv[1])
 	{
-		write(2, "unset: not enough arguments\n", 24);
-		data->exit_status = 1;
+		handle_error(data, argv[0], 0);
 		return ;
 	}
 	data->exit_status = 0;

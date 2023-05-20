@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	check_argv(t_data *data, char **argv)
+static int	check_argv(t_data *data, char **argv)
 {
 	int	i;
 
@@ -23,19 +23,12 @@ int	check_argv(t_data *data, char **argv)
 		return (data->exit_status);
 	}
 	if (argv[2])
-	{
-		write(2, "exit: too many arguments\n", 25);
-		data->exit_status = 1;
-		return (data->exit_status);
-	}
+		return (handle_error(data, argv[0], 1));
 	printf("exit\n");
 	while (argv[1][i])
 	{
 		if (ft_isalpha(argv[1][i++]))
-		{
-			write(2, "exit: numeric argument required\n", 32);
-			data->exit_status = 2;
-		}
+			return (handle_error(data, argv[0], 3));
 	}
 	return (data->exit_status);
 }
