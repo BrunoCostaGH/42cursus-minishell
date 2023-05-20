@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/20 15:21:12 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:05:15 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ static char	***duplicate_envp(t_data *data, int len)
 	while (data->envp.envp[i])
 	{
 		temp_envp[i] = ft_calloc(2, sizeof(char *));
-		temp_envp[i][0] = data->envp.envp[i][0];
-		temp_envp[i][1] = data->envp.envp[i][1];
+		temp_envp[i][0] = ft_strdup(data->envp.envp[i][0]);
+		temp_envp[i][1] = ft_strdup(data->envp.envp[i][1]);
+		free_darr((void **)data->envp.envp[i]);
 		i++;
 	}
 	return (temp_envp);
@@ -75,8 +76,8 @@ static int	edit_existing_envp(t_data *data, char **argv)
 	{
 		i = 0;
 		temp = ft_split(argv[index_argv], '=');
-		while (data->envp.envp[i] && ft_strncmp(data->envp.envp[i][0], temp[0], \
-		ft_strlen(data->envp.envp[i][0])))
+		while (temp && data->envp.envp[i] && ft_strncmp(data->envp.envp[i][0], \
+		temp[0], ft_strlen(data->envp.envp[i][0])))
 			i++;
 		if (data->envp.envp[i])
 		{

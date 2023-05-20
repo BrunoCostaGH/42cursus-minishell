@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/20 13:43:12 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 19:49:50 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ static void	envp_clear(t_data *data)
 	while (data->envp.envp && data->envp.envp[id])
 	{
 		free_darr((void **)data->envp.envp[id]);
-		data->envp.envp[id] = 0;
-		id++;
+		data->envp.envp[id++] = 0;
 	}
 	free(data->envp.envp);
 	data->envp.envp = 0;

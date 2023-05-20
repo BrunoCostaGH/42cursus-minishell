@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/18 18:21:45 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 18:46:45 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	set_home_var(t_data *data)
 	char	*temp;
 	char	*env_var;
 
-	env_var = get_env_var(data, "$HOME");
+	env_var = get_env_var(data, "HOME");
 	env_var = ft_strjoin(env_var, "/");
 	if (!env_var)
 		env_var = "";

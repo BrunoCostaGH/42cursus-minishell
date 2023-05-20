@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:10:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/20 15:42:39 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:04:23 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 static void	update_env(t_data *data, char *old_path, char *path)
 {
-	char	**argv;
+	char	*argv[3];
 
-	argv = malloc(sizeof(char *) * 2);
 	argv[0] = ft_strdup("export");
 	argv[1] = ft_strjoin("OLDPWD=", old_path);
+	argv[2] = NULL;
 	export(data, argv);
 	free(argv[1]);
 	argv[1] = ft_strjoin("PWD=", path);
 	export(data, argv);
-	free_darr((void **)argv);
+	free(argv[0]);
+	free(argv[1]);
 }
 
 void	change_dir(t_data *data, char **argv)
