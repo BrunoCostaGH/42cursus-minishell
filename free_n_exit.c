@@ -86,6 +86,7 @@ void	shell_exit(t_data *data, char **argv)
 
 	if (argv && check_argv(data, argv) == 1)
 		return ;
+	exit_status = data->exit_status;
 	rl_clear_history();
 	if (data->prompt)
 		free(data->prompt);
