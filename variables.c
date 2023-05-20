@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/20 18:46:45 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:16:36 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static void	set_exit_status(t_data *data)
 
 	temp = ft_fndnrepl(data->prompt, "$?", ft_itoa(data->exit_status));
 	free(data->prompt);
+	printf("%s\n\n", temp);
 	data->prompt = temp;
 }
 
@@ -66,11 +67,20 @@ void	check_variables(t_data *data)
 	if (data->prompt)
 	{
 		if (ft_strnstr(data->prompt, "~/", ft_strlen(data->prompt)))
+		{
 			set_home_var(data);
+			check_variables(data);
+		}
 		else if (ft_strnstr(data->prompt, "$?", ft_strlen(data->prompt)))
+		{
 			set_exit_status(data);
+			check_variables(data);
+		}
 		else if (ft_strnstr(data->prompt, "$", ft_strlen(data->prompt)) \
 		&& data->prompt[0])
+		{
 			set_env_var(data);
+			check_variables(data);
+		}
 	}
 }
