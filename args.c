@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/18 19:33:27 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 18:55:53 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static int	special_treatment(const char *prompt, char **result, int index_res)
 			quote = FALSE;
 		else if (*prompt == 34 || *prompt == 39)
 			quote = TRUE;
-		if (!ft_strncmp(prompt, "|", 1) || !ft_strncmp(prompt, ">>", 2) || \
+		if ((!ft_strncmp(prompt, "|", 1) || !ft_strncmp(prompt, ">>", 2) || \
 			!ft_strncmp(prompt, ">", 1) || !ft_strncmp(prompt, "<<", 2) || \
-			!ft_strncmp(prompt, "<", 1))
+			!ft_strncmp(prompt, "<", 1)) && !quote)
 			break ;
 		result[index_res][k++] = *prompt++;
 		i++;

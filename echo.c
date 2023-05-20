@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:34:08 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/18 19:07:17 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 18:45:31 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	go_to_text(char **argv, char flag)
 			break ;
 		i++;
 	}
-	return (--i);
+	return (i);
 }
 
 void	echo(t_data *data, char **argv)
@@ -35,7 +35,7 @@ void	echo(t_data *data, char **argv)
 	int	i;
 
 	i = go_to_text(argv, 'n');
-	if (i)
+	if (i > 1)
 	{
 		while (argv[i])
 		{
