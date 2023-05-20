@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/20 20:16:36 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:19:19 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static void	set_exit_status(t_data *data)
 
 	temp = ft_fndnrepl(data->prompt, "$?", ft_itoa(data->exit_status));
 	free(data->prompt);
-	printf("%s\n\n", temp);
 	data->prompt = temp;
 }
 
