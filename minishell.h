@@ -88,6 +88,7 @@ int		char_count(const char *prompt);
 int		group_count(const char *prompt);
 int		string_count(const char *prompt);
 int		count_quotes(const char *prompt);
+int		handle_error(t_data *data, char *command, int error);
 int		check_for_special_char(t_data *data, char *prompt, int id, int i);
 
 char	*get_env_var(t_data *data, const char *var_name);

@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:32:12 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/02 20:43:27 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/20 15:42:28 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	pwd(t_data *data, char **argv)
 
 	if (argv[1])
 	{
-		write(2, "pwd: too many arguments\n", 24);
-		data->exit_status = 1;
+		handle_error(data, argv[0], 1);
 		return ;
 	}
 	path = getcwd(NULL, 0);

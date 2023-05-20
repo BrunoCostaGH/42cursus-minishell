@@ -30,9 +30,8 @@ void	execute_sig_action(int sig, void *data)
 		}
 		if (sig == SIGQUIT)
 		{
-			printf("\b\b  \b\b\n");
+			printf("\b\b  \b\b");
 			rl_redisplay();
-			shell_exit(static_data, 0);
 		}
 	}
 	if (static_data && !(static_data->interactive))
