@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/18 17:40:12 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 15:22:04 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	while (1)
 	{
-		data->prompt = readline("\x1B[1;32m(Minishell)$ \x1B[0m");
+		data->prompt = readline("\001\e[1;32m\002(Minishell)$ \001\e[0m\002");
 		if (data->prompt == NULL)
 		{
 			printf("exit\n");
