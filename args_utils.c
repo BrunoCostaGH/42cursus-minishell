@@ -6,24 +6,27 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:51:41 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/20 18:56:40 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 15:06:19 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_quotes(const char *prompt)
+int	handle_quote(const char *prompt, int *index, int *quote)
 {
-	int	quotes;
-
-	quotes = 0;
-	while (*prompt++)
-		if (*prompt == 34 || *prompt == 39)
-			quotes++;
-	return (quotes);
+	if (*prompt == *quote)
+		*quote = FALSE;
+	else if ((*prompt == 34 || *prompt == 39) && \
+		ft_strchr(prompt + 1, *prompt) && !*quote)
+		*quote = (int)*prompt;
+	else
+		return (0);
+	if (index)
+		*index = *index + 1;
+	return (1);
 }
 
-int	check_for_special_char(t_data *data, char *prompt, int id, int i)
+int	check_for_special_char(t_data *data, const char *prompt, int id, int i)
 {
 	if (i && !ft_strncmp(prompt, "|", 1))
 		data->argv.type[id] = PIPE;
@@ -67,15 +70,16 @@ int	string_count(const char *prompt)
 	quote = FALSE;
 	while (prompt && *prompt)
 	{
-		if ((*prompt == 34 || *prompt == 39) && quote)
-			quote = FALSE;
-		else if (*prompt == 34 || *prompt == 39)
-			quote = TRUE;
+		if (handle_quote(prompt + i, NULL, &quote))
+		{
+			prompt++;
+			continue ;
+		}
 		if ((!ft_strncmp(prompt, "|", 1) || !ft_strncmp(prompt, ">>", 2) || \
 			!ft_strncmp(prompt, ">", 1) || !ft_strncmp(prompt, "<<", 2) || \
 			!ft_strncmp(prompt, "<", 1)) && !quote)
 			break ;
-		if (*prompt++ == ' ' && (!quote || !count_quotes(prompt)))
+		if (*prompt++ == ' ' && !quote)
 			i++;
 	}
 	return (++i);
@@ -88,13 +92,13 @@ int	char_count(const char *prompt)
 
 	i = 0;
 	quote = FALSE;
-	while (prompt && *prompt && (*prompt != ' ' || \
-			(quote && count_quotes(prompt))))
+	while (prompt && *prompt && (*prompt != ' ' || quote))
 	{
-		if ((*prompt == 34 || *prompt == 39) && quote)
-			quote = FALSE;
-		else if (*prompt == 34 || *prompt == 39)
-			quote = TRUE;
+		if (handle_quote(prompt + i, NULL, &quote))
+		{
+			prompt++;
+			continue ;
+		}
 		if ((!ft_strncmp(prompt, "|", 1) || !ft_strncmp(prompt, ">>", 2) || \
 			!ft_strncmp(prompt, ">", 1) || !ft_strncmp(prompt, "<<", 2) || \
 			!ft_strncmp(prompt, "<", 1)) && !quote)

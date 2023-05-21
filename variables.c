@@ -6,11 +6,33 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/20 20:19:19 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 14:08:19 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	check_var_within_quotes(t_data *data)
+{
+	int	i;
+	int	quote;
+
+	i = 0;
+	quote = FALSE;
+	while (data->prompt[i])
+	{
+		if (quote && (data->prompt[i] == quote))
+			quote = FALSE;
+		else if ((data->prompt[i] == 34 || data->prompt[i] == 39) && \
+		ft_strchr(data->prompt + i + 1, data->prompt[i]))
+			quote = (int)data->prompt[i];
+		if (quote == 39 && data->prompt[i] == '$')
+			if ((ft_isalnum(data->prompt[++i]) || data->prompt[i] == '_'))
+				return (TRUE);
+		i++;
+	}
+	return (FALSE);
+}
 
 static void	set_home_var(t_data *data)
 {
@@ -43,7 +65,7 @@ static void	set_env_var(t_data *data)
 	}
 	var_name = ft_calloc(k + 1, sizeof(char));
 	ft_strlcpy(var_name, temp, k + 1);
-	env_var = get_env_var(data, var_name);
+	env_var = get_env_var(data, var_name + 1);
 	if (!env_var)
 		env_var = "";
 	temp = ft_fndnrepl(data->prompt, var_name, env_var);
@@ -76,7 +98,8 @@ void	check_variables(t_data *data)
 			check_variables(data);
 		}
 		else if (ft_strnstr(data->prompt, "$", ft_strlen(data->prompt)) \
-		&& data->prompt[0])
+		&& (ft_isalnum(*(data->prompt + 1)) || *(data->prompt + 1) == '_') \
+		&& !check_var_within_quotes(data))
 		{
 			set_env_var(data);
 			check_variables(data);
