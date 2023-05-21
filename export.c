@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/20 20:05:15 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 18:27:43 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,22 @@
 static int	check_argv(t_data *data, char *arg, int initial)
 {
 	int		index;
-	char	*temp;
 
 	index = 0;
 	if (initial == TRUE && !arg)
 	{
-		while (data->envp.envp[index])
+		while (data->envp.envp[++index])
 		{
-			printf("%s %s", "declare -x", data->envp.envp[index][0]);
-			if (data->envp.envp[index][1])
-				printf("=\"%s\"", data->envp.envp[index][1]);
+			printf("%s %s", "declare -x", data->envp.envp[index - 1][0]);
+			if (data->envp.envp[index - 1][1])
+				printf("=\"%s\"", data->envp.envp[index - 1][1]);
 			printf("\n");
-			index++;
 		}
 		return (1);
 	}
-	while (initial == FALSE && arg[index])
-	{
-		if (!ft_isalpha(arg[index]) && arg[index] != '_')
-		{
-			temp = ft_strjoin("export: ", arg);
-			handle_error(data, temp, 2);
-			free(temp);
+	else if ((initial == TRUE && !*arg) || initial == FALSE)
+		if (check_identifier(data, "export", arg))
 			return (1);
-		}
-		index++;
-	}
 	return (0);
 }
 
@@ -56,7 +46,8 @@ static char	***duplicate_envp(t_data *data, int len)
 	{
 		temp_envp[i] = ft_calloc(2, sizeof(char *));
 		temp_envp[i][0] = ft_strdup(data->envp.envp[i][0]);
-		temp_envp[i][1] = ft_strdup(data->envp.envp[i][1]);
+		if (data->envp.envp[i][1])
+			temp_envp[i][1] = ft_strdup(data->envp.envp[i][1]);
 		free_darr((void **)data->envp.envp[i]);
 		i++;
 	}
@@ -76,13 +67,15 @@ static int	edit_existing_envp(t_data *data, char **argv)
 	{
 		i = 0;
 		temp = ft_split(argv[index_argv], '=');
-		while (temp && data->envp.envp[i] && ft_strncmp(data->envp.envp[i][0], \
+		while (*temp && data->envp.envp[i] && ft_strncmp(data->envp.envp[i][0], \
 		temp[0], ft_strlen(data->envp.envp[i][0])))
 			i++;
 		if (data->envp.envp[i])
 		{
 			free(data->envp.envp[i][1]);
-			data->envp.envp[i][1] = ft_strdup(temp[1]);
+			data->envp.envp[i][1] = 0;
+			if (temp[1])
+				data->envp.envp[i][1] = ft_strdup(temp[1]);
 			free(argv[index_argv]);
 			i = index_argv;
 			while (argv[++i])
@@ -120,7 +113,8 @@ void	export(t_data *data, char **argv)
 		}
 		temp_envp[index_env] = ft_calloc(2, sizeof(char *));
 		temp_envp[index_env][0] = ft_strdup(temp[0]);
-		temp_envp[index_env][1] = ft_strdup(temp[1]);
+		if (temp[1])
+			temp_envp[index_env][1] = ft_strdup(temp[1]);
 		free_darr((void **)temp);
 		index_env++;
 	}

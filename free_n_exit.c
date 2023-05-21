@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/21 15:35:01 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 18:39:23 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,14 @@ static int	check_argv(t_data *data, char **argv)
 	int	i;
 
 	i = 0;
-	if (!argv[1])
-	{
-		printf("exit\n");
-		return (data->exit_status);
-	}
-	if (argv[2])
+	if (argv[1] && argv[2])
 		return (handle_error(data, argv[0], 1));
-	printf("exit\n");
-	while (argv[1][i])
-	{
+	while (argv[1] && argv[1][i])
 		if (ft_isalpha(argv[1][i++]))
 			return (handle_error(data, argv[0], 3));
-	}
-	return (data->exit_status);
+	if (!argv[1])
+		printf("exit\n");
+	return (0);
 }
 
 static void	envp_clear(t_data *data)

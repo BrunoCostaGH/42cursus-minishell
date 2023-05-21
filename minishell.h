@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/21 15:31:36 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 18:01:38 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int		group_count(const char *prompt);
 int		string_count(const char *prompt);
 int		handle_error(t_data *data, char *command, int error);
 int		handle_quote(const char *prompt, int *index, int *quote);
+int		check_identifier(t_data *data, char *command, char *arg);
 int		check_for_special_char(t_data *data, const char *prompt, int id, int i);
 
 char	*get_env_var(t_data *data, const char *var_name);

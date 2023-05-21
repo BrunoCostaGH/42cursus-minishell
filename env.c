@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/20 15:24:30 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 19:43:04 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ void	unset(t_data *data, char **argv)
 	int		index_env;
 
 	index_argv = 0;
-	index_env = 0;
 	while (argv[++index_argv])
 	{
+		index_env = 0;
+		if (check_identifier(data, argv[0], argv[index_argv]))
+			continue ;
 		while (data->envp.envp[index_env] && \
 		ft_strncmp(data->envp.envp[index_env][0], argv[index_argv], \
 		ft_strlen(argv[index_argv])))

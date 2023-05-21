@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/21 14:08:19 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 19:21:50 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	set_home_var(t_data *data)
 	free(env_var);
 }
 
-static void	set_env_var(t_data *data)
+static int	set_env_var(t_data *data)
 {
 	int		k;
 	char	*temp;
@@ -57,12 +57,14 @@ static void	set_env_var(t_data *data)
 	char	*var_name;
 
 	temp = ft_strnstr(data->prompt, "$", ft_strlen(data->prompt));
-	k = 1;
+	k = 0;
 	while (temp[++k])
 	{
 		if (!(ft_isalnum(temp[k]) || temp[k] == '_'))
 			break ;
 	}
+	if (k == 1)
+		return (1);
 	var_name = ft_calloc(k + 1, sizeof(char));
 	ft_strlcpy(var_name, temp, k + 1);
 	env_var = get_env_var(data, var_name + 1);
@@ -72,6 +74,7 @@ static void	set_env_var(t_data *data)
 	free(data->prompt);
 	data->prompt = temp;
 	free(var_name);
+	return (0);
 }
 
 static void	set_exit_status(t_data *data)
@@ -98,10 +101,10 @@ void	check_variables(t_data *data)
 			check_variables(data);
 		}
 		else if (ft_strnstr(data->prompt, "$", ft_strlen(data->prompt)) \
-		&& (ft_isalnum(*(data->prompt + 1)) || *(data->prompt + 1) == '_') \
 		&& !check_var_within_quotes(data))
 		{
-			set_env_var(data);
+			if (set_env_var(data))
+				return ;
 			check_variables(data);
 		}
 	}
