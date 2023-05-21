@@ -28,7 +28,6 @@ void	unset(t_data *data, char **argv)
 		if (data->envp.envp[index_env])
 		{
 			free_darr((void **)data->envp.envp[index_env]);
-			data->envp.envp[index_env] = 0;
 			if (data->envp.envp[index_env + 1])
 			{
 				while (data->envp.envp[index_env + 1])

@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/21 14:55:19 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 15:31:36 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,13 @@ int		check_for_special_char(t_data *data, const char *prompt, int id, int i);
 
 char	*get_env_var(t_data *data, const char *var_name);
 
+void	pwd(t_data *data);
 void	free_darr(void **arr);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	argv_clear(t_data *data);
 void	check_variables(t_data *data);
 void	env(t_data *data, char **argv);
-void	pwd(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
 void	export(t_data *data, char **argv);

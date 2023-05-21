@@ -70,7 +70,7 @@ int	string_count(const char *prompt)
 	quote = FALSE;
 	while (prompt && *prompt)
 	{
-		if (handle_quote(prompt + i, NULL, &quote))
+		if (handle_quote(prompt, NULL, &quote))
 		{
 			prompt++;
 			continue ;
@@ -94,7 +94,7 @@ int	char_count(const char *prompt)
 	quote = FALSE;
 	while (prompt && *prompt && (*prompt != ' ' || quote))
 	{
-		if (handle_quote(prompt + i, NULL, &quote))
+		if (handle_quote(prompt, NULL, &quote))
 		{
 			prompt++;
 			continue ;

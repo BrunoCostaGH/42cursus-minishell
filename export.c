@@ -90,7 +90,7 @@ static int	edit_existing_envp(t_data *data, char **argv)
 			argv[--i] = 0;
 			amount_edited++;
 		}
-		free_darr((void **) temp);
+		free_darr((void **)temp);
 	}
 	return (amount_edited);
 }

@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/20 19:49:50 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 15:35:01 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,11 @@ static void	envp_clear(t_data *data)
 
 	id = 0;
 	while (data->envp.envp && data->envp.envp[id])
-	{
-		free_darr((void **)data->envp.envp[id]);
-		data->envp.envp[id++] = 0;
-	}
+		free_darr((void **)data->envp.envp[id++]);
 	free(data->envp.envp);
 	data->envp.envp = 0;
 	if (data->envp.exec_envp)
-	{
 		free_darr((void **) data->envp.exec_envp);
-		data->envp.exec_envp = 0;
-	}
 }
 
 void	argv_clear(t_data *data)
@@ -58,11 +52,7 @@ void	argv_clear(t_data *data)
 
 	id = 0;
 	while (data->argv.args && data->argv.args[id])
-	{
-		free_darr((void **)data->argv.args[id]);
-		data->argv.args[id] = 0;
-		id++;
-	}
+		free_darr((void **)data->argv.args[id++]);
 	free(data->argv.args);
 	data->argv.args = 0;
 	if (data->argv.type)

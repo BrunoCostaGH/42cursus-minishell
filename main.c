@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/21 15:22:04 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 15:29:40 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	find_command(t_data *data, char **argv)
 		else if (!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
 			change_dir(data, argv);
 		else if (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
-			pwd(data, argv);
+			pwd(data);
 		else if (!ft_strncmp(argv[0], "env", ft_strlen(argv[0])))
 			env(data, argv);
 		else if (!ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
