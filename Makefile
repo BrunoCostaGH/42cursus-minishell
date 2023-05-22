@@ -6,7 +6,7 @@
 #    By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/20 19:20:05 by bsilva-c          #+#    #+#              #
-#    Updated: 2023/05/20 13:45:17 by bsilva-c         ###   ########.fr        #
+#    Updated: 2023/05/22 17:17:45 by bsilva-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ DEPS=libft/libft.a
 
 SRCS=main.c free_n_exit.c exec.c pwd.c change_dir.c args.c args_utils.c \
 minishell_utils.c init.c env.c signals.c variables.c pipes.c echo.c \
-error.c export.c
+error.c export.c export_utils.c
 
 OBJS=$(SRCS:.c=.o)
 NAME=minishell

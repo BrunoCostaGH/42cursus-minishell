@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/22 13:59:07 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/22 17:14:08 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,75 +34,14 @@ static int	check_argv(t_data *data, char *arg, int initial)
 	return (0);
 }
 
-static char	***duplicate_envp(t_data *data, int len)
-{
-	int		i;
-	char	***temp_envp;
-
-	i = 0;
-	temp_envp = ft_calloc(len + len_darr((void **)data->envp.envp) + 1, \
-	sizeof(char **));
-	while (data->envp.envp[i])
-	{
-		temp_envp[i] = ft_calloc(2, sizeof(char *));
-		temp_envp[i][0] = ft_strdup(data->envp.envp[i][0]);
-		if (data->envp.envp[i][1])
-			temp_envp[i][1] = ft_strdup(data->envp.envp[i][1]);
-		free_darr((void **)data->envp.envp[i]);
-		i++;
-	}
-	return (temp_envp);
-}
-
-static int	edit_existing_envp(t_data *data, char **argv)
-{
-	int		i;
-	int		index_argv;
-	int		amount_edited;
-	char	**temp;
-
-	amount_edited = 0;
-	index_argv = 0;
-	while (argv[++index_argv])
-	{
-		i = 0;
-		temp = ft_split(argv[index_argv], '=');
-		while (*temp && data->envp.envp[i] && ft_strncmp(data->envp.envp[i][0], \
-		temp[0], ft_strlen(data->envp.envp[i][0]) + 1))
-			i++;
-		if (data->envp.envp[i])
-		{
-			free(data->envp.envp[i][1]);
-			data->envp.envp[i][1] = 0;
-			if (temp[1])
-				data->envp.envp[i][1] = ft_strdup(temp[1]);
-			free(argv[index_argv]);
-			i = index_argv;
-			while (argv[++i])
-				argv[i - 1] = argv[i];
-			argv[--i] = 0;
-			amount_edited++;
-		}
-		free_darr((void **)temp);
-	}
-	return (amount_edited);
-}
-
-void	export(t_data *data, char **argv)
+static void	do_export(t_data *data, char ***temp_envp, char **argv)
 {
 	int		index_argv;
 	int		index_env;
 	char	**temp;
-	char	***temp_envp;
 
-	if (check_argv(data, argv[1], TRUE))
-		return ;
-	index_argv = len_darr((void **)argv) - edit_existing_envp(data, argv);
-	if (!index_argv)
-		return ;
-	temp_envp = duplicate_envp(data, index_argv);
-	index_env = len_darr((void **)temp_envp);
 	index_argv = 0;
+	index_env = len_darr((void **)temp_envp);
 	while (argv[++index_argv])
 	{
 		temp = ft_split(argv[index_argv], '=');
@@ -118,6 +57,20 @@ void	export(t_data *data, char **argv)
 		free_darr((void **)temp);
 		index_env++;
 	}
+}
+
+void	export(t_data *data, char **argv)
+{
+	int		index_argv;
+	char	***temp_envp;
+
+	if (check_argv(data, argv[1], TRUE))
+		return ;
+	index_argv = len_darr((void **)argv) - check_envp(data, argv);
+	if (!index_argv)
+		return ;
+	temp_envp = duplicate_envp(data, index_argv);
+	do_export(data, temp_envp, argv);
 	free(data->envp.envp);
 	data->envp.envp = temp_envp;
 }

@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:51:41 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/21 15:06:19 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/22 17:02:45 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	handle_quote(const char *prompt, int *index, int *quote)
 	return (1);
 }
 
-int	check_for_special_char(t_data *data, const char *prompt, int id, int i)
+int	check_for_special_char(t_data *data, const char *prompt, int *i, int id)
 {
 	if (i && !ft_strncmp(prompt, "|", 1))
 		data->argv.type[id] = PIPE;
@@ -39,9 +39,15 @@ int	check_for_special_char(t_data *data, const char *prompt, int id, int i)
 	else if (i && !ft_strncmp(prompt, "<", 1))
 		data->argv.type[id] = REDR_INPUT;
 	if (data->argv.type[id] && data->argv.type[id] % 2 == 0)
+	{
+		*i = 0;
 		return (2);
+	}
 	else if (data->argv.type[id])
+	{
+		*i = 0;
 		return (1);
+	}
 	return (0);
 }
 

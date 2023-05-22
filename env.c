@@ -6,11 +6,25 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/22 14:00:01 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/22 17:28:24 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	do_unset(t_data *data, int *index_env)
+{
+	if (data->envp.envp[*index_env])
+	{
+		free_darr((void **)data->envp.envp[*index_env]);
+		while (data->envp.envp[*index_env + 1])
+		{
+			data->envp.envp[*index_env] = data->envp.envp[*index_env + 1];
+			*index_env = *index_env + 1;
+		}
+		data->envp.envp[*index_env] = NULL;
+	}
+}
 
 void	unset(t_data *data, char **argv)
 {
@@ -27,16 +41,7 @@ void	unset(t_data *data, char **argv)
 		ft_strncmp(data->envp.envp[index_env][0], argv[index_argv], \
 		ft_strlen(argv[index_argv]) + 1))
 			index_env++;
-		if (data->envp.envp[index_env])
-		{
-			free_darr((void **)data->envp.envp[index_env]);
-			while (data->envp.envp[index_env + 1])
-			{
-				data->envp.envp[index_env] = data->envp.envp[index_env + 1];
-				index_env++;
-			}
-			data->envp.envp[index_env] = NULL;
-		}
+		do_unset(data, &index_env);
 	}
 	if (!argv[1])
 	{
@@ -44,6 +49,21 @@ void	unset(t_data *data, char **argv)
 		return ;
 	}
 	data->exit_status = 0;
+}
+
+char	*get_env_var(t_data *data, const char *var_name)
+{
+	int		index;
+	char	*var_value;
+
+	index = 0;
+	var_value = 0;
+	while (data->envp.envp[index] && ft_strncmp(data->envp.envp[index][0], \
+		var_name, ft_strlen(data->envp.envp[index][0]) + 1))
+		index++;
+	if (data->envp.envp[index])
+		var_value = data->envp.envp[index][1];
+	return (var_value);
 }
 
 void	env(t_data *data, char **argv)
@@ -63,19 +83,4 @@ void	env(t_data *data, char **argv)
 		i++;
 	}
 	data->exit_status = 0;
-}
-
-char	*get_env_var(t_data *data, const char *var_name)
-{
-	int		index;
-	char	*var_value;
-
-	index = 0;
-	var_value = 0;
-	while (data->envp.envp[index] && ft_strncmp(data->envp.envp[index][0], \
-		var_name, ft_strlen(data->envp.envp[index][0]) + 1))
-		index++;
-	if (data->envp.envp[index])
-		var_value = data->envp.envp[index][1];
-	return (var_value);
 }
