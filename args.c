@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/21 15:06:54 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/22 17:03:02 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,20 @@ static void	set_result(t_data *data, const char *prompt, char ***result)
 	{
 		while (*prompt && (*prompt == ' ' || *prompt == '\t'))
 			prompt++;
-		prompt += check_for_special_char(data, prompt, id, i);
+		prompt += check_for_special_char(data, prompt, &i, id);
 		if (data->argv.type[id])
 		{
 			result[++id] = ft_calloc(string_count(prompt) + 1, sizeof(char *));
 			if (!result[id])
-				exit(0);
-			i = 0;
+				exit(1);
 			continue ;
 		}
 		if (*prompt && *prompt != ' ')
 		{
 			result[id][i] = ft_calloc(char_count(prompt) + 1, sizeof(char));
 			if (!result[id][i])
-				exit(0);
-			prompt += special_treatment(prompt, result[id], i);
-			i++;
+				exit(1);
+			prompt += special_treatment(prompt, result[id], i++);
 		}
 	}
 }
