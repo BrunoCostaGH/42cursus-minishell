@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:28:04 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/21 18:47:05 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/22 13:52:39 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ int	check_identifier(t_data *data, char *command, char *arg)
 		{
 			temp = ft_strjoin(command, ": ");
 			free(command);
-			command = temp;
-			temp = ft_strjoin(command, arg);
-			handle_error(data, temp, 2);
+			command = ft_strjoin(temp, arg);
 			free(temp);
+			handle_error(data, command, 2);
+			free(command);
 			return (1);
 		}
 	}

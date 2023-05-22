@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/21 18:27:43 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/22 13:59:07 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	check_argv(t_data *data, char *arg, int initial)
 	index = 0;
 	if (initial == TRUE && !arg)
 	{
-		while (data->envp.envp[++index])
+		while (data->envp.envp[++index - 1])
 		{
 			printf("%s %s", "declare -x", data->envp.envp[index - 1][0]);
 			if (data->envp.envp[index - 1][1])
@@ -29,7 +29,7 @@ static int	check_argv(t_data *data, char *arg, int initial)
 		return (1);
 	}
 	else if ((initial == TRUE && !*arg) || initial == FALSE)
-		if (check_identifier(data, "export", arg))
+		if (check_identifier(data, ft_strdup("export"), arg))
 			return (1);
 	return (0);
 }
@@ -68,7 +68,7 @@ static int	edit_existing_envp(t_data *data, char **argv)
 		i = 0;
 		temp = ft_split(argv[index_argv], '=');
 		while (*temp && data->envp.envp[i] && ft_strncmp(data->envp.envp[i][0], \
-		temp[0], ft_strlen(data->envp.envp[i][0])))
+		temp[0], ft_strlen(data->envp.envp[i][0]) + 1))
 			i++;
 		if (data->envp.envp[i])
 		{

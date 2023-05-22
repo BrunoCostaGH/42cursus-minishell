@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/21 19:43:04 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/22 14:00:01 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,21 @@ void	unset(t_data *data, char **argv)
 	while (argv[++index_argv])
 	{
 		index_env = 0;
-		if (check_identifier(data, argv[0], argv[index_argv]))
+		if (check_identifier(data, ft_strdup(argv[0]), argv[index_argv]))
 			continue ;
 		while (data->envp.envp[index_env] && \
 		ft_strncmp(data->envp.envp[index_env][0], argv[index_argv], \
-		ft_strlen(argv[index_argv])))
+		ft_strlen(argv[index_argv]) + 1))
 			index_env++;
 		if (data->envp.envp[index_env])
 		{
 			free_darr((void **)data->envp.envp[index_env]);
-			if (data->envp.envp[index_env + 1])
+			while (data->envp.envp[index_env + 1])
 			{
-				while (data->envp.envp[index_env + 1])
-				{
-					data->envp.envp[index_env] = data->envp.envp[index_env + 1];
-					index_env++;
-				}
-				data->envp.envp[index_env] = NULL;
+				data->envp.envp[index_env] = data->envp.envp[index_env + 1];
+				index_env++;
 			}
+			data->envp.envp[index_env] = NULL;
 		}
 	}
 	if (!argv[1])
@@ -76,7 +73,7 @@ char	*get_env_var(t_data *data, const char *var_name)
 	index = 0;
 	var_value = 0;
 	while (data->envp.envp[index] && ft_strncmp(data->envp.envp[index][0], \
-		var_name, ft_strlen(data->envp.envp[index][0])))
+		var_name, ft_strlen(data->envp.envp[index][0]) + 1))
 		index++;
 	if (data->envp.envp[index])
 		var_value = data->envp.envp[index][1];
