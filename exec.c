@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/20 18:44:52 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/22 14:54:50 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	build_envp(t_data *data)
 /* Check if argv[0] is a file in any of the folders specified by $PATH and if
  * true return the program's path.
  */
-static char	*check_environment(char *fname)
+static char	*check_environment(t_data *data, char *fname)
 {
 	int		i;
 	char	*name;
@@ -59,7 +59,7 @@ static char	*check_environment(char *fname)
 
 	i = -1;
 	name = 0;
-	little_path = ft_split(getenv("PATH"), ':');
+	little_path = ft_split(get_env_var(data, "PATH"), ':');
 	while (little_path[++i])
 	{
 		path = ft_strjoin(little_path[i], "/");
@@ -85,7 +85,7 @@ void	run_executable(t_data *data, char **argv)
 
 	if (argv && *argv)
 	{
-		argv[0] = check_environment(argv[0]);
+		argv[0] = check_environment(data, argv[0]);
 		build_envp(data);
 		pid = fork();
 		if (pid == -1)

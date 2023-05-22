@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/20 13:38:06 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/21 18:01:38 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,19 +87,20 @@ int		check_for_pipes(t_data *data);
 int		char_count(const char *prompt);
 int		group_count(const char *prompt);
 int		string_count(const char *prompt);
-int		count_quotes(const char *prompt);
 int		handle_error(t_data *data, char *command, int error);
-int		check_for_special_char(t_data *data, char *prompt, int id, int i);
+int		handle_quote(const char *prompt, int *index, int *quote);
+int		check_identifier(t_data *data, char *command, char *arg);
+int		check_for_special_char(t_data *data, const char *prompt, int id, int i);
 
 char	*get_env_var(t_data *data, const char *var_name);
 
+void	pwd(t_data *data);
 void	free_darr(void **arr);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	argv_clear(t_data *data);
 void	check_variables(t_data *data);
 void	env(t_data *data, char **argv);
-void	pwd(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
 void	export(t_data *data, char **argv);

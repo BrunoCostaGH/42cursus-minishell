@@ -6,11 +6,40 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:28:04 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/19 19:53:26 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/22 13:52:39 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_identifier(t_data *data, char *command, char *arg)
+{
+	int		index;
+	char	*temp;
+
+	if (!arg || !*arg)
+	{
+		temp = ft_strjoin(command, ": ");
+		handle_error(data, temp, 2);
+		free(temp);
+		return (1);
+	}
+	index = -1;
+	while (arg[++index])
+	{
+		if (!(ft_isalnum(arg[index]) || arg[index] == '_'))
+		{
+			temp = ft_strjoin(command, ": ");
+			free(command);
+			command = ft_strjoin(temp, arg);
+			free(temp);
+			handle_error(data, command, 2);
+			free(command);
+			return (1);
+		}
+	}
+	return (0);
+}
 
 int	len_darr(void **arr)
 {
@@ -33,7 +62,12 @@ void	free_darr(void **arr)
 	if (arr)
 	{
 		while (arr[i])
-			free(arr[i++]);
+		{
+			free(arr[i]);
+			arr[i] = 0;
+			i++;
+		}
 		free(arr);
+		arr = 0;
 	}
 }
