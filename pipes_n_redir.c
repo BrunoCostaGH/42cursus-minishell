@@ -1,12 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipes.c                                            :+:      :+:    :+:   */
+/*   pipes_n_redir.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/24 23:23:25 by bsilva-c          #+#    #+#             */
+/*   Updated: 2023/05/25 00:29:09 by bsilva-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipes_n_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/24 18:55:04 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/24 23:10:20 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,33 +35,6 @@ static void	close_pipes(int **pipe_fd, int id)
 		}
 		id--;
 	}
-}
-
-int	get_fd_out(t_data *data, int *fd)
-{
-	int	id;
-
-	id = 0;
-	while (data->argv.type[id])
-	{
-		if (!data->argv.args[id + 1][0])
-		{
-			write(2, &"Error: syntax error near unexpected token `newline'\n", 52);
-			return (1);
-		}
-		if (data->argv.type[id] == REDR_OUTPUT || data->argv.type[id] == \
-		REDR_APPEND)
-		{
-			if (*fd)
-				close(*fd);
-			*fd = open(data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
-			O_TRUNC, S_IRWXU);
-			if (*fd == -1)
-				shell_error();
-		}
-		id++;
-	}
-	return (0);
 }
 
 void	here_doc(t_data *data, int *fd, int id)
@@ -86,6 +71,18 @@ void	create_pipes(t_data *data, int **pipe_fd)
 	fd_out = 0;
 	if (get_fd_out(data, &fd_out) == 1)
 		return ;
+	if (!data->argv.args[id][0] && data->argv.args[id + 1][0])
+		id++;
+	/* NEED TO FIX FD ARGV CLEAR, NOT WORKING FOR SOME REASON :( */
+/*	int i = id;
+	int k = 0;
+	while (data->argv.args[i][k])
+	{
+		k = 0;
+		while (data->argv.args[i][++k])
+			printf("%d: %s\n", i, data->argv.args[i][k - 1]);
+		i++;
+	}*/
 	pipe_fd[id] = malloc(sizeof(int) * 2);
 	pipe(pipe_fd[id]);
 	pid = fork();
@@ -103,23 +100,21 @@ void	create_pipes(t_data *data, int **pipe_fd)
 				shell_error();
 			dup2(fd_in, STDIN_FILENO);
 		}
-		if (data->argv.type[id] == REDR_OUTPUT || data->argv.type[id] == \
-		REDR_APPEND)
-			id++;
 		if (data->argv.type[id])
-			dup2(pipe_fd[0][1], STDOUT_FILENO);
+			dup2(pipe_fd[id][1], STDOUT_FILENO);
 		else if (fd_out)
 			dup2(fd_out, STDOUT_FILENO);
-		close_pipes(pipe_fd, 0);
-		find_command(data, data->argv.args[0]);
+		close_pipes(pipe_fd, id);
+		if (data->argv.type[id - 1] == REDR_DELIM)
+			find_command(data, data->argv.args[id - 1]);
+		else
+			find_command(data, data->argv.args[id]);
 		exit(0);
 	}
 	else
 	{
 		while (data->argv.args[++id])
 		{
-			if (data->argv.type[id - 1] == REDR_DELIM)
-				continue ;
 			if (data->argv.type[id - 1] != PIPE)
 				continue ;
 			if (data->argv.type[id] == PIPE)
@@ -153,12 +148,6 @@ void	create_pipes(t_data *data, int **pipe_fd)
 				close_pipes(pipe_fd, id);
 				find_command(data, data->argv.args[id]);
 				exit(0);
-			}
-			else
-			{
-				if (data->argv.type[id] == REDR_OUTPUT || \
-				data->argv.type[id] == REDR_APPEND)
-					id++;
 			}
 		}
 	}

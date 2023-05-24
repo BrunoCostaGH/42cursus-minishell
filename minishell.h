@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/23 19:08:20 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/22 17:15:29 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int		check_for_pipes(t_data *data);
 int		char_count(const char *prompt);
 int		group_count(const char *prompt);
 int		string_count(const char *prompt);
+int		get_fd_out(t_data *data, int *fd);
 int		check_envp(t_data *data, char **argv);
 int		handle_error(t_data *data, char *command, int error);
 int		handle_quote(const char *prompt, int *index, int *quote);
