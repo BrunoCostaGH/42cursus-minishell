@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:17:40 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/18 16:21:51 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/24 14:46:39 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	execute_sig_action(int sig, void *data)
 	}
 	if (static_data && !(static_data->interactive))
 		if (sig == SIGINT)
-			printf("\n");
+			write(0, &"^C", 2);
 }
 
 void	handle(int sig)

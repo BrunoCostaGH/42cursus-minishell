@@ -56,6 +56,12 @@ void	argv_clear(t_data *data)
 	}
 }
 
+void	shell_error(void)
+{
+	perror("Error");
+	exit(1);
+}
+
 void	shell_exit(t_data *data, char **argv)
 {
 	int	exit_status;

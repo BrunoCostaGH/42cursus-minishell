@@ -98,6 +98,7 @@ char	*get_env_var(t_data *data, const char *var_name);
 
 char	***duplicate_envp(t_data *data, int len);
 
+void	shell_error(void);
 void	pwd(t_data *data);
 void	free_darr(void **arr);
 void	set_argv(t_data *data);
