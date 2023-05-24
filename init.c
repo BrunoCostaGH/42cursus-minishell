@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/19 18:18:41 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/23 19:02:24 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,21 @@ static void	init_envp(t_data *data, char **envp)
 	}
 }
 
+void	init_tmp(t_data *data)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	temp = NULL;
+	while (i == 0 || access(temp, F_OK) == 0)
+	{
+		if (data->tmp_file)
+			free(data->tmp_file);
+		data->tmp_file = ft_strjoin(".tmp", ft_itoa(++i));
+	}
+}
+
 void	*init_struct(char **envp)
 {
 	t_data	*data;
@@ -47,5 +62,6 @@ void	*init_struct(char **envp)
 	data->argv.args = NULL;
 	data->argv.type = NULL;
 	init_envp(data, envp);
+	init_tmp(data);
 	return (data);
 }

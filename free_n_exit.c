@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/21 18:39:23 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/24 14:51:25 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,15 @@ void	shell_exit(t_data *data, char **argv)
 		return ;
 	exit_status = data->exit_status;
 	rl_clear_history();
+	if (access(data->tmp_file, F_OK) == 0)
+	{
+		if (data->prompt)
+			free(data->prompt);
+		argv_clear(data);
+		data->prompt = ft_strjoin("rm ", data->tmp_file);
+		set_argv(data);
+		find_command(data, data->argv.args[0]);
+	}
 	if (data->prompt)
 		free(data->prompt);
 	argv_clear(data);
