@@ -3,22 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_n_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 23:23:25 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/25 00:29:09 by bsilva-c         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipes_n_redir.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/24 23:10:20 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:30:53 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +59,12 @@ void	create_pipes(t_data *data, int **pipe_fd)
 	fd_out = 0;
 	if (get_fd_out(data, &fd_out) == 1)
 		return ;
-	if (!data->argv.args[id][0] && data->argv.args[id + 1][0])
+	while (!data->argv.args[id][0] && data->argv.args[id + 1][0])
 		id++;
-	/* NEED TO FIX FD ARGV CLEAR, NOT WORKING FOR SOME REASON :( */
-/*	int i = id;
-	int k = 0;
-	while (data->argv.args[i][k])
-	{
-		k = 0;
-		while (data->argv.args[i][++k])
-			printf("%d: %s\n", i, data->argv.args[i][k - 1]);
-		i++;
-	}*/
+/*	printf("%d: %s\n", 0, data->argv.args[0][0]);
+	printf("%d: %s\n", 1, data->argv.args[1][0]);
+	printf("%d: %s\n", 2, data->argv.args[2][0]);
+	printf("%d: %s\n", 3, data->argv.args[3][0]);*/
 	pipe_fd[id] = malloc(sizeof(int) * 2);
 	pipe(pipe_fd[id]);
 	pid = fork();
@@ -159,7 +141,7 @@ int	check_for_pipes(t_data *data)
 	int		**pipe_fd;
 	int		pipe_amount;
 
-	if (!data->prompt)
+	if (!data->argv.args)
 		return (0);
 	i = 0;
 	pipe_amount = 0;
