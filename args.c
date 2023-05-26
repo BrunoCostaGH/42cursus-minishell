@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/25 17:25:04 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 00:17:17 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,7 @@ void	set_argv(t_data *data)
 		if ((!data->argv.args[id] || !data->argv.args[id][0]))
 		{
 			write(2, &"Error: syntax error near unexpected token\n", 42);
-			id = 0;
-			while (data->argv.args[id])
-				free_darr((void **)data->argv.args[id]);
-			free(data->argv.args);
-			data->argv.args = 0;
+			argv_clear(data);
 			return ;
 		}
 	}

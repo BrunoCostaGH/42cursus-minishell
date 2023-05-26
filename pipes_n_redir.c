@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/25 17:30:53 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 00:26:57 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,8 @@ void	create_pipes(t_data *data, int **pipe_fd)
 	fd_out = 0;
 	if (get_fd_out(data, &fd_out) == 1)
 		return ;
-	while (!data->argv.args[id][0] && data->argv.args[id + 1][0])
+	while (!data->argv.args[id][0])
 		id++;
-/*	printf("%d: %s\n", 0, data->argv.args[0][0]);
-	printf("%d: %s\n", 1, data->argv.args[1][0]);
-	printf("%d: %s\n", 2, data->argv.args[2][0]);
-	printf("%d: %s\n", 3, data->argv.args[3][0]);*/
 	pipe_fd[id] = malloc(sizeof(int) * 2);
 	pipe(pipe_fd[id]);
 	pid = fork();
@@ -82,7 +78,7 @@ void	create_pipes(t_data *data, int **pipe_fd)
 				shell_error();
 			dup2(fd_in, STDIN_FILENO);
 		}
-		if (data->argv.type[id])
+		if (data->argv.type[id] == PIPE || data->argv.type[id + 1] == PIPE)
 			dup2(pipe_fd[id][1], STDOUT_FILENO);
 		else if (fd_out)
 			dup2(fd_out, STDOUT_FILENO);
