@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/26 00:26:57 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 18:06:40 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ void	here_doc(t_data *data, int *fd, int id)
 	while (1)
 	{
 		str = readline("heredoc> ");
-		if (!ft_strncmp(data->argv.args[id + 1][0], str, \
-		ft_strlen(data->argv.args[id + 1][0])))
+		if (*data->argv.args[id + 1] && !ft_strncmp(data->argv.args[id + 1][0], \
+		str, ft_strlen(data->argv.args[id + 1][0])))
 			break ;
 		write(*fd, str, ft_strlen(str));
 		write(*fd, "\n", 1);
+		if (!*data->argv.args[id + 1])
+			break ;
 	}
 	close(*fd);
 	*fd = open(data->tmp_file, O_RDONLY);
@@ -47,12 +49,11 @@ void	here_doc(t_data *data, int *fd, int id)
 		shell_error();
 }
 
-void	create_pipes(t_data *data, int **pipe_fd)
+void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 {
 	int		id;
 	int		fd_in;
 	int		fd_out;
-	pid_t	pid;
 
 	id = 0;
 	fd_in = 0;
@@ -63,8 +64,8 @@ void	create_pipes(t_data *data, int **pipe_fd)
 		id++;
 	pipe_fd[id] = malloc(sizeof(int) * 2);
 	pipe(pipe_fd[id]);
-	pid = fork();
-	if (pid == 0)
+	*pid = fork();
+	if (*pid == 0)
 	{
 		if (data->argv.type[id] == REDR_DELIM)
 		{
@@ -78,7 +79,7 @@ void	create_pipes(t_data *data, int **pipe_fd)
 				shell_error();
 			dup2(fd_in, STDIN_FILENO);
 		}
-		if (data->argv.type[id] == PIPE || data->argv.type[id + 1] == PIPE)
+		if (data->argv.type[id] == PIPE)
 			dup2(pipe_fd[id][1], STDOUT_FILENO);
 		else if (fd_out)
 			dup2(fd_out, STDOUT_FILENO);
@@ -87,7 +88,7 @@ void	create_pipes(t_data *data, int **pipe_fd)
 			find_command(data, data->argv.args[id - 1]);
 		else
 			find_command(data, data->argv.args[id]);
-		exit(0);
+		exit(data->exit_status);
 	}
 	else
 	{
@@ -100,8 +101,8 @@ void	create_pipes(t_data *data, int **pipe_fd)
 				pipe_fd[id] = malloc(sizeof(int) * 2);
 				pipe(pipe_fd[id]);
 			}
-			pid = fork();
-			if (pid == 0)
+			*pid = fork();
+			if (*pid == 0)
 			{
 				if (data->argv.type[id] == REDR_DELIM)
 				{
@@ -125,7 +126,7 @@ void	create_pipes(t_data *data, int **pipe_fd)
 					dup2(fd_out, STDOUT_FILENO);
 				close_pipes(pipe_fd, id);
 				find_command(data, data->argv.args[id]);
-				exit(0);
+				exit(data->exit_status);
 			}
 		}
 	}
@@ -134,6 +135,7 @@ void	create_pipes(t_data *data, int **pipe_fd)
 int	check_for_pipes(t_data *data)
 {
 	int		i;
+	int		pid;
 	int		**pipe_fd;
 	int		pipe_amount;
 
@@ -146,10 +148,11 @@ int	check_for_pipes(t_data *data)
 	if (pipe_amount)
 	{
 		pipe_fd = ft_calloc(pipe_amount + 1, sizeof(int *));
-		create_pipes(data, pipe_fd);
+		create_pipes(data, pipe_fd, &pid);
 		close_pipes(pipe_fd, pipe_amount);
-		while (waitpid(-1, NULL, 0) != -1)
+		while (waitpid(pid, &data->exit_status, WUNTRACED) != -1)
 			;
+		set_error_status(data, 0);
 		free_darr((void **)pipe_fd);
 		return (1);
 	}

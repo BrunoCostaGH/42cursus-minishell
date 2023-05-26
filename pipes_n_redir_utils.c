@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 00:33:37 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 18:16:51 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,25 @@ static void	clear_argv(t_data *data, int id)
 	}
 }
 
-static void	open_file(char *file, int oflag, int *fd)
+static void	open_file(t_data *data, char *file, int oflag, int *fd)
 {
 	if (!*fd)
 	{
 		*fd = open(file, oflag, S_IRWXU);
 		if (*fd == -1)
+		{
 			perror("Error");
+			data->exit_status = errno;
+		}
 	}
 	else
+	{
 		if (open(file, oflag, S_IRWXU) == -1)
+		{
 			perror("Error");
+			data->exit_status = errno;
+		}
+	}
 }
 
 int	get_fd_out(t_data *data, int *fd)
@@ -61,14 +69,14 @@ int	get_fd_out(t_data *data, int *fd)
 	{
 		if (data->argv.type[id] == REDR_OUTPUT)
 		{
-			open_file(data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
+			open_file(data, data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
 			O_TRUNC, fd);
 			clear_argv(data, id + 1);
 			continue ;
 		}
 		else if (data->argv.type[id] == REDR_APPEND)
 		{
-			open_file(data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
+			open_file(data, data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
 			O_APPEND, fd);
 			clear_argv(data, id + 1);
 			continue ;

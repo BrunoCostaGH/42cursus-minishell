@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 00:17:17 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 16:39:04 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,13 @@ void	set_argv(t_data *data)
 	id = 0;
 	while (data->argv.type[id++])
 	{
-		if ((!data->argv.args[id] || !data->argv.args[id][0]))
+		if ((!data->argv.args[id] || !data->argv.args[id][0]) || \
+		(data->argv.type[id - 1] == PIPE && !data->argv.args[id - 1][0]))
 		{
-			write(2, &"Error: syntax error near unexpected token\n", 42);
-			argv_clear(data);
+			if (data->argv.type[id])
+				handle_error(data, get_token(data, id), 4);
+			else
+				handle_error(data, get_token(data, id - 1), 4);
 			return ;
 		}
 	}

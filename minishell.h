@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/22 17:15:29 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 15:44:01 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int		check_identifier(t_data *data, char *command, char *arg);
 int		check_for_special_char(t_data *data, const char *prompt, int *i, \
 int id);
 
+char	*get_token(t_data *data, int id);
 char	*get_env_var(t_data *data, const char *var_name);
 
 char	***duplicate_envp(t_data *data, int len);
@@ -117,6 +118,7 @@ void	change_dir(t_data *data, char **argv);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
+void	set_error_status(t_data *data, char **argv);
 
 void	*init_struct(char **envp);
 

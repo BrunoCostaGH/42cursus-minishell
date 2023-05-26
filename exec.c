@@ -6,22 +6,23 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/22 14:54:50 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 18:12:54 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	set_error_status(t_data *data, char **argv)
+void	set_error_status(t_data *data, char **argv)
 {
 	if ((data->exit_status >> 7) & 0x01)
 		write(2, "Quit (core dump)\n", 17);
-	else if (access(argv[0], F_OK))
+	else if (argv && access(argv[0], F_OK))
 	{
 		write(2, "command not found: ", 19);
 		write(2, argv[0], ft_strlen(argv[0]));
 		write(2, "\n", 1);
 		data->exit_status = 127;
+		return ;
 	}
 	data->exit_status >>= 8;
 }
