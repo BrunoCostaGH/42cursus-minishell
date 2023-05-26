@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:10:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/22 17:40:43 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:25:25 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	change_dir(t_data *data, char **argv)
 	if (chdir(path) == -1)
 	{
 		perror("Error");
-		data->exit_status = errno;
+		data->exit_status = 1;
 		return ;
 	}
 	update_env(data, old_path, getcwd(NULL, 0));

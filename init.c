@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/23 19:02:24 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:11:21 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	init_envp(t_data *data, char **envp)
 	{
 		temp = ft_split(envp[len], '=');
 		data->envp.envp[len] = ft_calloc(2, sizeof(char *));
+		if (!data->envp.envp[len])
+			return ;
 		data->envp.envp[len][0] = temp[0];
 		data->envp.envp[len][1] = temp[1];
 		free(temp);

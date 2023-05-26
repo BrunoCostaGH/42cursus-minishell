@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/21 19:21:50 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:12:54 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ static int	set_env_var(t_data *data)
 	if (k == 1)
 		return (1);
 	var_name = ft_calloc(k + 1, sizeof(char));
+	if (!var_name)
+		return (0);
 	ft_strlcpy(var_name, temp, k + 1);
 	env_var = get_env_var(data, var_name + 1);
 	if (!env_var)

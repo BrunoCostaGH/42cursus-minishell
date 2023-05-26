@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 18:12:54 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:51:26 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,8 @@ void	run_executable(t_data *data, char **argv)
 		}
 		else
 		{
-			data->interactive = FALSE;
 			while (waitpid(pid, &data->exit_status, WUNTRACED) == -1)
 				;
-			data->interactive = TRUE;
 			set_error_status(data, argv);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/26 18:06:40 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:30:47 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ void	here_doc(t_data *data, int *fd, int id)
 
 	*fd = open(data->tmp_file, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
 	if (*fd == -1)
-		shell_error();
+	{
+		perror("Error");
+		data->exit_status = 1;
+	}
 	while (1)
 	{
 		str = readline("heredoc> ");
@@ -46,7 +49,10 @@ void	here_doc(t_data *data, int *fd, int id)
 	close(*fd);
 	*fd = open(data->tmp_file, O_RDONLY);
 	if (*fd == -1)
-		shell_error();
+	{
+		perror("Error");
+		data->exit_status = 1;
+	}
 }
 
 void	create_pipes(t_data *data, int **pipe_fd, int *pid)
@@ -63,10 +69,13 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 	while (!data->argv.args[id][0])
 		id++;
 	pipe_fd[id] = malloc(sizeof(int) * 2);
+	if (!pipe_fd[id])
+		return ;
 	pipe(pipe_fd[id]);
 	*pid = fork();
 	if (*pid == 0)
 	{
+		data->exit_status = 0;
 		if (data->argv.type[id] == REDR_DELIM)
 		{
 			here_doc(data, &fd_in, id++);
@@ -76,13 +85,17 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 		{
 			fd_in = open(data->argv.args[id + 1][0], O_RDONLY);
 			if (fd_in == -1)
-				shell_error();
+			{
+				perror("Error");
+				exit(1);
+			}
 			dup2(fd_in, STDIN_FILENO);
 		}
 		if (data->argv.type[id] == PIPE)
 			dup2(pipe_fd[id][1], STDOUT_FILENO);
 		else if (fd_out)
 			dup2(fd_out, STDOUT_FILENO);
+		data->tmp_file = 0;
 		close_pipes(pipe_fd, id);
 		if (data->argv.type[id - 1] == REDR_DELIM)
 			find_command(data, data->argv.args[id - 1]);
@@ -99,11 +112,14 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 			if (data->argv.type[id] == PIPE)
 			{
 				pipe_fd[id] = malloc(sizeof(int) * 2);
+				if (!pipe_fd[id])
+					return ;
 				pipe(pipe_fd[id]);
 			}
 			*pid = fork();
 			if (*pid == 0)
 			{
+				data->exit_status = 0;
 				if (data->argv.type[id] == REDR_DELIM)
 				{
 					here_doc(data, &fd_in, id++);
@@ -113,7 +129,10 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 				{
 					fd_in = open(data->argv.args[id + 1][0], O_RDONLY);
 					if (fd_in == -1)
-						shell_error();
+					{
+						perror("Error");
+						exit(1);
+					}
 					dup2(fd_in, STDIN_FILENO);
 				}
 				else if (data->argv.type[id - 2] == REDR_DELIM)
@@ -124,8 +143,12 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 					dup2(pipe_fd[id][1], STDOUT_FILENO);
 				else if (fd_out)
 					dup2(fd_out, STDOUT_FILENO);
+				data->tmp_file = 0;
 				close_pipes(pipe_fd, id);
-				find_command(data, data->argv.args[id]);
+				if (data->argv.type[id - 1] == REDR_DELIM)
+					find_command(data, data->argv.args[id - 1]);
+				else
+					find_command(data, data->argv.args[id]);
 				exit(data->exit_status);
 			}
 		}
@@ -148,11 +171,15 @@ int	check_for_pipes(t_data *data)
 	if (pipe_amount)
 	{
 		pipe_fd = ft_calloc(pipe_amount + 1, sizeof(int *));
+		if (!pipe_fd)
+			return (0);
 		create_pipes(data, pipe_fd, &pid);
 		close_pipes(pipe_fd, pipe_amount);
 		while (waitpid(pid, &data->exit_status, WUNTRACED) != -1)
 			;
 		set_error_status(data, 0);
+		while (waitpid(-1, 0, 0) != -1)
+			;
 		free_darr((void **)pipe_fd);
 		return (1);
 	}

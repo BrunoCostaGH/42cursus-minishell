@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:14:23 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/22 17:25:22 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:10:46 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,13 @@ char	***duplicate_envp(t_data *data, int len)
 	i = 0;
 	temp_envp = ft_calloc(len + len_darr((void **)data->envp.envp) + 1, \
 	sizeof(char **));
+	if (!temp_envp)
+		return (0);
 	while (data->envp.envp[i])
 	{
 		temp_envp[i] = ft_calloc(2, sizeof(char *));
+		if (!temp_envp[i])
+			return (0);
 		temp_envp[i][0] = ft_strdup(data->envp.envp[i][0]);
 		if (data->envp.envp[i][1])
 			temp_envp[i][1] = ft_strdup(data->envp.envp[i][1]);

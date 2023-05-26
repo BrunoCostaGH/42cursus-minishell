@@ -6,22 +6,11 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 13:32:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 18:19:48 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:17:24 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	shell_error(void)
-{
-	perror("Error");
-	exit(1);
-}
-
-void print_error()
-{
-
-}
 
 int	handle_error2(t_data *data, char *command, int error)
 {

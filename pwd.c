@@ -20,7 +20,7 @@ void	pwd(t_data *data)
 	if (path == NULL)
 	{
 		perror("Error");
-		data->exit_status = errno;
+		data->exit_status = 1;
 		return ;
 	}
 	printf("%s\n", path);

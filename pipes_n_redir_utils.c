@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 18:16:51 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 23:23:46 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	open_file(t_data *data, char *file, int oflag, int *fd)
 		if (*fd == -1)
 		{
 			perror("Error");
-			data->exit_status = errno;
+			data->exit_status = 1;
 		}
 	}
 	else
@@ -55,7 +55,7 @@ static void	open_file(t_data *data, char *file, int oflag, int *fd)
 		if (open(file, oflag, S_IRWXU) == -1)
 		{
 			perror("Error");
-			data->exit_status = errno;
+			data->exit_status = 1;
 		}
 	}
 }
