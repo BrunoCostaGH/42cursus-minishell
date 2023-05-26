@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/24 14:51:25 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 00:16:59 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	argv_clear(t_data *data)
 	int	id;
 
 	id = 0;
+	if (!data->argv.args)
+		return ;
 	while (data->argv.args && data->argv.args[id])
 		free_darr((void **)data->argv.args[id++]);
 	free(data->argv.args);

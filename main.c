@@ -57,7 +57,8 @@ int	main(int ac, char **av, char **envp)
 		set_argv(data);
 		if (check_for_pipes(data))
 			continue ;
-		find_command(data, *data->argv.args);
+		if (data->argv.args)
+			find_command(data, *data->argv.args);
 		argv_clear(data);
 	}
 }
