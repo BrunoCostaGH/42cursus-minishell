@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:51:41 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/22 17:02:45 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/26 00:25:11 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,13 @@ int	group_count(const char *prompt)
 	i = 0;
 	while (prompt && *prompt)
 	{
-		if (!ft_strncmp(prompt, "|", 1) || !ft_strncmp(prompt, ">>", 2) || \
-			!ft_strncmp(prompt, ">", 1) || !ft_strncmp(prompt, "<<", 2) || \
+		if (!ft_strncmp(prompt, ">>", 2) || !ft_strncmp(prompt, "<<", 2))
+		{
+			i++;
+			prompt += 2;
+			continue ;
+		}
+		else if (!ft_strncmp(prompt, "|", 1) || !ft_strncmp(prompt, ">", 1) || \
 			!ft_strncmp(prompt, "<", 1))
 			i++;
 		prompt++;

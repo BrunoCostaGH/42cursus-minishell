@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/22 17:15:29 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/23 19:08:20 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft/libft.h"
 # include <stdio.h>
 # include <errno.h>
+# include <fcntl.h>
 # include <stdlib.h>
 # include <dirent.h>
 # include <unistd.h>
@@ -78,6 +79,7 @@ typedef struct s_data
 	int				interactive;
 	int				exit_status;
 	char			*prompt;
+	char			*tmp_file;
 	struct s_envp	envp;
 	struct s_args	argv;
 }	t_data;
@@ -98,6 +100,7 @@ char	*get_env_var(t_data *data, const char *var_name);
 
 char	***duplicate_envp(t_data *data, int len);
 
+void	shell_error(void);
 void	pwd(t_data *data);
 void	free_darr(void **arr);
 void	set_argv(t_data *data);
