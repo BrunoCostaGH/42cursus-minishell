@@ -70,7 +70,7 @@ char	***duplicate_envp(t_data *data, int len)
 		return (0);
 	while (data->envp.envp[i])
 	{
-		temp_envp[i] = ft_calloc(2, sizeof(char *));
+		temp_envp[i] = ft_calloc(2 + 1, sizeof(char *));
 		if (!temp_envp[i])
 			return (0);
 		temp_envp[i][0] = ft_strdup(data->envp.envp[i][0]);

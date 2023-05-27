@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/26 22:26:25 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:33:05 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ int	main(int ac, char **av, char **envp)
 		if (data->prompt && *data->prompt)
 			add_history(data->prompt);
 		set_argv(data);
-		if (check_for_pipes(data))
-			continue ;
-		if (data->argv.args)
+		if (!check_for_pipes(data) && data->argv.args)
 			find_command(data, *data->argv.args);
 		argv_clear(data);
 	}

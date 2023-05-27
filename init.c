@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 23:11:21 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:25:39 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,30 @@ static void	init_envp(t_data *data, char **envp)
 	len = 0;
 	while (envp[len])
 		len++;
-	data->envp.exec_envp = 0;
-	data->envp.envp = malloc(sizeof(char **) * len + 1);
+	data->envp.exec_envp = NULL;
+	data->envp.envp = ft_calloc(len + 1, sizeof(char **));
 	if (!data->envp.envp)
 		return ;
 	while (len-- > 0)
 	{
 		temp = ft_split(envp[len], '=');
-		data->envp.envp[len] = ft_calloc(2, sizeof(char *));
+		data->envp.envp[len] = ft_calloc(2 + 1, sizeof(char *));
 		if (!data->envp.envp[len])
 			return ;
-		data->envp.envp[len][0] = temp[0];
-		data->envp.envp[len][1] = temp[1];
-		free(temp);
+		data->envp.envp[len][0] = ft_strdup(temp[0]);
+		data->envp.envp[len][1] = ft_strdup(temp[1]);
+		free_darr((void **)temp);
 	}
 }
 
 void	init_tmp(t_data *data)
 {
 	int		i;
-	char	*temp;
 
-	i = 0;
-	temp = NULL;
-	while (i == 0 || access(temp, F_OK) == 0)
+	i = 1;
+	if (!data->tmp_file)
+		data->tmp_file = ft_strdup(".tmp1");
+	while (access(data->tmp_file, F_OK) == 0)
 	{
 		if (data->tmp_file)
 			free(data->tmp_file);
@@ -63,6 +63,7 @@ void	*init_struct(char **envp)
 	data->prompt = NULL;
 	data->argv.args = NULL;
 	data->argv.type = NULL;
+	data->tmp_file = NULL;
 	init_envp(data, envp);
 	init_tmp(data);
 	return (data);

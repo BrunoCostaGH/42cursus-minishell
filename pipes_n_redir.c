@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/26 23:30:47 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:43:02 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 	*pid = fork();
 	if (*pid == 0)
 	{
+		init_tmp(data);
 		data->exit_status = 0;
 		if (data->argv.type[id] == REDR_DELIM)
 		{
@@ -87,7 +88,9 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 			if (fd_in == -1)
 			{
 				perror("Error");
-				exit(1);
+				data->exit_status = 1;
+				free_darr((void **)pipe_fd);
+				shell_exit(data, 0);
 			}
 			dup2(fd_in, STDIN_FILENO);
 		}
@@ -95,13 +98,13 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 			dup2(pipe_fd[id][1], STDOUT_FILENO);
 		else if (fd_out)
 			dup2(fd_out, STDOUT_FILENO);
-		data->tmp_file = 0;
 		close_pipes(pipe_fd, id);
-		if (data->argv.type[id - 1] == REDR_DELIM)
+		if (id > 0 && data->argv.type[id - 1] == REDR_DELIM)
 			find_command(data, data->argv.args[id - 1]);
 		else
 			find_command(data, data->argv.args[id]);
-		exit(data->exit_status);
+		free_darr((void **)pipe_fd);
+		shell_exit(data, 0);
 	}
 	else
 	{
@@ -119,6 +122,7 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 			*pid = fork();
 			if (*pid == 0)
 			{
+				init_tmp(data);
 				data->exit_status = 0;
 				if (data->argv.type[id] == REDR_DELIM)
 				{
@@ -131,11 +135,13 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 					if (fd_in == -1)
 					{
 						perror("Error");
-						exit(1);
+						data->exit_status = 1;
+						free_darr((void **)pipe_fd);
+						shell_exit(data, 0);
 					}
 					dup2(fd_in, STDIN_FILENO);
 				}
-				else if (data->argv.type[id - 2] == REDR_DELIM)
+				else if (id > 1 && data->argv.type[id - 2] == REDR_DELIM)
 					dup2(pipe_fd[id - 2][0], STDIN_FILENO);
 				else
 					dup2(pipe_fd[id - 1][0], STDIN_FILENO);
@@ -143,13 +149,13 @@ void	create_pipes(t_data *data, int **pipe_fd, int *pid)
 					dup2(pipe_fd[id][1], STDOUT_FILENO);
 				else if (fd_out)
 					dup2(fd_out, STDOUT_FILENO);
-				data->tmp_file = 0;
 				close_pipes(pipe_fd, id);
 				if (data->argv.type[id - 1] == REDR_DELIM)
 					find_command(data, data->argv.args[id - 1]);
 				else
 					find_command(data, data->argv.args[id]);
-				exit(data->exit_status);
+				free_darr((void **)pipe_fd);
+				shell_exit(data, 0);
 			}
 		}
 	}

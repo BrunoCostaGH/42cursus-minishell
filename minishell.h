@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/26 15:44:01 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:20:44 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ char	***duplicate_envp(t_data *data, int len);
 void	shell_error(void);
 void	pwd(t_data *data);
 void	free_darr(void **arr);
+void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	argv_clear(t_data *data);
