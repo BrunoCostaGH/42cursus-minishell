@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 22:51:26 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/28 21:13:19 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ void	run_executable(t_data *data, char **argv)
 			if (execve(argv[0], argv, data->envp.exec_envp) == -1)
 				if (errno != 2)
 					perror("Error");
-			exit(1);
+			data->exit_status = 1;
+			shell_exit(data, 0);
 		}
 		else
 		{

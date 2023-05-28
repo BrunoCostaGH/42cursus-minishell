@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/27 13:20:44 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/28 21:04:49 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_envp
 typedef struct s_args
 {
 	int		*type;
+	int		**pipe_fd;
 	char	***args;
 }	t_args;
 
@@ -102,13 +103,13 @@ char	*get_env_var(t_data *data, const char *var_name);
 
 char	***duplicate_envp(t_data *data, int len);
 
-void	shell_error(void);
 void	pwd(t_data *data);
 void	free_darr(void **arr);
 void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	argv_clear(t_data *data);
+void	init_pipe_fd(t_data *data);
 void	check_variables(t_data *data);
 void	env(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);

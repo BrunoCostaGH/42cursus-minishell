@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/27 13:25:39 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/28 21:43:56 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,22 @@ void	init_tmp(t_data *data)
 	}
 }
 
+void	init_pipe_fd(t_data *data)
+{
+	int	i;
+
+	i = len_darr((void **)data->argv.type);
+	data->argv.pipe_fd = ft_calloc(i + 1, sizeof(int *));
+	if (!data->argv.pipe_fd)
+		return ;
+	while (i--)
+	{
+		data->argv.pipe_fd[i] = ft_calloc(2 + 1, sizeof(int));
+		if (!data->argv.pipe_fd[i])
+			return ;
+	}
+}
+
 void	*init_struct(char **envp)
 {
 	t_data	*data;
@@ -63,8 +79,8 @@ void	*init_struct(char **envp)
 	data->prompt = NULL;
 	data->argv.args = NULL;
 	data->argv.type = NULL;
+	data->argv.pipe_fd = NULL;
 	data->tmp_file = NULL;
 	init_envp(data, envp);
-	init_tmp(data);
 	return (data);
 }

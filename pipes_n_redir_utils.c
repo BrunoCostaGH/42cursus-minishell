@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 23:23:46 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:42:15 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ static void	clear_argv(t_data *data, int id)
 	while (data->argv.args[i][++k])
 		data->argv.args[i][k - 1] = data->argv.args[i][k];
 	data->argv.args[i][k - 1] = 0;
-	if (!data->argv.args[i][0])
+	while ((i >= 0 && data->argv.args[i] && !data->argv.args[i][0]) || \
+	(--i >= 0 && data->argv.args[i] && !data->argv.args[i][0]))
 	{
-		free(data->argv.args[i]);
+		if (data->argv.args[i])
+			free(data->argv.args[i]);
 		data->argv.args[i] = 0;
 		while (data->argv.args[++i])
 			data->argv.args[i - 1] = data->argv.args[i];
@@ -35,28 +37,19 @@ static void	clear_argv(t_data *data, int id)
 		i = id - 1;
 		while (data->argv.type[++i])
 			data->argv.type[i - 1] = data->argv.type[i];
-		data->argv.type[i - 1] = 0;
+		data->argv.type[--i] = 0;
 	}
 }
 
 static void	open_file(t_data *data, char *file, int oflag, int *fd)
 {
-	if (!*fd)
+	if (*fd)
+		close(*fd);
+	*fd = open(file, oflag, S_IRWXU);
+	if (*fd == -1)
 	{
-		*fd = open(file, oflag, S_IRWXU);
-		if (*fd == -1)
-		{
-			perror("Error");
-			data->exit_status = 1;
-		}
-	}
-	else
-	{
-		if (open(file, oflag, S_IRWXU) == -1)
-		{
-			perror("Error");
-			data->exit_status = 1;
-		}
+		perror("Error");
+		data->exit_status = 1;
 	}
 }
 
@@ -64,8 +57,8 @@ int	get_fd_out(t_data *data, int *fd)
 {
 	int	id;
 
-	id = group_count(data->prompt) - 2;
-	while (id >= 0)
+	id = 0;
+	while (data->argv.type[id])
 	{
 		if (data->argv.type[id] == REDR_OUTPUT)
 		{
@@ -81,7 +74,7 @@ int	get_fd_out(t_data *data, int *fd)
 			clear_argv(data, id + 1);
 			continue ;
 		}
-		id--;
+		id++;
 	}
 	return (0);
 }

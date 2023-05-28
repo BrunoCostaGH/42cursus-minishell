@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/27 13:51:51 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:49:50 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ static void	temp_clear(t_data *data)
 {
 	if (access(data->tmp_file, F_OK) == 0)
 	{
-		if (data->prompt)
-			free(data->prompt);
 		argv_clear(data);
 		data->prompt = ft_strjoin("rm ", data->tmp_file);
 		set_argv(data);
@@ -62,6 +60,11 @@ void	argv_clear(t_data *data)
 	int	id;
 
 	id = 0;
+	if (data->prompt)
+	{
+		free(data->prompt);
+		data->prompt = 0;
+	}
 	if (!data->argv.args)
 		return ;
 	while (data->argv.args[id])
@@ -73,6 +76,8 @@ void	argv_clear(t_data *data)
 		free(data->argv.type);
 		data->argv.type = 0;
 	}
+	if (data->argv.pipe_fd)
+		free_darr((void **)data->argv.pipe_fd);
 }
 
 void	shell_exit(t_data *data, char **argv)
@@ -88,8 +93,6 @@ void	shell_exit(t_data *data, char **argv)
 	rl_clear_history();
 	if (data->tmp_file)
 		temp_clear(data);
-	if (data->prompt)
-		free(data->prompt);
 	argv_clear(data);
 	envp_clear(data);
 	free(data);
