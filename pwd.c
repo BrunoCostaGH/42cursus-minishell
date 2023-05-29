@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:32:12 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/21 15:30:57 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 18:25:13 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	pwd(t_data *data)
 	char	*path;
 
 	path = getcwd(NULL, 0);
+	data->exit_status = 0;
 	if (path == NULL)
 	{
 		perror("Error");
@@ -25,5 +26,4 @@ void	pwd(t_data *data)
 	}
 	printf("%s\n", path);
 	free(path);
-	data->exit_status = 0;
 }

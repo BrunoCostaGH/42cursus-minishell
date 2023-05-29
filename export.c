@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/27 12:00:07 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 18:23:37 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	check_argv(t_data *data, char *arg, int initial)
 		return (1);
 	}
 	else if ((initial == TRUE && !*arg) || initial == FALSE)
-		if (check_identifier(data, ft_strdup("export"), arg))
+		if (check_identifier(data, "export", arg))
 			return (1);
 	return (0);
 }

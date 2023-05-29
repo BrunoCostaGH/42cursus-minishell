@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:10:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/26 23:25:25 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 18:22:13 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	change_dir(t_data *data, char **argv)
 		return ;
 	}
 	path = argv[1];
+	data->exit_status = 0;
 	if (!path || !ft_strncmp(path, "~", ft_strlen(path)))
 		path = get_env_var(data, "HOME");
 	old_path = get_env_var(data, "PWD");
@@ -47,6 +48,7 @@ void	change_dir(t_data *data, char **argv)
 		data->exit_status = 1;
 		return ;
 	}
-	update_env(data, old_path, getcwd(NULL, 0));
-	data->exit_status = 0;
+	path = getcwd(NULL, 0);
+	update_env(data, old_path, path);
+	free(path);
 }

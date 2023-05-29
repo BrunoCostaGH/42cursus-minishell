@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/22 17:28:24 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 18:21:57 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ void	unset(t_data *data, char **argv)
 	int		index_env;
 
 	index_argv = 0;
+	data->exit_status = 0;
 	while (argv[++index_argv])
 	{
 		index_env = 0;
-		if (check_identifier(data, ft_strdup(argv[0]), argv[index_argv]))
+		if (check_identifier(data, argv[0], argv[index_argv]))
 			continue ;
 		while (data->envp.envp[index_env] && \
 		ft_strncmp(data->envp.envp[index_env][0], argv[index_argv], \
@@ -48,7 +49,6 @@ void	unset(t_data *data, char **argv)
 		handle_error(data, argv[0], 0);
 		return ;
 	}
-	data->exit_status = 0;
 }
 
 char	*get_env_var(t_data *data, const char *var_name)
@@ -71,6 +71,7 @@ void	env(t_data *data, char **argv)
 	int	i;
 
 	i = 0;
+	data->exit_status = 0;
 	if (!data->envp.envp || argv[1])
 	{
 		data->exit_status = 1;
@@ -82,5 +83,4 @@ void	env(t_data *data, char **argv)
 			printf("%s=%s\n", data->envp.envp[i][0], data->envp.envp[i][1]);
 		i++;
 	}
-	data->exit_status = 0;
 }

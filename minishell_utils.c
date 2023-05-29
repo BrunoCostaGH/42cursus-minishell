@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:28:04 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 15:27:25 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 15:00:34 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	check_identifier(t_data *data, char *command, char *arg)
 {
 	int		i;
 	char	*temp;
+	char	*comm;
 
 	if (!arg || !*arg)
 	{
@@ -46,11 +47,10 @@ int	check_identifier(t_data *data, char *command, char *arg)
 		if (ft_isdigit(arg[0]) || !(ft_isalnum(arg[i]) || arg[i] == '_'))
 		{
 			temp = ft_strjoin(command, ": ");
-			free(command);
-			command = ft_strjoin(temp, arg);
+			comm = ft_strjoin(temp, arg);
 			free(temp);
-			handle_error(data, command, 2);
-			free(command);
+			handle_error(data, comm, 2);
+			free(comm);
 			return (1);
 		}
 	}
