@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/28 22:49:50 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:35:39 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	argv_clear(t_data *data)
 	}
 	if (data->argv.pipe_fd)
 		free_darr((void **)data->argv.pipe_fd);
+	if (data->file_io)
+		free(data->file_io);
 }
 
 void	shell_exit(t_data *data, char **argv)

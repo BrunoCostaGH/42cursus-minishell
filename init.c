@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/28 21:43:56 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:20:24 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ void	init_pipe_fd(t_data *data)
 {
 	int	i;
 
-	i = len_darr((void **)data->argv.type);
-	data->argv.pipe_fd = ft_calloc(i + 1, sizeof(int *));
-	if (!data->argv.pipe_fd)
+	i = len_darr((void **)data->argv.type) + 1;
+	data->argv.pipe_fd = ft_calloc(i, sizeof(int *));
+	data->file_io = ft_calloc(2 + 1, sizeof(int));
+	if (!data->argv.pipe_fd || !data->file_io)
 		return ;
 	while (i--)
 	{

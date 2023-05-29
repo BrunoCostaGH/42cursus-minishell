@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/29 18:49:22 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:38:51 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,14 @@ void	close_pipes(int **pipe_fd, int id, int len)
 	}
 }
 
-void	here_doc(t_data *data, int *fd, int id)
+void	here_doc(t_data *data, int id)
 {
 	char	*str;
 
 	init_tmp(data);
-	*fd = open(data->tmp_file, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
-	if (*fd == -1)
+	data->file_io[0] = open(data->tmp_file, O_CREAT | O_RDWR | O_TRUNC, \
+	S_IRWXU);
+	if (data->file_io[0] == -1)
 		handle_error(data, 0, 0);
 	while (1)
 	{
@@ -118,13 +119,13 @@ void	here_doc(t_data *data, int *fd, int id)
 		if (*data->argv.args[id + 1] && !ft_strncmp(data->argv.args[id + 1][0], \
 		str, ft_strlen(data->argv.args[id + 1][0])))
 			break ;
-		write(*fd, str, ft_strlen(str));
-		write(*fd, "\n", 1);
+		write(data->file_io[0], str, ft_strlen(str));
+		write(data->file_io[0], "\n", 1);
 		if (!*data->argv.args[id + 1])
 			break ;
 	}
-	close(*fd);
-	*fd = open(data->tmp_file, O_RDONLY);
-	if (*fd == -1)
+	close(data->file_io[0]);
+	data->file_io[0] = open(data->tmp_file, O_RDONLY);
+	if (data->file_io[0] == -1)
 		handle_error(data, 0, 0);
 }

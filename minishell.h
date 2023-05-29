@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/29 19:05:27 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:39:08 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_data
 {
 	int				interactive;
 	int				exit_status;
+	int				*file_io;
 	char			*prompt;
 	char			*tmp_file;
 	struct s_envp	envp;
@@ -111,13 +112,13 @@ void	set_handle_struct(void);
 void	argv_clear(t_data *data);
 void	init_pipe_fd(t_data *data);
 void	check_variables(t_data *data);
+void	here_doc(t_data *data, int id);
 void	env(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
 void	export(t_data *data, char **argv);
 void	shell_exit(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);
-void	here_doc(t_data *data, int *fd, int id);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
