@@ -41,16 +41,16 @@ static void	clear_argv(t_data *data, int id)
 	}
 }
 
-static void	open_file(t_data *data, char *file, int oflag, int *fd)
+static void	open_file(t_data *data, char *file, int oflag, int *fd_out)
 {
-	if (*fd)
-		close(*fd);
-	*fd = open(file, oflag, S_IRWXU);
-	if (*fd == -1)
+	if (*fd_out)
+		close(*fd_out);
+	*fd_out = open(file, oflag, S_IRWXU);
+	if (*fd_out == -1)
 		handle_error(data, 0, 0);
 }
 
-int	get_fd_out(t_data *data, int *fd)
+int	get_fd_out(t_data *data, int *fd_out)
 {
 	int	id;
 
@@ -60,14 +60,14 @@ int	get_fd_out(t_data *data, int *fd)
 		if (data->argv.type[id] == REDR_OUTPUT)
 		{
 			open_file(data, data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
-			O_TRUNC, fd);
+			O_TRUNC, fd_out);
 			clear_argv(data, id + 1);
 			continue ;
 		}
 		else if (data->argv.type[id] == REDR_APPEND)
 		{
 			open_file(data, data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
-			O_APPEND, fd);
+			O_APPEND, fd_out);
 			clear_argv(data, id + 1);
 			continue ;
 		}

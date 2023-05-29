@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/28 21:13:19 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:47:12 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	set_error_status(t_data *data, char **argv)
 {
 	if ((data->exit_status >> 7) & 0x01)
-		write(2, "Quit (core dump)\n", 17);
+		write(2, "minishell: Quit (core dump)\n", 28);
 	else if (argv && access(argv[0], F_OK))
 	{
 		write(2, "command not found: ", 19);

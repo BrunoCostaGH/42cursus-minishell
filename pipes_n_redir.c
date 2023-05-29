@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/29 19:08:10 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:34:43 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,68 +35,59 @@ static void	set_input_file(t_data *data, int **pipe_fd, int *fd_in, int *id)
 		dup2(pipe_fd[*id - 1][0], STDIN_FILENO);
 }
 
-static void	set_output_file(t_data *data, int **pipe_fd, int *fd_out, int *id)
+static void	run_token_logic(t_data *data, int **pipe_fd, int *fd, int *id)
 {
+	data->exit_status = 0;
+	set_input_file(data, pipe_fd, &fd[0], &*id);
 	if (data->argv.type[*id] == PIPE)
 		dup2(pipe_fd[*id][1], STDOUT_FILENO);
-	else if (fd_out)
-		dup2(*fd_out, STDOUT_FILENO);
+	else if (fd[1])
+		dup2(fd[1], STDOUT_FILENO);
+	close_pipes(pipe_fd, *id, 1);
+	if (id > 0 && data->argv.type[*id - 1] == REDR_DELIM)
+		find_command(data, data->argv.args[*id - 1]);
+	else
+		find_command(data, data->argv.args[*id]);
+	if (fd[0])
+		close(fd[0]);
+	shell_exit(data, 0);
 }
 
-int	create_pipes(t_data *data, int **pipe_fd, int *pid)
+static void	run_token_logic_chil(t_data *data, int **pipe_fd, int *fd, int *pid)
 {
-	int		id;
-	int		fd_in;
-	int		fd_out;
+	int	id;
 
 	id = 0;
-	fd_in = 0;
-	fd_out = 0;
-	if (get_fd_out(data, &fd_out) == 1)
+	while (data->argv.args[++id])
+	{
+		if (data->argv.type[id - 1] != PIPE)
+			continue ;
+		if (data->argv.type[id] == PIPE)
+			pipe(pipe_fd[id]);
+		*pid = fork();
+		if (*pid == 0)
+			run_token_logic(data, pipe_fd, fd, &id);
+	}
+}
+
+int	create_token_logic(t_data *data, int **pipe_fd, int *pid)
+{
+	int	id;
+	int	fd[2];
+
+	id = 0;
+	fd[0] = 0;
+	fd[1] = 0;
+	if (get_fd_out(data, &fd[1]))
 		return (1);
 	pipe(pipe_fd[id]);
 	*pid = fork();
 	if (*pid == 0)
-	{
-		data->exit_status = 0;
-		set_input_file(data, pipe_fd, &fd_in, &id);
-		set_output_file(data, pipe_fd, &fd_out, &id);
-		close_pipes(pipe_fd, id, 1);
-		if (id > 0 && data->argv.type[id - 1] == REDR_DELIM)
-			find_command(data, data->argv.args[id - 1]);
-		else
-			find_command(data, data->argv.args[id]);
-		if (fd_in)
-			close(fd_in);
-		shell_exit(data, 0);
-	}
+		run_token_logic(data, pipe_fd, fd, &id);
 	else
-	{
-		while (data->argv.args[++id])
-		{
-			if (data->argv.type[id - 1] != PIPE)
-				continue ;
-			if (data->argv.type[id] == PIPE)
-				pipe(pipe_fd[id]);
-			*pid = fork();
-			if (*pid == 0)
-			{
-				data->exit_status = 0;
-				set_input_file(data, pipe_fd, &fd_in, &id);
-				set_output_file(data, pipe_fd, &fd_out, &id);
-				close_pipes(pipe_fd, id, 1);
-				if (data->argv.type[id - 1] == REDR_DELIM)
-					find_command(data, data->argv.args[id - 1]);
-				else
-					find_command(data, data->argv.args[id]);
-				if (fd_in)
-					close(fd_in);
-				shell_exit(data, 0);
-			}
-		}
-	}
-	if (fd_out)
-		close(fd_out);
+		run_token_logic_chil(data, pipe_fd, fd, pid);
+	if (fd[1])
+		close(fd[1]);
 	return (0);
 }
 
@@ -110,7 +101,7 @@ int	check_for_pipes(t_data *data)
 	pipe_amount = len_darr((void **)data->argv.type);
 	if (pipe_amount)
 	{
-		if (create_pipes(data, data->argv.pipe_fd, &pid))
+		if (create_token_logic(data, data->argv.pipe_fd, &pid))
 			return (1);
 		close_pipes(data->argv.pipe_fd, -1, len_darr((void **)data->argv.type));
 		while (waitpid(pid, &data->exit_status, WUNTRACED) != -1)
