@@ -18,10 +18,10 @@ static int	check_argv(t_data *data, char **argv)
 
 	i = 0;
 	if (argv[1] && argv[2])
-		return (handle_error(data, argv[0], 1));
+		return (handle_error(data, argv[0], 2));
 	while (argv[1] && argv[1][i])
 		if (ft_isalpha(argv[1][i++]))
-			return (handle_error(data, argv[0], 3));
+			return (handle_error(data, argv[0], 4));
 	if (!argv[1])
 		printf("exit\n");
 	return (0);

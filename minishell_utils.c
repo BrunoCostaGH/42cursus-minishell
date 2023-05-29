@@ -37,7 +37,7 @@ int	check_identifier(t_data *data, char *command, char *arg)
 	if (!arg || !*arg)
 	{
 		temp = ft_strjoin(command, ": ");
-		handle_error(data, temp, 2);
+		handle_error(data, temp, 3);
 		free(temp);
 		return (1);
 	}
@@ -49,7 +49,7 @@ int	check_identifier(t_data *data, char *command, char *arg)
 			temp = ft_strjoin(command, ": ");
 			comm = ft_strjoin(temp, arg);
 			free(temp);
-			handle_error(data, comm, 2);
+			handle_error(data, comm, 3);
 			free(comm);
 			return (1);
 		}

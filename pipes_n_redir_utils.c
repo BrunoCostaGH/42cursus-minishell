@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/28 22:42:15 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 18:49:22 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ static void	open_file(t_data *data, char *file, int oflag, int *fd)
 		close(*fd);
 	*fd = open(file, oflag, S_IRWXU);
 	if (*fd == -1)
-	{
-		perror("Error");
-		data->exit_status = 1;
-	}
+		handle_error(data, 0, 0);
 }
 
 int	get_fd_out(t_data *data, int *fd)
@@ -77,4 +74,57 @@ int	get_fd_out(t_data *data, int *fd)
 		id++;
 	}
 	return (0);
+}
+
+void	close_pipes(int **pipe_fd, int id, int len)
+{
+	if (id == -1)
+	{
+		while (++id != len)
+		{
+			if (pipe_fd[id])
+			{
+				close(pipe_fd[id][0]);
+				close(pipe_fd[id][1]);
+			}
+		}
+	}
+	else
+	{
+		(void)len;
+		while (id >= 0)
+		{
+			if (pipe_fd[id])
+			{
+				close(pipe_fd[id][0]);
+				close(pipe_fd[id][1]);
+			}
+			id--;
+		}
+	}
+}
+
+void	here_doc(t_data *data, int *fd, int id)
+{
+	char	*str;
+
+	init_tmp(data);
+	*fd = open(data->tmp_file, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
+	if (*fd == -1)
+		handle_error(data, 0, 0);
+	while (1)
+	{
+		str = readline("heredoc> ");
+		if (*data->argv.args[id + 1] && !ft_strncmp(data->argv.args[id + 1][0], \
+		str, ft_strlen(data->argv.args[id + 1][0])))
+			break ;
+		write(*fd, str, ft_strlen(str));
+		write(*fd, "\n", 1);
+		if (!*data->argv.args[id + 1])
+			break ;
+	}
+	close(*fd);
+	*fd = open(data->tmp_file, O_RDONLY);
+	if (*fd == -1)
+		handle_error(data, 0, 0);
 }

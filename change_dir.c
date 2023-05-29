@@ -34,7 +34,7 @@ void	change_dir(t_data *data, char **argv)
 
 	if (argv[1] && argv[2])
 	{
-		handle_error(data, argv[0], 1);
+		handle_error(data, argv[0], 2);
 		return ;
 	}
 	path = argv[1];
@@ -44,8 +44,7 @@ void	change_dir(t_data *data, char **argv)
 	old_path = get_env_var(data, "PWD");
 	if (chdir(path) == -1)
 	{
-		perror("Error");
-		data->exit_status = 1;
+		handle_error(data, 0, 0);
 		return ;
 	}
 	path = getcwd(NULL, 0);

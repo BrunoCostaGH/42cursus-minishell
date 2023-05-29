@@ -85,9 +85,9 @@ void	set_argv(t_data *data)
 		(data->argv.type[id - 1] == PIPE && !data->argv.args[id - 1][0]))
 		{
 			if (data->argv.type[id])
-				handle_error(data, get_token(data, id), 4);
+				handle_error(data, get_token(data, id), 5);
 			else
-				handle_error(data, get_token(data, id - 1), 4);
+				handle_error(data, get_token(data, id - 1), 5);
 			return ;
 		}
 	}

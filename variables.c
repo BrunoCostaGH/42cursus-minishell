@@ -59,10 +59,8 @@ static int	set_env_var(t_data *data)
 	temp = ft_strnstr(data->prompt, "$", ft_strlen(data->prompt));
 	k = 0;
 	while (temp[++k])
-	{
 		if (!(ft_isalnum(temp[k]) || temp[k] == '_'))
 			break ;
-	}
 	if (k == 1)
 		return (1);
 	var_name = ft_calloc(k + 1, sizeof(char));
