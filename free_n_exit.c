@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/30 11:03:53 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:49:33 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ static int	check_argv(t_data *data, char **argv)
 	while (argv[1] && argv[1][i])
 		if (ft_isalpha(argv[1][i++]))
 			return (handle_error(data, argv[0], 4));
-	if (!argv[1])
-		printf("exit\n");
 	return (0);
 }
 
@@ -31,7 +29,7 @@ static void	temp_clear(t_data *data)
 {
 	if (access(data->tmp_file, F_OK) == 0)
 	{
-		argv_clear(data);
+		clear_argv(data);
 		data->prompt = ft_strjoin("rm ", data->tmp_file);
 		set_argv(data);
 		find_command(data, data->argv.args[0]);
@@ -55,7 +53,7 @@ static void	envp_clear(t_data *data)
 		free_darr((void **) data->envp.exec_envp);
 }
 
-void	argv_clear(t_data *data)
+void	clear_argv(t_data *data)
 {
 	int	id;
 
@@ -78,7 +76,7 @@ void	argv_clear(t_data *data)
 	}
 }
 
-void	shell_exit(t_data *data, char **argv)
+void	exit_shell(t_data *data, char **argv)
 {
 	int	exit_status;
 
@@ -93,8 +91,9 @@ void	shell_exit(t_data *data, char **argv)
 		free(data->file_io);
 	if (data->tmp_file)
 		temp_clear(data);
-	argv_clear(data);
+	clear_argv(data);
 	envp_clear(data);
 	free(data);
+	printf("exit\n");
 	exit(exit_status);
 }

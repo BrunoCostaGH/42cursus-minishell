@@ -64,7 +64,7 @@ char	***duplicate_envp(t_data *data, int len)
 	char	***temp_envp;
 
 	i = 0;
-	temp_envp = ft_calloc(len + len_darr((void **)data->envp.envp) + 1, \
+	temp_envp = ft_calloc(len + darr_len((void **) data->envp.envp) + 1, \
 	sizeof(char **));
 	if (!temp_envp)
 		return (0);
