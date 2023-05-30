@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:28:04 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/29 15:00:34 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/30 11:25:34 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,25 @@ int	check_identifier(t_data *data, char *command, char *arg)
 	return (0);
 }
 
+int	len_iarr(const int *arr)
+{
+	int	i;
+
+	i = 0;
+	if (arr)
+		while (arr[i])
+			i++;
+	return (i);
+}
+
 int	len_darr(void **arr)
 {
 	int	i;
 
 	i = 0;
 	if (arr)
-	{
 		while (arr[i])
 			i++;
-	}
 	return (i);
 }
 

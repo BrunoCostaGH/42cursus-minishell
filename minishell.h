@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/29 20:39:08 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/30 11:26:02 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_envp
 typedef struct s_args
 {
 	int		*type;
-	int		**pipe_fd;
 	char	***args;
 }	t_args;
 
@@ -87,6 +86,7 @@ typedef struct s_data
 }	t_data;
 
 int		len_darr(void **arr);
+int		len_iarr(const int *arr);
 int		check_for_pipes(t_data *data);
 int		char_count(const char *prompt);
 int		group_count(const char *prompt);
@@ -110,7 +110,6 @@ void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	argv_clear(t_data *data);
-void	init_pipe_fd(t_data *data);
 void	check_variables(t_data *data);
 void	here_doc(t_data *data, int id);
 void	env(t_data *data, char **argv);
@@ -122,7 +121,7 @@ void	change_dir(t_data *data, char **argv);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
-void	close_pipes(int **pipe_fd, int id, int len);
+void	close_pipes(int **pipe_fd, int id);
 void	set_error_status(t_data *data, char **argv);
 
 void	*init_struct(char **envp);

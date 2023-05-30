@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/28 23:04:54 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/30 11:03:07 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	set_argv(t_data *data)
 	if (!data->argv.args || !data->argv.type)
 		return ;
 	set_result(data, prompt, data->argv.args);
-	init_pipe_fd(data);
 	while (data->argv.type[id++])
 	{
 		if ((!data->argv.args[id] || !data->argv.args[id][0]) || \
