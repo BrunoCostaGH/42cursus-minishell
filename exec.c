@@ -6,22 +6,23 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/22 14:54:50 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:47:12 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	set_error_status(t_data *data, char **argv)
+void	set_error_status(t_data *data, char **argv)
 {
 	if ((data->exit_status >> 7) & 0x01)
-		write(2, "Quit (core dump)\n", 17);
-	else if (access(argv[0], F_OK))
+		write(2, "minishell: Quit (core dump)\n", 28);
+	else if (argv && access(argv[0], F_OK))
 	{
 		write(2, "command not found: ", 19);
 		write(2, argv[0], ft_strlen(argv[0]));
 		write(2, "\n", 1);
 		data->exit_status = 127;
+		return ;
 	}
 	data->exit_status >>= 8;
 }
@@ -95,14 +96,13 @@ void	run_executable(t_data *data, char **argv)
 			if (execve(argv[0], argv, data->envp.exec_envp) == -1)
 				if (errno != 2)
 					perror("Error");
-			exit(1);
+			data->exit_status = 1;
+			shell_exit(data, 0);
 		}
 		else
 		{
-			data->interactive = FALSE;
 			while (waitpid(pid, &data->exit_status, WUNTRACED) == -1)
 				;
-			data->interactive = TRUE;
 			set_error_status(data, argv);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/21 15:29:40 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:46:54 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,15 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	while (1)
 	{
+		data->interactive = TRUE;
 		data->prompt = readline("\001\e[1;32m\002(Minishell)$ \001\e[0m\002");
+		data->interactive = FALSE;
 		if (data->prompt == NULL)
-		{
-			printf("exit\n");
 			data->prompt = ft_strdup("exit");
-		}
 		if (data->prompt && *data->prompt)
 			add_history(data->prompt);
 		set_argv(data);
-		if (check_for_pipes(data))
-			continue ;
-		if (data->argv.args)
+		if (!check_for_pipes(data) && data->argv.args)
 			find_command(data, *data->argv.args);
 		argv_clear(data);
 	}

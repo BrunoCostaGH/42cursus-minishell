@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/22 17:03:02 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/30 11:03:07 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,14 @@ static void	set_result(t_data *data, const char *prompt, char ***result)
 		{
 			result[++id] = ft_calloc(string_count(prompt) + 1, sizeof(char *));
 			if (!result[id])
-				exit(1);
+				return ;
 			continue ;
 		}
 		if (*prompt && *prompt != ' ')
 		{
 			result[id][i] = ft_calloc(char_count(prompt) + 1, sizeof(char));
 			if (!result[id][i])
-				exit(1);
+				return ;
 			prompt += special_treatment(prompt, result[id], i++);
 		}
 	}
@@ -66,14 +66,28 @@ static void	set_result(t_data *data, const char *prompt, char ***result)
 
 void	set_argv(t_data *data)
 {
+	int			id;
 	const char	*prompt;
 
+	id = 0;
 	check_variables(data);
 	prompt = data->prompt;
 	data->argv.args = ft_calloc(group_count(prompt) + 1, sizeof(char **));
 	data->argv.args[0] = ft_calloc(string_count(prompt) + 1, sizeof(char *));
-	data->argv.type = ft_calloc(group_count(prompt) + 1, sizeof(int));
+	data->argv.type = ft_calloc(group_count(prompt) + 2, sizeof(int));
 	if (!data->argv.args || !data->argv.type)
 		return ;
 	set_result(data, prompt, data->argv.args);
+	while (data->argv.type[id++])
+	{
+		if ((!data->argv.args[id] || !data->argv.args[id][0]) || \
+		(data->argv.type[id - 1] == PIPE && !data->argv.args[id - 1][0]))
+		{
+			if (data->argv.type[id])
+				handle_error(data, get_token(data, id), 5);
+			else
+				handle_error(data, get_token(data, id - 1), 5);
+			return ;
+		}
+	}
 }

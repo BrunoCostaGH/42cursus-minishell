@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/22 17:14:08 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/29 18:23:37 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	check_argv(t_data *data, char *arg, int initial)
 		return (1);
 	}
 	else if ((initial == TRUE && !*arg) || initial == FALSE)
-		if (check_identifier(data, ft_strdup("export"), arg))
+		if (check_identifier(data, "export", arg))
 			return (1);
 	return (0);
 }
@@ -50,7 +50,9 @@ static void	do_export(t_data *data, char ***temp_envp, char **argv)
 			free_darr((void **)temp);
 			continue ;
 		}
-		temp_envp[index_env] = ft_calloc(2, sizeof(char *));
+		temp_envp[index_env] = ft_calloc(2 + 1, sizeof(char *));
+		if (!temp_envp[index_env])
+			return ;
 		temp_envp[index_env][0] = ft_strdup(temp[0]);
 		if (temp[1])
 			temp_envp[index_env][1] = ft_strdup(temp[1]);
@@ -67,6 +69,7 @@ void	export(t_data *data, char **argv)
 	if (check_argv(data, argv[1], TRUE))
 		return ;
 	index_argv = len_darr((void **)argv) - check_envp(data, argv);
+	data->exit_status = 0;
 	if (!index_argv)
 		return ;
 	temp_envp = duplicate_envp(data, index_argv);

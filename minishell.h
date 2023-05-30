@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/23 19:08:20 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/30 11:26:02 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_data
 {
 	int				interactive;
 	int				exit_status;
+	int				*file_io;
 	char			*prompt;
 	char			*tmp_file;
 	struct s_envp	envp;
@@ -85,10 +86,12 @@ typedef struct s_data
 }	t_data;
 
 int		len_darr(void **arr);
+int		len_iarr(const int *arr);
 int		check_for_pipes(t_data *data);
 int		char_count(const char *prompt);
 int		group_count(const char *prompt);
 int		string_count(const char *prompt);
+int		get_fd_out(t_data *data, int *fd);
 int		check_envp(t_data *data, char **argv);
 int		handle_error(t_data *data, char *command, int error);
 int		handle_quote(const char *prompt, int *index, int *quote);
@@ -96,17 +99,19 @@ int		check_identifier(t_data *data, char *command, char *arg);
 int		check_for_special_char(t_data *data, const char *prompt, int *i, \
 int id);
 
+char	*get_token(t_data *data, int id);
 char	*get_env_var(t_data *data, const char *var_name);
 
 char	***duplicate_envp(t_data *data, int len);
 
-void	shell_error(void);
 void	pwd(t_data *data);
 void	free_darr(void **arr);
+void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	argv_clear(t_data *data);
 void	check_variables(t_data *data);
+void	here_doc(t_data *data, int id);
 void	env(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
@@ -116,6 +121,8 @@ void	change_dir(t_data *data, char **argv);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
+void	close_pipes(int **pipe_fd, int id);
+void	set_error_status(t_data *data, char **argv);
 
 void	*init_struct(char **envp);
 
