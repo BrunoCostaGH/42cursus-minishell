@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC=cc
-CFLAGS=-Wall -Werror -Wextra -g
+CFLAGS=-Wall -Werror -Wextra
 DEPS=libft/libft.a
 
 SRCS=main.c free_n_exit.c exec.c pwd.c change_dir.c args.c args_utils.c \
