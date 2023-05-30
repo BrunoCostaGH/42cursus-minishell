@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	clear_argv(t_data *data, int id)
+static void	clear_inputs(t_data *data, int id)
 {
 	int	i;
 	int	k;
@@ -61,14 +61,14 @@ int	get_fd_out(t_data *data, int *fd_out)
 		{
 			open_file(data, data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
 			O_TRUNC, fd_out);
-			clear_argv(data, id + 1);
+			clear_inputs(data, id + 1);
 			continue ;
 		}
 		else if (data->argv.type[id] == REDR_APPEND)
 		{
 			open_file(data, data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
 			O_APPEND, fd_out);
-			clear_argv(data, id + 1);
+			clear_inputs(data, id + 1);
 			continue ;
 		}
 		id++;

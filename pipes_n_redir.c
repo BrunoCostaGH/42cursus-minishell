@@ -26,7 +26,7 @@ static void	set_input_file(t_data *data, int **pipe_fd, int *id)
 		{
 			handle_error(data, 0, 0);
 			free_darr((void **)pipe_fd);
-			shell_exit(data, 0);
+			exit_shell(data, 0);
 		}
 		dup2(data->file_io[0], STDIN_FILENO);
 	}
@@ -52,7 +52,7 @@ static void	run_token_logic(t_data *data, int **pipe_fd, int *id)
 	if (data->file_io[0])
 		close(data->file_io[0]);
 	free_darr((void **)pipe_fd);
-	shell_exit(data, 0);
+	exit_shell(data, 0);
 }
 
 static void	run_token_logic_chil(t_data *data, int **pipe_fd, int *pid)
@@ -98,7 +98,7 @@ int	create_token_logic(t_data *data, int **pipe_fd, int *pid)
 	return (0);
 }
 
-int	check_for_pipes(t_data *data)
+int	check_tokens(t_data *data)
 {
 	int		pid;
 	int		pipe_amount;
@@ -106,7 +106,7 @@ int	check_for_pipes(t_data *data)
 
 	if (!data->argv.args)
 		return (0);
-	pipe_amount = len_iarr(data->argv.type);
+	pipe_amount = iarr_len(data->argv.type);
 	if (pipe_amount)
 	{
 		pipe_fd = ft_calloc(pipe_amount + 2, sizeof(int *));
@@ -114,7 +114,7 @@ int	check_for_pipes(t_data *data)
 			return (0);
 		if (create_token_logic(data, pipe_fd, &pid))
 			return (1);
-		close_pipes(pipe_fd, len_iarr(data->argv.type));
+		close_pipes(pipe_fd, iarr_len(data->argv.type));
 		while (waitpid(pid, &data->exit_status, WUNTRACED) != -1)
 			;
 		set_error_status(data, 0);

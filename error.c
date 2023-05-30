@@ -25,7 +25,7 @@ int	handle_error2(t_data *data, char *command, int error)
 		write(2, &"Error: syntax error near unexpected token `", 43);
 		write(2, command, ft_strlen(command));
 		write(2, &"'\n", 2);
-		argv_clear(data);
+		clear_argv(data);
 		data->exit_status = 2;
 	}
 	return (data->exit_status);

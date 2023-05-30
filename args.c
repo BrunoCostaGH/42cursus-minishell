@@ -49,14 +49,14 @@ static void	set_result(t_data *data, const char *prompt, char ***result)
 		prompt += check_for_special_char(data, prompt, &i, id);
 		if (data->argv.type[id])
 		{
-			result[++id] = ft_calloc(string_count(prompt) + 1, sizeof(char *));
+			result[++id] = ft_calloc(count_string(prompt) + 1, sizeof(char *));
 			if (!result[id])
 				return ;
 			continue ;
 		}
 		if (*prompt && *prompt != ' ')
 		{
-			result[id][i] = ft_calloc(char_count(prompt) + 1, sizeof(char));
+			result[id][i] = ft_calloc(count_char(prompt) + 1, sizeof(char));
 			if (!result[id][i])
 				return ;
 			prompt += special_treatment(prompt, result[id], i++);
@@ -72,9 +72,9 @@ void	set_argv(t_data *data)
 	id = 0;
 	check_variables(data);
 	prompt = data->prompt;
-	data->argv.args = ft_calloc(group_count(prompt) + 1, sizeof(char **));
-	data->argv.args[0] = ft_calloc(string_count(prompt) + 1, sizeof(char *));
-	data->argv.type = ft_calloc(group_count(prompt) + 2, sizeof(int));
+	data->argv.args = ft_calloc(count_group(prompt) + 1, sizeof(char **));
+	data->argv.args[0] = ft_calloc(count_string(prompt) + 1, sizeof(char *));
+	data->argv.type = ft_calloc(count_group(prompt) + 2, sizeof(int));
 	if (!data->argv.args || !data->argv.type)
 		return ;
 	set_result(data, prompt, data->argv.args);

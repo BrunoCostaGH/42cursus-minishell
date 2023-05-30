@@ -17,7 +17,7 @@ void	find_command(t_data *data, char **argv)
 	if (argv && *argv)
 	{
 		if (!ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
-			shell_exit(data, argv);
+			exit_shell(data, argv);
 		else if (!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
 			change_dir(data, argv);
 		else if (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
@@ -54,8 +54,8 @@ int	main(int ac, char **av, char **envp)
 		if (data->prompt && *data->prompt)
 			add_history(data->prompt);
 		set_argv(data);
-		if (!check_for_pipes(data) && data->argv.args)
+		if (!check_tokens(data) && data->argv.args)
 			find_command(data, *data->argv.args);
-		argv_clear(data);
+		clear_argv(data);
 	}
 }

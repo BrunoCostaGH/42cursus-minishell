@@ -57,7 +57,7 @@ int	check_identifier(t_data *data, char *command, char *arg)
 	return (0);
 }
 
-int	len_iarr(const int *arr)
+int	iarr_len(const int *arr)
 {
 	int	i;
 
@@ -68,7 +68,7 @@ int	len_iarr(const int *arr)
 	return (i);
 }
 
-int	len_darr(void **arr)
+int	darr_len(void **arr)
 {
 	int	i;
 

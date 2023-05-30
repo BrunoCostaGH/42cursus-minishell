@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/30 11:26:02 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:53:30 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,12 @@ typedef struct s_data
 	struct s_args	argv;
 }	t_data;
 
-int		len_darr(void **arr);
-int		len_iarr(const int *arr);
-int		check_for_pipes(t_data *data);
-int		char_count(const char *prompt);
-int		group_count(const char *prompt);
-int		string_count(const char *prompt);
+int		darr_len(void **arr);
+int		iarr_len(const int *arr);
+int		check_tokens(t_data *data);
+int		count_char(const char *prompt);
+int		count_group(const char *prompt);
+int		count_string(const char *prompt);
 int		get_fd_out(t_data *data, int *fd);
 int		check_envp(t_data *data, char **argv);
 int		handle_error(t_data *data, char *command, int error);
@@ -109,14 +109,14 @@ void	free_darr(void **arr);
 void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
-void	argv_clear(t_data *data);
+void	clear_argv(t_data *data);
 void	check_variables(t_data *data);
 void	here_doc(t_data *data, int id);
 void	env(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
 void	export(t_data *data, char **argv);
-void	shell_exit(t_data *data, char **argv);
+void	exit_shell(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);

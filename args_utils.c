@@ -51,7 +51,7 @@ int	check_for_special_char(t_data *data, const char *prompt, int *i, int id)
 	return (0);
 }
 
-int	group_count(const char *prompt)
+int	count_group(const char *prompt)
 {
 	int	i;
 
@@ -72,7 +72,7 @@ int	group_count(const char *prompt)
 	return (++i);
 }
 
-int	string_count(const char *prompt)
+int	count_string(const char *prompt)
 {
 	int	i;
 	int	quote;
@@ -96,7 +96,7 @@ int	string_count(const char *prompt)
 	return (++i);
 }
 
-int	char_count(const char *prompt)
+int	count_char(const char *prompt)
 {
 	int	i;
 	int	quote;

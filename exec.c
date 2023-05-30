@@ -97,7 +97,7 @@ void	run_executable(t_data *data, char **argv)
 				if (errno != 2)
 					perror("Error");
 			data->exit_status = 1;
-			shell_exit(data, 0);
+			exit_shell(data, 0);
 		}
 		else
 		{

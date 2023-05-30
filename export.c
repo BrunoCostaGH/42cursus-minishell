@@ -41,7 +41,7 @@ static void	do_export(t_data *data, char ***temp_envp, char **argv)
 	char	**temp;
 
 	index_argv = 0;
-	index_env = len_darr((void **)temp_envp);
+	index_env = darr_len((void **) temp_envp);
 	while (argv[++index_argv])
 	{
 		temp = ft_split(argv[index_argv], '=');
@@ -68,7 +68,7 @@ void	export(t_data *data, char **argv)
 
 	if (check_argv(data, argv[1], TRUE))
 		return ;
-	index_argv = len_darr((void **)argv) - check_envp(data, argv);
+	index_argv = darr_len((void **) argv) - check_envp(data, argv);
 	data->exit_status = 0;
 	if (!index_argv)
 		return ;
