@@ -4,10 +4,11 @@
 
 The objective of this project is for you to create a simple shell.
 
-![contributors](https://flat.badgen.net/github/contributors/BrunoCostaGH/42cursus-minishell)
-![issues](https://flat.badgen.net/github/issues/BrunoCostaGH/42cursus-minishell)
-![commits](https://flat.badgen.net/github/commits/BrunoCostaGH/42cursus-minishell/master)
-![license](https://flat.badgen.net/github/license/BrunoCostaGH/42cursus-minishell)
+![GitHub](https://img.shields.io/github/license/BrunoCostaGH/42cursus-minishell?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/BrunoCostaGH/42cursus-minishell?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/BrunoCostaGH/42cursus-minishell?style=for-the-badge)
+![GitHub Release Date](https://img.shields.io/github/release-date/BrunoCostaGH/42cursus-minishell?style=for-the-badge)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/BrunoCostaGH/42cursus-minishell?style=for-the-badge)
 
 ## Features
 
