@@ -94,6 +94,7 @@ void	exit_shell(t_data *data, char **argv)
 	clear_argv(data);
 	envp_clear(data);
 	free(data);
-	printf("exit\n");
+	if (argv)
+		printf("exit\n");
 	exit(exit_status);
 }
