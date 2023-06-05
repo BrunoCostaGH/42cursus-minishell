@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/30 11:28:49 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/05 21:50:54 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,10 @@ int	create_token_logic(t_data *data, int **pipe_fd, int *pid)
 	else
 		run_token_logic_chil(data, pipe_fd, pid);
 	if (data->file_io[1])
+	{
 		close(data->file_io[1]);
+		data->file_io[1] = 0;
+	}
 	return (0);
 }
 
