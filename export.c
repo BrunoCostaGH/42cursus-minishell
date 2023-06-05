@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/29 18:23:37 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/05 21:56:32 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static void	do_export(t_data *data, char ***temp_envp, char **argv)
 		temp_envp[index_env][0] = ft_strdup(temp[0]);
 		if (temp[1])
 			temp_envp[index_env][1] = ft_strdup(temp[1]);
+		else if (ft_strchr(argv[index_argv], '='))
+			temp_envp[index_env][1] = ft_calloc(1, sizeof(char));
 		free_darr((void **)temp);
 		index_env++;
 	}
