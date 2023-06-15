@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/05 21:56:32 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/15 13:44:54 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,16 @@ static int	check_argv(t_data *data, char *arg, int initial)
 	index = 0;
 	if (initial == TRUE && !arg)
 	{
-		while (data->envp.envp[++index - 1])
+		data->envp.sorted_envp = ft_calloc(\
+		darr_len((void **)data->envp.envp) + 1, sizeof(char **));
+		if (!data->envp.sorted_envp)
+			return (1);
+		build_sorted_env(data, data->envp.sorted_envp);
+		while (data->envp.sorted_envp[++index - 1])
 		{
-			printf("%s %s", "declare -x", data->envp.envp[index - 1][0]);
-			if (data->envp.envp[index - 1][1])
-				printf("=\"%s\"", data->envp.envp[index - 1][1]);
+			printf("declare -x %s", data->envp.sorted_envp[index - 1][0]);
+			if (data->envp.sorted_envp[index - 1][1])
+				printf("=\"%s\"", data->envp.sorted_envp[index - 1][1]);
 			printf("\n");
 		}
 		return (1);
@@ -70,7 +75,7 @@ void	export(t_data *data, char **argv)
 
 	if (check_argv(data, argv[1], TRUE))
 		return ;
-	index_argv = darr_len((void **) argv) - check_envp(data, argv);
+	index_argv = darr_len((void **)argv) - check_envp(data, argv);
 	data->exit_status = 0;
 	if (!index_argv)
 		return ;

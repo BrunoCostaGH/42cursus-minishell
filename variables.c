@@ -21,7 +21,6 @@ static int	check_var_within_quotes(t_data *data)
 	quote = FALSE;
 	while (data->prompt[i])
 	{
-
 		if (handle_quote(data->prompt + i, &i, &quote))
 			continue ;
 		if (quote == 39 && data->prompt[i] == '$')

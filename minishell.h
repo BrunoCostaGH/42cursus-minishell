@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/05/30 18:53:30 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/15 13:28:15 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_envp
 {
 	char	**exec_envp;
 	char	***envp;
+	char	***sorted_envp;
 }	t_envp;
 
 typedef struct s_args
@@ -116,13 +117,14 @@ void	env(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
 void	export(t_data *data, char **argv);
+void	close_pipes(int **pipe_fd, int id);
 void	exit_shell(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
-void	close_pipes(int **pipe_fd, int id);
 void	set_error_status(t_data *data, char **argv);
+void	build_sorted_env(t_data *data, char ***envp);
 
 void	*init_struct(char **envp);
 
