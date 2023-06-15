@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/29 15:11:47 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/15 11:54:39 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,8 @@ static int	check_var_within_quotes(t_data *data)
 	quote = FALSE;
 	while (data->prompt[i])
 	{
-		if (quote && (data->prompt[i] == quote))
-			quote = FALSE;
-		else if ((data->prompt[i] == 34 || data->prompt[i] == 39) && \
-		ft_strchr(data->prompt + i + 1, data->prompt[i]))
-			quote = (int)data->prompt[i];
+		if (handle_quote(data->prompt + i, &i, &quote))
+			continue ;
 		if (quote == 39 && data->prompt[i] == '$')
 			if ((ft_isalnum(data->prompt[++i]) || data->prompt[i] == '_'))
 				return (TRUE);

@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:14:23 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 23:10:46 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/15 13:52:02 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	set_existing_env(t_data *data, char **argv, int *index, int index_argv)
 		data->envp.envp[*index][1] = 0;
 		if (temp[1])
 			data->envp.envp[*index][1] = ft_strdup(temp[1]);
+		else if (ft_strchr(argv[index_argv], '='))
+			data->envp.envp[*index][1] = ft_calloc(1, sizeof(char));
 		free(argv[index_argv]);
 		*index = index_argv;
 		while (argv[++*index])
@@ -56,6 +58,45 @@ int	check_envp(t_data *data, char **argv)
 		free_darr((void **)temp);
 	}
 	return (amount_edited);
+}
+
+static void	create_slot(char ***envp, int index_slot)
+{
+	int		index_sorted;
+	char	**temp;
+
+	index_sorted = index_slot;
+	while (envp[index_sorted])
+	{
+		temp = envp[index_sorted + 1];
+		envp[index_sorted + 1] = envp[index_slot];
+		envp[index_slot] = temp;
+		index_sorted++;
+	}
+}
+
+void	build_sorted_env(t_data *data, char ***envp)
+{
+	int		index_envp;
+	int		index_sorted;
+
+	index_envp = 0;
+	while (data->envp.envp[index_envp])
+	{
+		index_sorted = 0;
+		while (envp[index_sorted] && \
+		ft_strncmp(envp[index_sorted][0], data->envp.envp[index_envp][0], \
+		ft_strlen(envp[index_sorted][0])) < 0)
+			index_sorted++;
+		create_slot(envp, index_sorted);
+		envp[index_sorted] = ft_calloc(2 + 1, sizeof(char *));
+		if (!envp[index_sorted])
+			return ;
+		envp[index_sorted][0] = ft_strdup(data->envp.envp[index_envp][0]);
+		if (data->envp.envp[index_envp][1])
+			envp[index_sorted][1] = ft_strdup(data->envp.envp[index_envp][1]);
+		index_envp++;
+	}
 }
 
 char	***duplicate_envp(t_data *data, int len)
