@@ -6,40 +6,33 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/05 21:50:54 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/15 20:25:08 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	set_input_file(t_data *data, int **pipe_fd, int *id)
+static void	close_pipes(int **pipe_fd, int id)
 {
-	if (data->argv.type[*id] == REDR_DELIM)
+	while (id >= 0)
 	{
-		here_doc(data, *id++);
-		dup2(data->file_io[0], STDIN_FILENO);
-	}
-	else if (data->argv.type[*id] == REDR_INPUT)
-	{
-		data->file_io[0] = open(data->argv.args[*id + 1][0], O_RDONLY);
-		if (data->file_io[0] == -1)
+		if (pipe_fd[id])
 		{
-			handle_error(data, 0, 0);
-			free_darr((void **)pipe_fd);
-			exit_shell(data, 0);
+			close(pipe_fd[id][0]);
+			close(pipe_fd[id][1]);
 		}
-		dup2(data->file_io[0], STDIN_FILENO);
+		id--;
 	}
-	else if (*id > 1 && data->argv.type[*id - 2] == REDR_DELIM)
-		dup2(pipe_fd[*id - 2][0], STDIN_FILENO);
-	else if (*id > 0 && data->argv.type[*id - 1] == PIPE)
-		dup2(pipe_fd[*id - 1][0], STDIN_FILENO);
 }
 
-static void	run_token_logic(t_data *data, int **pipe_fd, int *id)
+static void	run_token_logic(t_data *data, int **pipe_fd, const int *id)
 {
 	data->exit_status = 0;
-	set_input_file(data, pipe_fd, id);
+	if (get_fd_in(data, pipe_fd) == 0)
+	{
+		if (*id > 0 && data->argv.type[*id - 1] == PIPE)
+			dup2(pipe_fd[*id - 1][0], STDIN_FILENO);
+	}
 	if (data->argv.type[*id] == PIPE)
 		dup2(pipe_fd[*id][1], STDOUT_FILENO);
 	else if (data->file_io[1])

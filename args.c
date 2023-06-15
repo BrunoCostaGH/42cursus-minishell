@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+int	handle_quote(const char *prompt, int *index, int *quote)
+{
+	if (*prompt == *quote)
+		*quote = FALSE;
+	else if ((*prompt == 34 || *prompt == 39) && \
+		ft_strchr(prompt + 1, *prompt) && !*quote)
+		*quote = (int)*prompt;
+	else
+		return (0);
+	if (index)
+		*index = *index + 1;
+	return (1);
+}
+
 static int	special_treatment(const char *prompt, char **result, int index_res)
 {
 	int	i;

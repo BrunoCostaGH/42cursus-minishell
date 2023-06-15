@@ -6,24 +6,59 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:51:41 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 00:25:11 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/15 21:16:20 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_quote(const char *prompt, int *index, int *quote)
+void	regroup_argv(t_data *data)
 {
-	if (*prompt == *quote)
-		*quote = FALSE;
-	else if ((*prompt == 34 || *prompt == 39) && \
-		ft_strchr(prompt + 1, *prompt) && !*quote)
-		*quote = (int)*prompt;
-	else
-		return (0);
-	if (index)
-		*index = *index + 1;
-	return (1);
+	int		i;
+	int		k;
+	int		j;
+	char	**temp;
+
+	i = 0;
+	while (data->argv.args[i + 1])
+	{
+		k = 0;
+		j = 0;
+		if (data->argv.type[i] == REGULAR && \
+		data->argv.args[i + 1] && data->argv.args[i + 1][0])
+		{
+			fprintf(stderr, "[ DEBUG ]\n1\n");
+			temp = ft_calloc((sizeof(data->argv.args[i]) \
+			+ sizeof(data->argv.args[i + 1])) / 8, (sizeof(char *)));
+			if (!temp)
+				return ;
+			fprintf(stderr, "[ DEBUG ]\n2\n");
+			while (data->argv.args[i][k])
+			{
+				temp[k] = data->argv.args[i][k];
+				k++;
+			}
+			fprintf(stderr, "[ DEBUG ]\n3\n");
+			while (data->argv.args[i + 1][j])
+			{
+				temp[k] = data->argv.args[i + 1][j++];
+				k++;
+			}
+			fprintf(stderr, "[ DEBUG ]\n4\n");
+			free(data->argv.args[++i - 1]);
+			data->argv.args[i - 1] = temp;
+			free(data->argv.args[i]);
+			data->argv.args[i] = 0;
+			fprintf(stderr, "[ DEBUG ]\n5\n");
+			while (data->argv.args[++i])
+				data->argv.args[i - 1] = data->argv.args[i];
+			fprintf(stderr, "[ DEBUG ]\n6\n");
+			data->argv.args[i - 1] = 0;
+			fprintf(stderr, "[ DEBUG ]\n7\n");
+			continue ;
+		}
+		i++;
+	}
 }
 
 int	check_for_special_char(t_data *data, const char *prompt, int *i, int id)
