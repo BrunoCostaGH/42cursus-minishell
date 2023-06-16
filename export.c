@@ -6,11 +6,25 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/15 13:44:54 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/16 19:44:14 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	clear_sorted_envp(t_data *data)
+{
+	int	id;
+
+	if (data->envp.sorted_envp)
+	{
+		id = 0;
+		while (data->envp.sorted_envp[id])
+			free_darr((void **)data->envp.sorted_envp[id++]);
+		free(data->envp.sorted_envp);
+		data->envp.sorted_envp = 0;
+	}
+}
 
 static int	check_argv(t_data *data, char *arg, int initial)
 {
@@ -19,6 +33,7 @@ static int	check_argv(t_data *data, char *arg, int initial)
 	index = 0;
 	if (initial == TRUE && !arg)
 	{
+		clear_sorted_envp(data);
 		data->envp.sorted_envp = ft_calloc(\
 		darr_len((void **)data->envp.envp) + 1, sizeof(char **));
 		if (!data->envp.sorted_envp)
@@ -33,7 +48,7 @@ static int	check_argv(t_data *data, char *arg, int initial)
 		}
 		return (1);
 	}
-	else if ((initial == TRUE && !*arg) || initial == FALSE)
+	else if (initial == FALSE)
 		if (check_identifier(data, "export", arg))
 			return (1);
 	return (0);
