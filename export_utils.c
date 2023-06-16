@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:14:23 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/16 20:12:48 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/16 20:47:26 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@ int	set_existing_env(t_data *data, char **argv, int *index, int index_argv)
 			data->envp.envp[*index][1] = ft_strdup(temp[1]);
 		else if (ft_strchr(argv[index_argv], '='))
 			data->envp.envp[*index][1] = ft_calloc(1, sizeof(char));
-		free(argv[index_argv]);
-		*index = index_argv;
-		while (argv[++*index])
-			argv[*index - 1] = argv[*index];
-		argv[--*index] = 0;
 		status = 1;
 	}
 	free_darr((void **)temp);

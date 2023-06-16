@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/16 19:44:14 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/16 20:44:56 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	do_export(t_data *data, char ***temp_envp, char **argv)
 	char	**temp;
 
 	index_argv = 0;
-	index_env = darr_len((void **) temp_envp);
+	index_env = darr_len((void **)temp_envp);
 	while (argv[++index_argv])
 	{
 		temp = ft_split(argv[index_argv], '=');
@@ -86,16 +86,25 @@ static void	do_export(t_data *data, char ***temp_envp, char **argv)
 void	export(t_data *data, char **argv)
 {
 	int		index_argv;
+	int		argv_len;
+	char	*_argv[3];
 	char	***temp_envp;
 
+	index_argv = 0;
 	if (check_argv(data, argv[1], TRUE))
 		return ;
-	index_argv = darr_len((void **)argv) - check_envp(data, argv);
-	data->exit_status = 0;
-	if (!index_argv)
-		return ;
-	temp_envp = duplicate_envp(data, index_argv);
-	do_export(data, temp_envp, argv);
-	free(data->envp.envp);
-	data->envp.envp = temp_envp;
+	while (argv[++index_argv])
+	{
+		_argv[0] = argv[0];
+		_argv[1] = argv[index_argv];
+		_argv[2] = 0;
+		argv_len = 1 - check_envp(data, _argv);
+		data->exit_status = 0;
+		if (!argv_len)
+			continue ;
+		temp_envp = duplicate_envp(data, argv_len);
+		do_export(data, temp_envp, _argv);
+		free(data->envp.envp);
+		data->envp.envp = temp_envp;
+	}
 }
