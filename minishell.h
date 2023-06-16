@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/15 21:05:14 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/16 19:32:24 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
 void	set_error_status(t_data *data, char **argv);
 void	build_sorted_env(t_data *data, char ***envp);
-
 
 void	*init_struct(char **envp);
 
