@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/15 21:05:27 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/16 17:55:57 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,26 @@ static void	clear_token(t_data *data, int id)
 	while (data->argv.args[i][++k])
 		data->argv.args[i][k - 1] = data->argv.args[i][k];
 	data->argv.args[i][k - 1] = 0;
-	while (((i >= 0 && data->argv.args[i] && !data->argv.args[i][0]) || \
-	(--i >= 0 && data->argv.args[i] && !data->argv.args[i][0])) && \
-	(data->argv.type[i] == PIPE || data->argv.type[i] == REGULAR))
+	if ((--i >= 0 && data->argv.args[i] && !data->argv.args[i][0]) || \
+		(++i >= 0 && data->argv.args[i] && !data->argv.args[i][0]))
 	{
-		if (data->argv.args[i])
-			free(data->argv.args[i]);
-		data->argv.args[i] = 0;
+		free_darr((void **)data->argv.args[i]);
 		while (data->argv.args[++i])
 			data->argv.args[i - 1] = data->argv.args[i];
 		data->argv.args[i - 1] = 0;
 		i = id - 1;
 		while (data->argv.type[++i])
 			data->argv.type[i - 1] = data->argv.type[i];
-		data->argv.type[--i] = 0;
+		data->argv.type[i - 1] = 0;
 	}
 }
 
-static void	open_file(t_data *data, char *file, int oflag, int *fd_out)
+static void	open_file(t_data *data, char *file, int oflag, int *fd_io)
 {
-	if (*fd_out)
-		close(*fd_out);
-	*fd_out = open(file, oflag, S_IRWXU);
-	if (*fd_out == -1)
+	if (*fd_io)
+		close(*fd_io);
+	*fd_io = open(file, oflag, S_IRWXU);
+	if (*fd_io == -1)
 		handle_error(data, 0, 0);
 }
 
@@ -56,7 +53,7 @@ int	get_fd_out(t_data *data, int *fd_out)
 	int	id;
 
 	id = 0;
-	while (data->argv.type[id])
+	while (data->argv.type[id] || data->argv.type[id + 1])
 	{
 		if (data->argv.type[id] == REDR_OUTPUT)
 		{
@@ -90,7 +87,7 @@ static void	here_doc(t_data *data, int id)
 	{
 		str = readline("heredoc> ");
 		if (*data->argv.args[id + 1] && !ft_strncmp(data->argv.args[id + 1][0], \
-		str, ft_strlen(data->argv.args[id + 1][0])))
+		str, ft_strlen(data->argv.args[id + 1][0]) + 1))
 			break ;
 		write(data->file_io[0], str, ft_strlen(str));
 		write(data->file_io[0], "\n", 1);
@@ -112,6 +109,9 @@ int	get_fd_in(t_data *data, int **pipe_fd)
 	id = iarr_len(data->argv.type) - 1;
 	while (id >= 0 && data->argv.type[id])
 	{
+		if (id == 0 && (data->argv.type[id] == REGULAR || \
+		data->argv.type[id] == PIPE))
+			break ;
 		if (status == 1 && (data->argv.type[id] == REDR_DELIM || \
 		data->argv.type[id] == REDR_INPUT))
 			clear_token(data, id + 1);

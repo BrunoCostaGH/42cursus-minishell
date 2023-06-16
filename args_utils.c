@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:51:41 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/15 21:16:20 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/16 17:28:27 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,37 +24,33 @@ void	regroup_argv(t_data *data)
 	{
 		k = 0;
 		j = 0;
-		if (data->argv.type[i] == REGULAR && \
-		data->argv.args[i + 1] && data->argv.args[i + 1][0])
+		if (data->argv.type[i] == 0 && data->argv.args[i + 1][0])
 		{
-			fprintf(stderr, "[ DEBUG ]\n1\n");
-			temp = ft_calloc((sizeof(data->argv.args[i]) \
-			+ sizeof(data->argv.args[i + 1])) / 8, (sizeof(char *)));
+			temp = ft_calloc((darr_len((void **)data->argv.args[i]) \
+			+ darr_len((void **)data->argv.args[i + 1]) + 1), (sizeof(char *)));
 			if (!temp)
 				return ;
-			fprintf(stderr, "[ DEBUG ]\n2\n");
 			while (data->argv.args[i][k])
 			{
-				temp[k] = data->argv.args[i][k];
+				temp[k] = ft_strdup(data->argv.args[i][k]);
 				k++;
 			}
-			fprintf(stderr, "[ DEBUG ]\n3\n");
 			while (data->argv.args[i + 1][j])
 			{
-				temp[k] = data->argv.args[i + 1][j++];
+				temp[k] = ft_strdup(data->argv.args[i + 1][j++]);
 				k++;
 			}
-			fprintf(stderr, "[ DEBUG ]\n4\n");
-			free(data->argv.args[++i - 1]);
-			data->argv.args[i - 1] = temp;
-			free(data->argv.args[i]);
-			data->argv.args[i] = 0;
-			fprintf(stderr, "[ DEBUG ]\n5\n");
-			while (data->argv.args[++i])
-				data->argv.args[i - 1] = data->argv.args[i];
-			fprintf(stderr, "[ DEBUG ]\n6\n");
-			data->argv.args[i - 1] = 0;
-			fprintf(stderr, "[ DEBUG ]\n7\n");
+			free_darr((void **)data->argv.args[i]);
+			data->argv.args[i] = temp;
+			free_darr((void **)data->argv.args[i + 1]);
+			k = i + 1;
+			while (data->argv.args[++k])
+				data->argv.args[k - 1] = data->argv.args[k];
+			data->argv.args[k - 1] = 0;
+			k = i;
+			while (data->argv.type[++k])
+				data->argv.type[k - 1] = data->argv.type[k];
+			data->argv.type[k - 1] = 0;
 			continue ;
 		}
 		i++;
