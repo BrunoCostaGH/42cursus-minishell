@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/16 19:32:24 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:08:09 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void	check_variables(t_data *data);
 void	env(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	unset(t_data *data, char **argv);
+void	clear_token(t_data *data, int id);
 void	export(t_data *data, char **argv);
 void	exit_shell(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);

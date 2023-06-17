@@ -1,61 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args_utils.c                                       :+:      :+:    :+:   */
+/*   set_argv_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:51:41 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/16 17:28:27 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:04:42 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	regroup_argv(t_data *data)
-{
-	int		i;
-	int		k;
-	int		j;
-	char	**temp;
-
-	i = 0;
-	while (data->argv.args[i + 1])
-	{
-		k = 0;
-		j = 0;
-		if (data->argv.type[i] == 0 && data->argv.args[i + 1][0])
-		{
-			temp = ft_calloc((darr_len((void **)data->argv.args[i]) \
-			+ darr_len((void **)data->argv.args[i + 1]) + 1), (sizeof(char *)));
-			if (!temp)
-				return ;
-			while (data->argv.args[i][k])
-			{
-				temp[k] = ft_strdup(data->argv.args[i][k]);
-				k++;
-			}
-			while (data->argv.args[i + 1][j])
-			{
-				temp[k] = ft_strdup(data->argv.args[i + 1][j++]);
-				k++;
-			}
-			free_darr((void **)data->argv.args[i]);
-			data->argv.args[i] = temp;
-			free_darr((void **)data->argv.args[i + 1]);
-			k = i + 1;
-			while (data->argv.args[++k])
-				data->argv.args[k - 1] = data->argv.args[k];
-			data->argv.args[k - 1] = 0;
-			k = i;
-			while (data->argv.type[++k])
-				data->argv.type[k - 1] = data->argv.type[k];
-			data->argv.type[k - 1] = 0;
-			continue ;
-		}
-		i++;
-	}
-}
 
 int	check_for_special_char(t_data *data, const char *prompt, int *i, int id)
 {
