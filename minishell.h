@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/17 16:08:09 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:32:26 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	clear_argv(t_data *data);
+void	print_argv(t_data *data, int id);
 void	regroup_argv(t_data *data);
 void	check_variables(t_data *data);
 void	env(t_data *data, char **argv);

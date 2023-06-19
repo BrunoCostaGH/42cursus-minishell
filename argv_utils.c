@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 16:04:04 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/17 16:27:53 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:34:42 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,24 @@ void	regroup_argv(t_data *data)
 		}
 		i++;
 	}
+}
+
+void	print_argv(t_data *data, int id)
+{
+	int	i;
+	int	j;
+
+	i = id - 1;
+	while (data->argv.args[++i])
+	{
+		j = -1;
+		while (data->argv.args[i][++j])
+		{
+			fprintf(stderr, "%s ", data->argv.args[i][j]);
+			fflush(stderr);
+		}
+		fprintf(stderr, "[%d](%s) ", i, get_token(data, i));
+		fflush(stderr);
+	}
+	fprintf(stderr, "\n");
 }
