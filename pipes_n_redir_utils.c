@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/17 16:35:18 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:16:19 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,26 @@ static void	open_file(t_data *data, char *file, int oflag, int *fd_io)
 		handle_error(data, 0, 0);
 }
 
-int	get_fd_out(t_data *data, int *fd_out)
+int	get_fd_out(t_data *data, int s_id)
 {
 	int	id;
 
-	id = 0;
+	id = s_id;
 	while (data->argv.type[id] || data->argv.type[id + 1])
 	{
+		if (id != s_id && data->argv.type[id - 1] == PIPE)
+			break ;
 		if (data->argv.type[id] == REDR_OUTPUT)
 		{
 			open_file(data, data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
-			O_TRUNC, fd_out);
+			O_TRUNC, &data->file_io[1]);
 			clear_token(data, id + 1);
 			continue ;
 		}
 		else if (data->argv.type[id] == REDR_APPEND)
 		{
 			open_file(data, data->argv.args[id + 1][0], O_CREAT | O_RDWR | \
-			O_APPEND, fd_out);
+			O_APPEND, &data->file_io[1]);
 			clear_token(data, id + 1);
 			continue ;
 		}
@@ -52,10 +54,8 @@ static void	here_doc(t_data *data, int id)
 	char	*str;
 
 	init_tmp(data);
-	data->file_io[0] = open(data->tmp_file, O_CREAT | O_RDWR | O_TRUNC, \
-	S_IRWXU);
-	if (data->file_io[0] == -1)
-		handle_error(data, 0, 0);
+	open_file(data, data->tmp_file, O_CREAT | O_RDWR | O_TRUNC, \
+	&data->file_io[0]);
 	while (1)
 	{
 		str = readline("heredoc> ");
@@ -95,17 +95,20 @@ static void	get_fd_in_2(t_data *data, int **pipe_fd, const int *id, int *status)
 	}
 }
 
-int	get_fd_in(t_data *data, int **pipe_fd)
+int	get_fd_in(t_data *data, int **pipe_fd, int s_id)
 {
 	int	id;
 	int	status;
 
 	status = 0;
-	id = iarr_len(data->argv.type) - 1;
+	id = s_id;
+	while (data->argv.type[id] && data->argv.type[id] != PIPE)
+		id++;
+	id--;
 	while (id >= 0 && data->argv.type[id])
 	{
-		if (id == 0 && (data->argv.type[id] == REGULAR || \
-		data->argv.type[id] == PIPE))
+		if ((id == 0 && (data->argv.type[id] == 0 || \
+		data->argv.type[id] == PIPE)) || id < s_id)
 			break ;
 		if (status == 1 && (data->argv.type[id] == REDR_DELIM || \
 		data->argv.type[id] == REDR_INPUT))

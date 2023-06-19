@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 16:04:04 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/19 16:34:42 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:26:23 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ void	regroup_argv(t_data *data)
 			+ darr_len((void **)data->argv.args[i + 1]) + 1), (sizeof(char *)));
 			if (!temp)
 				return ;
-			while (data->argv.args[i][++k])
+			while (data->argv.args[i] && data->argv.args[i][++k])
 				temp[k] = ft_strdup(data->argv.args[i][k]);
-			while (data->argv.args[i + 1][j])
+			while (data->argv.args[i + 1] && data->argv.args[i + 1][j])
 				temp[k++] = ft_strdup(data->argv.args[i + 1][j++]);
 			regroup_argv_2(data, temp, i);
 			continue ;
