@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 13:32:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/29 18:54:18 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/20 15:46:25 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,13 @@
 
 int	handle_error2(t_data *data, char *command, int error)
 {
-	if (error == 4)
+	if (error == 3)
+	{
+		write(2, command, ft_strlen(command));
+		write(2, "': not a valid identifier\n", 26);
+		data->exit_status = 1;
+	}
+	else if (error == 4)
 	{
 		write(2, command, ft_strlen(command));
 		write(2, ": numeric argument required\n", 28);
@@ -43,7 +49,10 @@ int	handle_error(t_data *data, char *command, int error)
 {
 	if (error == 0)
 	{
-		perror("Error");
+		write(2, "Error: ", 7);
+		if (command)
+			write(2, command, ft_strlen(command));
+		perror(" \b");
 		data->exit_status = 1;
 	}
 	else if (error == 1)
@@ -56,12 +65,6 @@ int	handle_error(t_data *data, char *command, int error)
 	{
 		write(2, command, ft_strlen(command));
 		write(2, ": too many arguments\n", 21);
-		data->exit_status = 1;
-	}
-	else if (error == 3)
-	{
-		write(2, command, ft_strlen(command));
-		write(2, ": not a valid identifier\n", 25);
 		data->exit_status = 1;
 	}
 	return (handle_error2(data, command, error));

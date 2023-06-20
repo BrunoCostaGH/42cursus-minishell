@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/29 19:47:12 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/20 15:30:05 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ void	set_error_status(t_data *data, char **argv)
 		write(2, "minishell: Quit (core dump)\n", 28);
 	else if (argv && access(argv[0], F_OK))
 	{
-		write(2, "command not found: ", 19);
 		write(2, argv[0], ft_strlen(argv[0]));
-		write(2, "\n", 1);
+		write(2, ": command not found\n", 20);
 		data->exit_status = 127;
 		return ;
 	}

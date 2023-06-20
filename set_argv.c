@@ -1,16 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*   set_argv.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/30 11:03:07 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:04:26 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	handle_quote(const char *prompt, int *index, int *quote)
+{
+	if (*prompt == *quote)
+		*quote = FALSE;
+	else if ((*prompt == 34 || *prompt == 39) && \
+		ft_strchr(prompt + 1, *prompt) && !*quote)
+		*quote = (int)*prompt;
+	else
+		return (0);
+	if (index)
+		*index = *index + 1;
+	return (1);
+}
 
 static int	special_treatment(const char *prompt, char **result, int index_res)
 {

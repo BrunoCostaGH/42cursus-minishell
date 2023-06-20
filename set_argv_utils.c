@@ -1,30 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args_utils.c                                       :+:      :+:    :+:   */
+/*   set_argv_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:51:41 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/26 00:25:11 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:04:42 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	handle_quote(const char *prompt, int *index, int *quote)
-{
-	if (*prompt == *quote)
-		*quote = FALSE;
-	else if ((*prompt == 34 || *prompt == 39) && \
-		ft_strchr(prompt + 1, *prompt) && !*quote)
-		*quote = (int)*prompt;
-	else
-		return (0);
-	if (index)
-		*index = *index + 1;
-	return (1);
-}
 
 int	check_for_special_char(t_data *data, const char *prompt, int *i, int id)
 {

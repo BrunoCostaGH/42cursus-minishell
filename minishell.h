@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/15 13:28:15 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:57:18 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,9 @@ int		check_tokens(t_data *data);
 int		count_char(const char *prompt);
 int		count_group(const char *prompt);
 int		count_string(const char *prompt);
-int		get_fd_out(t_data *data, int *fd);
+int		get_fd_out(t_data *data, int s_id);
 int		check_envp(t_data *data, char **argv);
+int		get_fd_in(t_data *data, int **pipe_fd, int s_id);
 int		handle_error(t_data *data, char *command, int error);
 int		handle_quote(const char *prompt, int *index, int *quote);
 int		check_identifier(t_data *data, char *command, char *arg);
@@ -111,13 +112,14 @@ void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	clear_argv(t_data *data);
+void	regroup_argv(t_data *data);
 void	check_variables(t_data *data);
-void	here_doc(t_data *data, int id);
 void	env(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
+void	print_argv(t_data *data, int id);
 void	unset(t_data *data, char **argv);
+void	clear_token(t_data *data, int id);
 void	export(t_data *data, char **argv);
-void	close_pipes(int **pipe_fd, int id);
 void	exit_shell(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);
 void	find_command(t_data *data, char **argv);

@@ -6,51 +6,50 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/05 21:50:54 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:53:14 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	set_input_file(t_data *data, int **pipe_fd, int *id)
+static void	close_pipes(int **pipe_fd, int id)
 {
-	if (data->argv.type[*id] == REDR_DELIM)
+	while (id >= 0)
 	{
-		here_doc(data, *id++);
-		dup2(data->file_io[0], STDIN_FILENO);
-	}
-	else if (data->argv.type[*id] == REDR_INPUT)
-	{
-		data->file_io[0] = open(data->argv.args[*id + 1][0], O_RDONLY);
-		if (data->file_io[0] == -1)
+		if (pipe_fd[id])
 		{
-			handle_error(data, 0, 0);
-			free_darr((void **)pipe_fd);
-			exit_shell(data, 0);
+			close(pipe_fd[id][0]);
+			close(pipe_fd[id][1]);
 		}
-		dup2(data->file_io[0], STDIN_FILENO);
+		id--;
 	}
-	else if (*id > 1 && data->argv.type[*id - 2] == REDR_DELIM)
-		dup2(pipe_fd[*id - 2][0], STDIN_FILENO);
-	else if (*id > 0 && data->argv.type[*id - 1] == PIPE)
-		dup2(pipe_fd[*id - 1][0], STDIN_FILENO);
 }
 
-static void	run_token_logic(t_data *data, int **pipe_fd, int *id)
+static void	run_token_logic(t_data *data, int **pipe_fd, int id, int pipe_index)
 {
+	while (id > 0 && pipe_fd[pipe_index])
+		pipe_index++;
 	data->exit_status = 0;
-	set_input_file(data, pipe_fd, id);
-	if (data->argv.type[*id] == PIPE)
-		dup2(pipe_fd[*id][1], STDOUT_FILENO);
-	else if (data->file_io[1])
+	(void)get_fd_out(data, id);
+	if (get_fd_in(data, pipe_fd, id) == 0)
+	{
+		if (id > 0 && data->argv.type[id - 1] == PIPE)
+		{
+			if (data->argv.type[id] == PIPE)
+				pipe_index--;
+			dup2(pipe_fd[pipe_index - 1][0], STDIN_FILENO);
+		}
+	}
+	if (data->file_io[1])
 		dup2(data->file_io[1], STDOUT_FILENO);
-	close_pipes(pipe_fd, *id);
-	if (*id > 0 && data->argv.type[*id - 1] == REDR_DELIM)
-		find_command(data, data->argv.args[*id - 1]);
-	else
-		find_command(data, data->argv.args[*id]);
+	else if (data->argv.type[id] == PIPE)
+		dup2(pipe_fd[pipe_index][1], STDOUT_FILENO);
+	close_pipes(pipe_fd, pipe_index);
+	find_command(data, data->argv.args[id]);
 	if (data->file_io[0])
 		close(data->file_io[0]);
+	if (data->file_io[1])
+		close(data->file_io[1]);
 	free_darr((void **)pipe_fd);
 	exit_shell(data, 0);
 }
@@ -58,22 +57,29 @@ static void	run_token_logic(t_data *data, int **pipe_fd, int *id)
 static void	run_token_logic_chil(t_data *data, int **pipe_fd, int *pid)
 {
 	int	id;
+	int	pipe_index;
 
 	id = 0;
 	while (data->argv.args[++id])
 	{
+		pipe_index = id;
 		if (data->argv.type[id - 1] != PIPE)
 			continue ;
-		if (data->argv.type[id] == PIPE)
+		while (data->argv.type[pipe_index] && data->argv.type[pipe_index] != 1)
+			pipe_index++;
+		if (data->argv.type[pipe_index] == PIPE)
 		{
-			pipe_fd[id] = ft_calloc(2 + 1, sizeof(int));
-			if (!pipe_fd[id])
+			pipe_index = 0;
+			while (pipe_fd[pipe_index])
+				pipe_index++;
+			pipe_fd[pipe_index] = ft_calloc(2 + 1, sizeof(int));
+			if (!pipe_fd[pipe_index])
 				return ;
-			pipe(pipe_fd[id]);
+			pipe(pipe_fd[pipe_index]);
 		}
 		*pid = fork();
 		if (*pid == 0)
-			run_token_logic(data, pipe_fd, &id);
+			run_token_logic(data, pipe_fd, id, 0);
 	}
 }
 
@@ -82,22 +88,15 @@ int	create_token_logic(t_data *data, int **pipe_fd, int *pid)
 	int	id;
 
 	id = 0;
-	if (get_fd_out(data, &data->file_io[1]))
-		return (1);
 	pipe_fd[id] = ft_calloc(2 + 1, sizeof(int));
 	if (!pipe_fd[id])
 		return (1);
 	pipe(pipe_fd[id]);
 	*pid = fork();
 	if (*pid == 0)
-		run_token_logic(data, pipe_fd, &id);
+		run_token_logic(data, pipe_fd, id, 0);
 	else
 		run_token_logic_chil(data, pipe_fd, pid);
-	if (data->file_io[1])
-	{
-		close(data->file_io[1]);
-		data->file_io[1] = 0;
-	}
 	return (0);
 }
 
