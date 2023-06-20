@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:42:05 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/16 20:44:56 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/20 16:29:25 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,30 +56,30 @@ static int	check_argv(t_data *data, char *arg, int initial)
 
 static void	do_export(t_data *data, char ***temp_envp, char **argv)
 {
-	int		index_argv;
-	int		index_env;
+	int		i_argv;
+	int		i_env;
 	char	**temp;
 
-	index_argv = 0;
-	index_env = darr_len((void **)temp_envp);
-	while (argv[++index_argv])
+	i_argv = 0;
+	i_env = darr_len((void **)temp_envp);
+	while (argv[++i_argv])
 	{
-		temp = ft_split(argv[index_argv], '=');
-		if (check_argv(data, temp[0], FALSE))
-		{
-			free_darr((void **)temp);
+		if (argv[i_argv][0] == '=' && check_argv(data, argv[i_argv], FALSE))
 			continue ;
+		temp = ft_split(argv[i_argv], '=');
+		if (!check_argv(data, temp[0], FALSE))
+		{
+			temp_envp[i_env] = ft_calloc(2 + 1, sizeof(char *));
+			if (!temp_envp[i_env])
+				return ;
+			temp_envp[i_env][0] = ft_strdup(temp[0]);
+			if (temp[1])
+				temp_envp[i_env][1] = ft_strdup(temp[1]);
+			else if (ft_strchr(argv[i_argv], '='))
+				temp_envp[i_env][1] = ft_calloc(1, sizeof(char));
 		}
-		temp_envp[index_env] = ft_calloc(2 + 1, sizeof(char *));
-		if (!temp_envp[index_env])
-			return ;
-		temp_envp[index_env][0] = ft_strdup(temp[0]);
-		if (temp[1])
-			temp_envp[index_env][1] = ft_strdup(temp[1]);
-		else if (ft_strchr(argv[index_argv], '='))
-			temp_envp[index_env][1] = ft_calloc(1, sizeof(char));
 		free_darr((void **)temp);
-		index_env++;
+		i_env++;
 	}
 }
 

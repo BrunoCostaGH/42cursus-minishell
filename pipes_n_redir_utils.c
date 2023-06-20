@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/19 20:16:19 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/20 15:26:00 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	open_file(t_data *data, char *file, int oflag, int *fd_io)
 		close(*fd_io);
 	*fd_io = open(file, oflag, S_IRWXU);
 	if (*fd_io == -1)
-		handle_error(data, 0, 0);
+		handle_error(data, file, 0);
 }
 
 int	get_fd_out(t_data *data, int s_id)
@@ -70,7 +70,7 @@ static void	here_doc(t_data *data, int id)
 	close(data->file_io[0]);
 	data->file_io[0] = open(data->tmp_file, O_RDONLY);
 	if (data->file_io[0] == -1)
-		handle_error(data, 0, 0);
+		handle_error(data, data->tmp_file, 0);
 }
 
 static void	get_fd_in_2(t_data *data, int **pipe_fd, const int *id, int *status)
@@ -86,7 +86,7 @@ static void	get_fd_in_2(t_data *data, int **pipe_fd, const int *id, int *status)
 		data->file_io[0] = open(data->argv.args[*id + 1][0], O_RDONLY);
 		if (data->file_io[0] == -1)
 		{
-			handle_error(data, 0, 0);
+			handle_error(data, data->argv.args[*id + 1][0], 0);
 			free_darr((void **)pipe_fd);
 			exit_shell(data, 0);
 		}
