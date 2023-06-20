@@ -25,7 +25,7 @@ static int	check_argv(t_data *data, char **argv)
 	return (0);
 }
 
-static void	temp_clear(t_data *data)
+static void	clear_temp(t_data *data)
 {
 	if (access(data->tmp_file, F_OK) == 0)
 	{
@@ -38,7 +38,7 @@ static void	temp_clear(t_data *data)
 	data->tmp_file = 0;
 }
 
-static void	envp_clear(t_data *data)
+static void	clear_envp(t_data *data)
 {
 	int	id;
 
@@ -53,12 +53,12 @@ static void	envp_clear(t_data *data)
 	{
 		id = 0;
 		while (data->envp.sorted_envp[id])
-			free_darr((void **) data->envp.sorted_envp[id++]);
+			free_darr((void **)data->envp.sorted_envp[id++]);
 		free(data->envp.sorted_envp);
 		data->envp.sorted_envp = 0;
 	}
 	if (data->envp.exec_envp)
-		free_darr((void **) data->envp.exec_envp);
+		free_darr((void **)data->envp.exec_envp);
 }
 
 void	clear_argv(t_data *data)
@@ -98,9 +98,9 @@ void	exit_shell(t_data *data, char **argv)
 	if (data->file_io)
 		free(data->file_io);
 	if (data->tmp_file)
-		temp_clear(data);
+		clear_temp(data);
 	clear_argv(data);
-	envp_clear(data);
+	clear_envp(data);
 	free(data);
 	if (argv)
 		printf("exit\n");
