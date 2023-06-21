@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 16:04:04 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/19 18:26:23 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:11:37 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,41 @@ void	print_argv(t_data *data, int id)
 		while (data->argv.args[i][++j])
 		{
 			fprintf(stderr, "%s ", data->argv.args[i][j]);
-			fflush(stderr);
 		}
 		fprintf(stderr, "[%d](%s) ", i, get_token(data, i));
-		fflush(stderr);
 	}
 	fprintf(stderr, "\n");
+}
+
+void	remove_invalid_var(char **prompt)
+{
+	int		i;
+	char	*temp;
+	char	*temp_res;
+
+	i = 0;
+	while ((*prompt)[i])
+	{
+		if ((*prompt)[i] == '$')
+		{
+			if ((*prompt)[++i] && ft_isdigit((*prompt)[i]))
+			{
+				temp = ft_chrjoin('$', (*prompt)[i]);
+				temp_res = ft_fndnrepl((*prompt), temp, "");
+				free(temp);
+				free((*prompt));
+				(*prompt) = temp_res;
+			}
+			else if ((*prompt)[i] && ((*prompt)[i] == '\'' || \
+			(*prompt)[i] == '\"'))
+			{
+				temp_res = ft_fndnrepl((*prompt), "$", "");
+				free((*prompt));
+				(*prompt) = temp_res;
+			}
+			else if ((ft_isalnum((*prompt)[i]) || (*prompt)[i] == '_'))
+				break ;
+		}
+		i++;
+	}
 }

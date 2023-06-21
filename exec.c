@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/20 15:30:05 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/21 15:32:03 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,27 @@ void	set_error_status(t_data *data, char **argv)
 		write(2, "minishell: Quit (core dump)\n", 28);
 	else if (argv && access(argv[0], F_OK))
 	{
-		write(2, argv[0], ft_strlen(argv[0]));
-		write(2, ": command not found\n", 20);
+		if (!ft_strchr(argv[0], '/'))
+		{
+			write(2, argv[0], ft_strlen(argv[0]));
+			write(2, ": command not found\n", 20);
+		}
+		else
+		{
+			write(2, "minishell: ", 11);
+			write(2, argv[0], ft_strlen(argv[0]));
+			write(2, ": No such file or directory\n", 28);
+		}
 		data->exit_status = 127;
 		return ;
 	}
-	data->exit_status >>= 8;
+	if (WIFSIGNALED(data->exit_status))
+	{
+		if (WTERMSIG(data->exit_status) == 2)
+			data->exit_status = 130;
+	}
+	else
+		data->exit_status >>= 8;
 }
 
 static void	build_envp(t_data *data)
@@ -85,7 +100,8 @@ void	run_executable(t_data *data, char **argv)
 
 	if (argv && *argv)
 	{
-		argv[0] = check_environment(data, argv[0]);
+		if (!ft_strchr(argv[0], '/'))
+			argv[0] = check_environment(data, argv[0]);
 		build_envp(data);
 		pid = fork();
 		if (pid == -1)

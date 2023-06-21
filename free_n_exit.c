@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/15 13:47:34 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/21 15:03:32 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ static int	check_argv(t_data *data, char **argv)
 	int	i;
 
 	i = 0;
-	if (argv[1] && argv[2])
-		return (handle_error(data, argv[0], 2));
 	while (argv[1] && argv[1][i])
 		if (ft_isalpha(argv[1][i++]))
 			return (handle_error(data, argv[0], 4));
+	if (argv[1] && argv[2])
+		return (handle_error(data, argv[0], 2));
 	return (0);
 }
 
@@ -87,10 +87,17 @@ void	clear_argv(t_data *data)
 void	exit_shell(t_data *data, char **argv)
 {
 	int	exit_status;
+	int	check_return;
 
-	if (argv && check_argv(data, argv) == 1)
+	check_return = 0;
+	if (argv)
+	{
+		printf("exit\n");
+		check_return = check_argv(data, argv);
+	}
+	if (check_return == 1)
 		return ;
-	if (argv && argv[1])
+	else if (argv && argv[1] && check_return != 2)
 		exit_status = ft_atoi(argv[1]);
 	else
 		exit_status = data->exit_status;
@@ -102,7 +109,5 @@ void	exit_shell(t_data *data, char **argv)
 	clear_argv(data);
 	clear_envp(data);
 	free(data);
-	if (argv)
-		printf("exit\n");
 	exit(exit_status);
 }

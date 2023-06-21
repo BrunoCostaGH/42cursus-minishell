@@ -6,32 +6,39 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/15 11:54:39 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:11:20 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_var_within_quotes(t_data *data)
+static int	check_var_within_quotes(char **prompt)
 {
 	int	i;
 	int	quote;
 
 	i = 0;
 	quote = FALSE;
-	while (data->prompt[i])
+	while (*prompt && (*prompt)[i])
 	{
-		if (handle_quote(data->prompt + i, &i, &quote))
+		if (handle_quote(*prompt + i, &i, &quote))
 			continue ;
-		if (quote == 39 && data->prompt[i] == '$')
-			if ((ft_isalnum(data->prompt[++i]) || data->prompt[i] == '_'))
-				return (TRUE);
+		if (quote == 39 && (*prompt)[i] == '$')
+			return (TRUE);
+		else if ((*prompt)[i] == '$')
+		{
+			if ((*prompt)[++i] && (ft_isdigit((*prompt)[i]) || \
+			(*prompt)[i] == '\'' || (*prompt)[i] == '\"' ))
+				return (2);
+			else if ((ft_isalnum((*prompt)[i]) || (*prompt)[i] == '_'))
+				break ;
+		}
 		i++;
 	}
 	return (FALSE);
 }
 
-static void	set_home_var(t_data *data)
+static void	set_home_var(t_data *data, char **prompt)
 {
 	char	*temp;
 	char	*env_var;
@@ -40,20 +47,32 @@ static void	set_home_var(t_data *data)
 	env_var = ft_strjoin(env_var, "/");
 	if (!env_var)
 		env_var = "";
-	temp = ft_fndnrepl(data->prompt, "~/", env_var);
-	free(data->prompt);
-	data->prompt = temp;
+	temp = ft_fndnrepl(*prompt, "~/", env_var);
+	free(*prompt);
+	*prompt = temp;
 	free(env_var);
 }
 
-static int	set_env_var(t_data *data)
+static void	set_exit_status(t_data *data, char **prompt)
+{
+	char	*value;
+	char	*temp;
+
+	value = ft_itoa(data->exit_status);
+	temp = ft_fndnrepl(*prompt, "$?", value);
+	free(*prompt);
+	*prompt = temp;
+	free(value);
+}
+
+static int	set_env_var(t_data *data, char **prompt)
 {
 	int		k;
 	char	*temp;
 	char	*env_var;
 	char	*var_name;
 
-	temp = ft_strnstr(data->prompt, "$", ft_strlen(data->prompt));
+	temp = ft_strnstr(*prompt, "$", ft_strlen(*prompt));
 	k = 0;
 	while (temp[++k])
 		if (!(ft_isalnum(temp[k]) || temp[k] == '_'))
@@ -67,45 +86,45 @@ static int	set_env_var(t_data *data)
 	env_var = get_env_var(data, var_name + 1);
 	if (!env_var)
 		env_var = "";
-	temp = ft_fndnrepl(data->prompt, var_name, env_var);
-	free(data->prompt);
-	data->prompt = temp;
+	printf("prompt: %s\nvar_name: %s\nenv_var: %s\n", *prompt, var_name, env_var);
+	temp = ft_fndnrepl(*prompt, var_name, env_var);
+	free(*prompt);
+	*prompt = temp;
 	free(var_name);
 	return (0);
 }
 
-static void	set_exit_status(t_data *data)
+void	check_variables(t_data *data, char **prompt)
 {
-	char	*value;
-	char	*temp;
+	int	temp;
 
-	value = ft_itoa(data->exit_status);
-	temp = ft_fndnrepl(data->prompt, "$?", value);
-	free(data->prompt);
-	data->prompt = temp;
-	free(value);
-}
-
-void	check_variables(t_data *data)
-{
-	if (data->prompt)
+	if (*prompt)
 	{
-		if (ft_strnstr(data->prompt, "~/", ft_strlen(data->prompt)))
+		if (ft_strnstr(*prompt, "~/", ft_strlen(*prompt)))
 		{
-			set_home_var(data);
-			check_variables(data);
+			set_home_var(data, prompt);
+			check_variables(data, prompt);
 		}
-		else if (ft_strnstr(data->prompt, "$?", ft_strlen(data->prompt)))
+		else if (ft_strchr(*prompt, '$') && \
+		(ft_strchr(*prompt, '$') + 1)[0] != '?')
 		{
-			set_exit_status(data);
-			check_variables(data);
+			temp = check_var_within_quotes(prompt);
+			if (temp == 2)
+			{
+				remove_invalid_var(prompt);
+				check_variables(data, prompt);
+			}
+			else if (!temp)
+			{
+				if (set_env_var(data, prompt))
+					return ;
+				check_variables(data, prompt);
+			}
 		}
-		else if (ft_strnstr(data->prompt, "$", ft_strlen(data->prompt)) \
-		&& !check_var_within_quotes(data))
+		else if (ft_strnstr(*prompt, "$?", ft_strlen(*prompt)))
 		{
-			if (set_env_var(data))
-				return ;
-			check_variables(data);
+			set_exit_status(data, prompt);
+			check_variables(data, prompt);
 		}
 	}
 }
