@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/21 20:11:20 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/22 15:01:29 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static int	set_env_var(t_data *data, char **prompt)
 	env_var = get_env_var(data, var_name + 1);
 	if (!env_var)
 		env_var = "";
-	printf("prompt: %s\nvar_name: %s\nenv_var: %s\n", *prompt, var_name, env_var);
 	temp = ft_fndnrepl(*prompt, var_name, env_var);
 	free(*prompt);
 	*prompt = temp;

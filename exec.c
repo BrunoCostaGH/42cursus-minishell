@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/21 15:32:03 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:47:10 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	set_error_status(t_data *data, char **argv)
 		data->exit_status = 127;
 		return ;
 	}
-	if (WIFSIGNALED(data->exit_status))
+	if ((((data->exit_status) & 0x7f) + 1) >> 1)
 	{
-		if (WTERMSIG(data->exit_status) == 2)
+		if (((data->exit_status) & 0x7f) == 2)
 			data->exit_status = 130;
 	}
 	else
@@ -47,17 +47,21 @@ static void	build_envp(t_data *data)
 	char	*temp;
 
 	len = 0;
-	while (data->envp.envp[len] && data->envp.envp[len][1])
+	while (data->envp.envp[len])
 		len++;
 	if (data->envp.exec_envp)
 		free_darr((void **)data->envp.exec_envp);
-	data->envp.exec_envp = ft_calloc(sizeof(char *), len + 1);
+	data->envp.exec_envp = ft_calloc(len + 1, sizeof(char *));
 	if (!data->envp.exec_envp)
 		return ;
 	while (len > 0 && data->envp.envp[--len])
 	{
 		temp = ft_strjoin(data->envp.envp[len][0], "=");
-		data->envp.exec_envp[len] = ft_strjoin(temp, data->envp.envp[len][1]);
+		if (data->envp.envp[len][1])
+			data->envp.exec_envp[len] = ft_strjoin(temp, \
+			data->envp.envp[len][1]);
+		else
+			data->envp.exec_envp[len] = ft_strdup(temp);
 		free(temp);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/21 18:09:28 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:02:59 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,14 +113,17 @@ void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
 void	clear_argv(t_data *data);
+void	set_heredoc_handler(void);
 void	regroup_argv(t_data *data);
+void	here_doc(t_data *data, int id);
 void	env(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
-void	remove_invalid_var(char **prompt);
 void	print_argv(t_data *data, int id);
 void	unset(t_data *data, char **argv);
 void	clear_token(t_data *data, int id);
 void	export(t_data *data, char **argv);
+void	remove_invalid_var(char **prompt);
+void	execute_sig_int(int sig, void *data);
 void	exit_shell(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);
 void	find_command(t_data *data, char **argv);
@@ -129,6 +132,7 @@ void	run_executable(t_data *data, char **argv);
 void	set_error_status(t_data *data, char **argv);
 void	build_sorted_env(t_data *data, char ***envp);
 void	check_variables(t_data *data, char **prompt);
+void	open_file(t_data *data, char *file, int oflag, int *fd_io);
 
 void	*init_struct(char **envp);
 
