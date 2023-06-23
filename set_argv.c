@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/21 19:51:50 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/23 14:24:21 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	set_argv(t_data *data)
 	const char	*prompt;
 
 	id = 0;
-	check_variables(data, &data->prompt);
+	check_variables(data, &data->prompt, TRUE);
 	prompt = data->prompt;
 	data->argv.args = ft_calloc(count_group(prompt) + 1, sizeof(char **));
 	data->argv.args[0] = ft_calloc(count_string(prompt) + 1, sizeof(char *));

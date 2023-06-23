@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/22 20:47:10 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/23 14:17:52 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	run_executable(t_data *data, char **argv)
 		}
 		else
 		{
-			while (waitpid(pid, &data->exit_status, WUNTRACED) == -1)
+			while (waitpid(pid, &data->exit_status, WNOHANG) == 0)
 				;
 			set_error_status(data, argv);
 		}

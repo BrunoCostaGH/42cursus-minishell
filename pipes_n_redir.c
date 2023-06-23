@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/19 20:53:14 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/23 14:18:43 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static void	run_token_logic(t_data *data, int **pipe_fd, int id, int pipe_index)
 {
 	while (id > 0 && pipe_fd[pipe_index])
 		pipe_index++;
+	while (id > 0 && pipe_fd[pipe_index])
+		;
 	data->exit_status = 0;
 	(void)get_fd_out(data, id);
 	if (get_fd_in(data, pipe_fd, id) == 0)
@@ -117,7 +119,7 @@ int	check_tokens(t_data *data)
 		if (create_token_logic(data, pipe_fd, &pid))
 			return (1);
 		close_pipes(pipe_fd, iarr_len(data->argv.type));
-		while (waitpid(pid, &data->exit_status, WUNTRACED) != -1)
+		while (waitpid(pid, &data->exit_status, WNOHANG) == 0)
 			;
 		set_error_status(data, 0);
 		while (waitpid(-1, 0, 0) != -1)

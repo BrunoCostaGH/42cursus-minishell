@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/22 20:51:20 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/23 13:06:33 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,5 @@ void	exit_shell(t_data *data, char **argv)
 	clear_argv(data);
 	clear_envp(data);
 	free(data);
-	/*exit_status != data->exit_status*/
 	exit(exit_status);
 }

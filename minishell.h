@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/22 20:02:59 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/23 14:41:16 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int id);
 char	*ft_chrjoin(char c1, char c2);
 char	*get_token(t_data *data, int id);
 char	*get_env_var(t_data *data, const char *var_name);
+char	*find_variable(const char *big, const char *little, size_t len);
 
 char	***duplicate_envp(t_data *data, int len);
 
@@ -115,7 +116,6 @@ void	set_handle_struct(void);
 void	clear_argv(t_data *data);
 void	set_heredoc_handler(void);
 void	regroup_argv(t_data *data);
-void	here_doc(t_data *data, int id);
 void	env(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	print_argv(t_data *data, int id);
@@ -123,16 +123,17 @@ void	unset(t_data *data, char **argv);
 void	clear_token(t_data *data, int id);
 void	export(t_data *data, char **argv);
 void	remove_invalid_var(char **prompt);
-void	execute_sig_int(int sig, void *data);
 void	exit_shell(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
 void	set_error_status(t_data *data, char **argv);
+void	heredoc(t_data *data, int **pipe_fd, int id);
 void	build_sorted_env(t_data *data, char ***envp);
-void	check_variables(t_data *data, char **prompt);
+void	execute_sig_int(int sig, void *data, int **pipes);
 void	open_file(t_data *data, char *file, int oflag, int *fd_io);
+void	check_variables(t_data *data, char **prompt, int for_argv);
 
 void	*init_struct(char **envp);
 

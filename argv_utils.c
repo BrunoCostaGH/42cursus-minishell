@@ -102,36 +102,3 @@ void	print_argv(t_data *data, int id)
 	}
 	fprintf(stderr, "\n");
 }
-
-void	remove_invalid_var(char **prompt)
-{
-	int		i;
-	char	*temp;
-	char	*temp_res;
-
-	i = 0;
-	while ((*prompt)[i])
-	{
-		if ((*prompt)[i] == '$')
-		{
-			if ((*prompt)[++i] && ft_isdigit((*prompt)[i]))
-			{
-				temp = ft_chrjoin('$', (*prompt)[i]);
-				temp_res = ft_fndnrepl((*prompt), temp, "");
-				free(temp);
-				free((*prompt));
-				(*prompt) = temp_res;
-			}
-			else if ((*prompt)[i] && ((*prompt)[i] == '\'' || \
-			(*prompt)[i] == '\"'))
-			{
-				temp_res = ft_fndnrepl((*prompt), "$", "");
-				free((*prompt));
-				(*prompt) = temp_res;
-			}
-			else if ((ft_isalnum((*prompt)[i]) || (*prompt)[i] == '_'))
-				break ;
-		}
-		i++;
-	}
-}
