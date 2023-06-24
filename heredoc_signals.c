@@ -12,15 +12,12 @@
 
 #include "minishell.h"
 
-void	execute_sig_int(int sig, void *data, int **pipes)
+void	execute_sig_int(int sig, void *data)
 {
-	static int		**static_pipes;
 	static t_data	*static_data;
 
 	if (!static_data && data)
 		static_data = (t_data *)data;
-	if (!static_pipes && pipes)
-		static_pipes = pipes;
 	if (static_data)
 	{
 		if (sig == SIGINT)
@@ -28,7 +25,6 @@ void	execute_sig_int(int sig, void *data, int **pipes)
 			printf("\n");
 			close(static_data->file_io[0]);
 			close(static_data->file_io[1]);
-			free_darr((void **)static_pipes);
 			exit_shell(static_data, 0);
 		}
 	}
@@ -36,7 +32,7 @@ void	execute_sig_int(int sig, void *data, int **pipes)
 
 static void	handle(int sig)
 {
-	execute_sig_int(sig, 0, 0);
+	execute_sig_int(sig, 0);
 }
 
 void	set_heredoc_handler(void)

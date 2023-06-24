@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 17:57:46 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:38:55 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,20 @@ static void	init_envp(t_data *data, char **envp)
 			data->envp.envp[len][1] = ft_strdup(temp[1]);
 		free_darr((void **)temp);
 	}
+}
+
+int	init_pipe_child(t_data *data)
+{
+	int	pipe_index;
+
+	pipe_index = 0;
+	while (data->pipe_fd[pipe_index])
+		pipe_index++;
+	data->pipe_fd[pipe_index] = ft_calloc(2 + 1, sizeof(int));
+	if (!data->pipe_fd[pipe_index])
+		return (1);
+	pipe(data->pipe_fd[pipe_index]);
+	return (0);
 }
 
 void	init_tmp(t_data *data)

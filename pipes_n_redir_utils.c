@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 18:23:12 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:09:53 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ int	get_fd_out(t_data *data, int s_id)
 	return (0);
 }
 
-static void	get_fd_in_2(t_data *data, int **pipe_fd, const int *id, int *status)
+static void	get_fd_in_2(t_data *data, const int *id, int *status)
 {
 	if (data->argv.type[*id] == REDR_DELIM)
 	{
-		heredoc(data, pipe_fd, *id);
+		heredoc(data, *id);
 		dup2(data->file_io[0], STDIN_FILENO);
 		*status = 1;
 		clear_token(data, *id + 1);
@@ -75,7 +75,7 @@ static void	get_fd_in_2(t_data *data, int **pipe_fd, const int *id, int *status)
 	}
 }
 
-int	get_fd_in(t_data *data, int **pipe_fd, int s_id)
+int	get_fd_in(t_data *data, int s_id)
 {
 	int	id;
 	int	status;
@@ -89,7 +89,7 @@ int	get_fd_in(t_data *data, int **pipe_fd, int s_id)
 		if (data->argv.type[id] == 4 || data->argv.type[id] == 5)
 			if (status == 1)
 				dup2(o_input, STDIN_FILENO);
-		get_fd_in_2(data, pipe_fd, &id, &status);
+		get_fd_in_2(data, &id, &status);
 		if (!status)
 			id++;
 		else if (status == 2)

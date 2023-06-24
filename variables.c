@@ -6,38 +6,11 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 18:37:10 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:17:53 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	check_var_within_quotes(char **prompt)
-{
-	int	i;
-	int	quote;
-
-	i = 0;
-	quote = FALSE;
-	while (*prompt && (*prompt)[i])
-	{
-		if (handle_quote(*prompt + i, &i, &quote))
-			continue ;
-		if (quote == 39 && (*prompt)[i] == '$')
-			return (TRUE);
-		else if ((*prompt)[i] == '$')
-		{
-			if ((*prompt)[++i] && (ft_isdigit((*prompt)[i]) || \
-			(*prompt)[i] == '\'' || (*prompt)[i] == '\"' ))
-				return (2);
-			else if (!(*prompt)[i] || \
-			(ft_isalnum((*prompt)[i]) || (*prompt)[i] == '_'))
-				break ;
-		}
-		i++;
-	}
-	return (FALSE);
-}
 
 static void	set_home_var(t_data *data, char **prompt)
 {
@@ -94,33 +67,36 @@ static int	set_env_var(t_data *data, char **prompt)
 	return (0);
 }
 
-void	check_variables(t_data *data, char **prompt, int for_argv)
+static void	do_check_variable(t_data *data, char **prompt)
 {
 	int	temp;
 
+	temp = check_var_within_quotes(prompt);
+	if (temp == 2)
+	{
+		remove_invalid_var(prompt);
+		check_variables(data, prompt, 0);
+	}
+	else if (!temp)
+	{
+		if (set_env_var(data, prompt))
+			return ;
+		check_variables(data, prompt, 0);
+	}
+}
+
+void	check_variables(t_data *data, char **prompt, int for_argv)
+{
 	if (*prompt)
 	{
-		if (!for_argv && ft_strnstr(*prompt, "~/", ft_strlen(*prompt)))
+		if (for_argv && ft_strnstr(*prompt, "~/", ft_strlen(*prompt)))
 		{
 			set_home_var(data, prompt);
 			check_variables(data, prompt, 0);
 		}
 		else if (ft_strchr(*prompt, '$') && \
 		(ft_strchr(*prompt, '$') + 1)[0] != '?')
-		{
-			temp = check_var_within_quotes(prompt);
-			if (temp == 2)
-			{
-				remove_invalid_var(prompt);
-				check_variables(data, prompt, 0);
-			}
-			else if (!temp)
-			{
-				if (set_env_var(data, prompt))
-					return ;
-				check_variables(data, prompt, 0);
-			}
-		}
+			do_check_variable(data, prompt);
 		else if (ft_strnstr(*prompt, "$?", ft_strlen(*prompt)))
 		{
 			set_exit_status(data, prompt);

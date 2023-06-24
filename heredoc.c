@@ -12,10 +12,35 @@
 
 #include "minishell.h"
 
-void	heredoc(t_data *data, int **pipe_fd, int id)
+static void	run_heredoc(t_data *data, int id)
+{
+	char	*str;
+
+	execute_sig_int(0, data);
+	set_heredoc_handler();
+	while (1)
+	{
+		str = readline("heredoc> ");
+		if (!str || !ft_strncmp(data->argv.args[id + 1][0], \
+			str, ft_strlen(data->argv.args[id + 1][0]) + 1))
+			break ;
+		check_variables(data, &str, FALSE);
+		write(data->file_io[0], str, ft_strlen(str));
+		write(data->file_io[0], "\n", 1);
+		free(str);
+	}
+	if (str)
+		free(str);
+	str = 0;
+	free(data->tmp_file);
+	data->tmp_file = 0;
+	reset_io(data);
+	exit_shell(data, 0);
+}
+
+void	heredoc(t_data *data, int id)
 {
 	int		pid;
-	char	*str;
 
 	init_tmp(data);
 	open_file(data, data->tmp_file, O_CREAT | O_RDWR | O_TRUNC, \
@@ -24,28 +49,7 @@ void	heredoc(t_data *data, int **pipe_fd, int id)
 	if (pid == -1)
 		return ;
 	if (pid == 0)
-	{
-		execute_sig_int(0, data, pipe_fd);
-		set_heredoc_handler();
-		while (1)
-		{
-			str = readline("heredoc> ");
-			if (!str || !ft_strncmp(data->argv.args[id + 1][0], \
-			str, ft_strlen(data->argv.args[id + 1][0]) + 1))
-				break ;
-			check_variables(data, &str, FALSE);
-			write(data->file_io[0], str, ft_strlen(str));
-			write(data->file_io[0], "\n", 1);
-			free(str);
-		}
-		if (str)
-			free(str);
-		str = 0;
-		free(data->tmp_file);
-		data->tmp_file = 0;
-		reset_io(data);
-		exit_shell(data, 0);
-	}
+		run_heredoc(data, id);
 	waitpid(pid, 0, 0);
 	close(data->file_io[0]);
 	data->file_io[0] = open(data->tmp_file, O_RDONLY);
