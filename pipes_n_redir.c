@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/24 18:06:09 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:18:30 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	run_token_logic(t_data *data, int **pipe_fd, int *pid, int id)
 			dup2(pipe_fd[pipe_index][1], STDOUT_FILENO);
 		close_pipes(pipe_fd, pipe_index);
 		find_command(data, data->argv.args[id]);
-		reset_io(data, pipe_fd);
+		reset_io(data);
 		exit_shell(data, 0);
 	}
 	return (0);
@@ -90,7 +90,7 @@ int	create_token_logic(t_data *data, int **pipe_fd, int *pid)
 		}
 		if (run_token_logic(data, pipe_fd, pid, id) == 1)
 			return (1);
-		reset_io(data, 0);
+		reset_io(data);
 		id++;
 	}
 	return (0);
@@ -100,26 +100,22 @@ int	check_tokens(t_data *data)
 {
 	int		pid;
 	int		pipe_amount;
-	int		**pipe_fd;
 
 	if (!data->argv.args)
 		return (0);
 	pipe_amount = iarr_len(data->argv.type);
 	if (pipe_amount)
 	{
-		pipe_fd = ft_calloc(pipe_amount + 2, sizeof(int *));
-		if (!pipe_fd)
-			return (0);
-		if (create_token_logic(data, pipe_fd, &pid) == 0)
+		if (create_token_logic(data, data->pipe_fd, &pid) == 0)
 		{
-			close_pipes(pipe_fd, iarr_len(data->argv.type));
+			close_pipes(data->pipe_fd, iarr_len(data->argv.type));
 			while (waitpid(pid, &data->exit_status, WNOHANG) == 0)
 				;
 			set_error_status(data, 0);
 			while (waitpid(-1, 0, 0) != -1)
 				;
 		}
-		reset_io(data, pipe_fd);
+		reset_io(data);
 		return (1);
 	}
 	return (0);

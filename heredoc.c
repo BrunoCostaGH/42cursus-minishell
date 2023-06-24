@@ -43,7 +43,7 @@ void	heredoc(t_data *data, int **pipe_fd, int id)
 		str = 0;
 		free(data->tmp_file);
 		data->tmp_file = 0;
-		reset_io(data, pipe_fd);
+		reset_io(data);
 		exit_shell(data, 0);
 	}
 	waitpid(pid, 0, 0);

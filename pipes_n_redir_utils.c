@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 18:06:54 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:23:12 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,8 @@ int	get_fd_in(t_data *data, int **pipe_fd, int s_id)
 	return (status);
 }
 
-void	reset_io(t_data *data, int **pipe_fd)
+void	reset_io(t_data *data)
 {
-	free_darr((void **)pipe_fd);
 	if (data->file_io[0] > 0)
 		close(data->file_io[0]);
 	data->file_io[0] = 0;

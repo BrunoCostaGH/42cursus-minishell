@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 17:00:55 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:18:30 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	clear_argv(t_data *data)
 		free_darr((void **)data->argv.args[id++]);
 	free(data->argv.args);
 	data->argv.args = 0;
+	if (data->pipe_fd)
+		free_darr((void **)data->pipe_fd);
 	if (data->argv.type)
 	{
 		free(data->argv.type);

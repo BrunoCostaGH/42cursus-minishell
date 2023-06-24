@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/23 14:57:34 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:37:10 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static int	check_var_within_quotes(char **prompt)
 			if ((*prompt)[++i] && (ft_isdigit((*prompt)[i]) || \
 			(*prompt)[i] == '\'' || (*prompt)[i] == '\"' ))
 				return (2);
-			else if ((ft_isalnum((*prompt)[i]) || (*prompt)[i] == '_'))
+			else if (!(*prompt)[i] || \
+			(ft_isalnum((*prompt)[i]) || (*prompt)[i] == '_'))
 				break ;
 		}
 		i++;

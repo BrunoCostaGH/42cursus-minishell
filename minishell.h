@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/24 14:43:48 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:23:25 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_data
 	int				exit_status;
 	int				*file_io;
 	int				*std_io;
+	int				**pipe_fd;
 	char			*prompt;
 	char			*tmp_file;
 	struct s_envp	envp;
@@ -113,6 +114,7 @@ void	pwd(t_data *data);
 void	free_darr(void **arr);
 void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
+void	reset_io(t_data *data);
 void	set_handle_struct(void);
 void	clear_argv(t_data *data);
 void	set_heredoc_handler(void);
@@ -126,7 +128,6 @@ void	export(t_data *data, char **argv);
 void	remove_invalid_var(char **prompt);
 void	exit_shell(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);
-void	reset_io(t_data *data, int **pipe_fd);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
