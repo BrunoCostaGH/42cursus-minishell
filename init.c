@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 14:57:12 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 17:57:46 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	init_tmp(t_data *data)
 	char	*temp;
 
 	i = 1;
+	if (data->tmp_file)
+		free(data->tmp_file);
 	data->tmp_file = ft_strdup(".tmp1");
 	while (access(data->tmp_file, F_OK) == 0)
 	{

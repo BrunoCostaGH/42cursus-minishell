@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 14:55:25 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:06:54 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ static void	get_fd_in_2(t_data *data, int **pipe_fd, const int *id, int *status)
 		if (data->file_io[0] == -1)
 		{
 			handle_error(data, data->argv.args[*id + 1][0], 0);
-			free_darr((void **)pipe_fd);
-			exit_shell(data, 0);
+			*status = 2;
+			return ;
 		}
 		dup2(data->file_io[0], STDIN_FILENO);
 		*status = 1;
@@ -92,23 +92,22 @@ int	get_fd_in(t_data *data, int **pipe_fd, int s_id)
 		get_fd_in_2(data, pipe_fd, &id, &status);
 		if (!status)
 			id++;
+		else if (status == 2)
+			return (status);
 	}
 	regroup_argv(data);
 	return (status);
 }
 
-void	reset_io(t_data *data)
+void	reset_io(t_data *data, int **pipe_fd)
 {
-	if (data->file_io[0])
-	{
+	free_darr((void **)pipe_fd);
+	if (data->file_io[0] > 0)
 		close(data->file_io[0]);
-		data->file_io[0] = 0;
-	}
-	if (data->file_io[1])
-	{
+	data->file_io[0] = 0;
+	if (data->file_io[1] > 0)
 		close(data->file_io[1]);
-		data->file_io[1] = 0;
-	}
+	data->file_io[1] = 0;
 	dup2(data->std_io[0], STDIN_FILENO);
 	dup2(data->std_io[1], STDOUT_FILENO);
 }

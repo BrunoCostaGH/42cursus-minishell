@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:05:44 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 15:01:37 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 17:56:37 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	heredoc(t_data *data, int **pipe_fd, int id)
 		str = 0;
 		free(data->tmp_file);
 		data->tmp_file = 0;
+		reset_io(data, pipe_fd);
 		exit_shell(data, 0);
 	}
 	waitpid(pid, 0, 0);

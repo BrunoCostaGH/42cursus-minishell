@@ -111,7 +111,6 @@ char	***duplicate_envp(t_data *data, int len);
 
 void	pwd(t_data *data);
 void	free_darr(void **arr);
-void	reset_io(t_data *data);
 void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);
@@ -127,6 +126,7 @@ void	export(t_data *data, char **argv);
 void	remove_invalid_var(char **prompt);
 void	exit_shell(t_data *data, char **argv);
 void	change_dir(t_data *data, char **argv);
+void	reset_io(t_data *data, int **pipe_fd);
 void	find_command(t_data *data, char **argv);
 void	execute_sig_action(int sig, void *data);
 void	run_executable(t_data *data, char **argv);
