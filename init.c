@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/22 16:46:45 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 14:57:12 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void	init_tmp(t_data *data)
 	char	*temp;
 
 	i = 1;
-	if (data->tmp_file)
-		return ;
 	data->tmp_file = ft_strdup(".tmp1");
 	while (access(data->tmp_file, F_OK) == 0)
 	{
@@ -67,6 +65,11 @@ void	*init_struct(char **envp)
 	data->file_io = ft_calloc(2 + 1, sizeof(int));
 	if (!data->file_io)
 		return (0);
+	data->std_io = ft_calloc(2 + 1, sizeof(int));
+	if (!data->std_io)
+		return (0);
+	data->std_io[0] = dup(STDIN_FILENO);
+	data->std_io[1] = dup(STDOUT_FILENO);
 	data->interactive = TRUE;
 	data->exit_status = 0;
 	data->prompt = NULL;

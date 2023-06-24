@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/23 14:41:16 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 14:43:48 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_data
 	int				interactive;
 	int				exit_status;
 	int				*file_io;
+	int				*std_io;
 	char			*prompt;
 	char			*tmp_file;
 	struct s_envp	envp;
@@ -110,6 +111,7 @@ char	***duplicate_envp(t_data *data, int len);
 
 void	pwd(t_data *data);
 void	free_darr(void **arr);
+void	reset_io(t_data *data);
 void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	set_handle_struct(void);

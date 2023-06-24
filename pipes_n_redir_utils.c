@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/23 14:05:43 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 14:55:25 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,20 @@ int	get_fd_in(t_data *data, int **pipe_fd, int s_id)
 	}
 	regroup_argv(data);
 	return (status);
+}
+
+void	reset_io(t_data *data)
+{
+	if (data->file_io[0])
+	{
+		close(data->file_io[0]);
+		data->file_io[0] = 0;
+	}
+	if (data->file_io[1])
+	{
+		close(data->file_io[1]);
+		data->file_io[1] = 0;
+	}
+	dup2(data->std_io[0], STDIN_FILENO);
+	dup2(data->std_io[1], STDOUT_FILENO);
 }
