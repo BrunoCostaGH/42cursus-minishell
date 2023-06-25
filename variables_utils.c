@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 14:39:02 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 19:15:22 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/25 10:51:31 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	check_if_invalid_var(char **prompt, int *i)
 	char	*temp;
 	char	*temp_res;
 
-	if ((*prompt)[*++i] && ft_isdigit((*prompt)[*i]))
+	if ((*prompt)[++*i] && ft_isdigit((*prompt)[*i]))
 	{
 		temp = ft_chrjoin('$', (*prompt)[*i]);
 		temp_res = ft_fndnrepl((*prompt), temp, "");
