@@ -25,7 +25,7 @@ static int	check_argv(t_data *data, char **argv)
 	return (0);
 }
 
-static void	clear_temp(t_data *data)
+void	clear_temp(t_data *data)
 {
 	if (access(data->tmp_file, F_OK) == 0)
 	{

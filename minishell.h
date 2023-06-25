@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/24 19:39:16 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/25 11:02:23 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void	init_tmp(t_data *data);
 void	set_argv(t_data *data);
 void	reset_io(t_data *data);
 void	set_handle_struct(void);
+void	clear_temp(t_data *data);
 void	clear_argv(t_data *data);
 void	set_heredoc_handler(void);
 void	regroup_argv(t_data *data);

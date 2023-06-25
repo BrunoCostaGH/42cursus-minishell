@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 19:38:55 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/25 11:16:40 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,22 @@ int	init_pipe_child(t_data *data)
 	return (0);
 }
 
+static void	delete_tmp_file(t_data *data)
+{
+	int		pid;
+
+	pid = fork();
+	if (pid == -1)
+		return ;
+	if (pid == 0)
+	{
+		clear_temp(data);
+		exit_shell(data, 0);
+	}
+	waitpid(pid, 0, 0);
+	free(data->tmp_file);
+}
+
 void	init_tmp(t_data *data)
 {
 	int		i;
@@ -59,7 +75,7 @@ void	init_tmp(t_data *data)
 
 	i = 1;
 	if (data->tmp_file)
-		free(data->tmp_file);
+		delete_tmp_file(data);
 	data->tmp_file = ft_strdup(".tmp1");
 	while (access(data->tmp_file, F_OK) == 0)
 	{
