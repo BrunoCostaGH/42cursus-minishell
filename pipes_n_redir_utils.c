@@ -16,13 +16,7 @@ void	open_file(t_data *data, char *file, int oflag, int *fd_io)
 {
 	if (*fd_io)
 		close(*fd_io);
-	if (access(data->tmp_file, F_OK) == 0)
-		*fd_io = open(file, oflag, S_IRWXU);
-	else
-	{
-		*fd_io = open(file, oflag, S_IRWXU);
-		write(*fd_io, "\0", 1);
-	}
+	*fd_io = open(file, oflag, S_IRWXU);
 	if (*fd_io == -1)
 		handle_error(data, file, 0);
 }
