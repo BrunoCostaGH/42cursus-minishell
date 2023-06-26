@@ -53,9 +53,8 @@ static void	get_fd_in_2(t_data *data, const int *id, int *status)
 {
 	if (data->argv.type[*id] == REDR_DELIM)
 	{
-		heredoc(data, *id);
+		*status = heredoc(data, *id);
 		dup2(data->file_io[0], STDIN_FILENO);
-		*status = 1;
 		clear_token(data, *id + 1);
 	}
 	else if (data->argv.type[*id] == REDR_INPUT)

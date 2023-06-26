@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:05:44 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 17:56:37 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/26 19:52:34 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	run_heredoc(t_data *data, int id)
 	exit_shell(data, 0);
 }
 
-void	heredoc(t_data *data, int id)
+int	heredoc(t_data *data, int id)
 {
 	int		pid;
 
@@ -47,12 +47,20 @@ void	heredoc(t_data *data, int id)
 	&data->file_io[0]);
 	pid = fork();
 	if (pid == -1)
-		return ;
+		return (0);
 	if (pid == 0)
 		run_heredoc(data, id);
-	waitpid(pid, 0, 0);
+	while (waitpid(pid, 0, WNOHANG) == 0)
+		;
+	if (access(data->tmp_file, F_OK) != 0)
+	{
+		free(data->tmp_file);
+		data->tmp_file = 0;
+		return (2);
+	}
 	close(data->file_io[0]);
 	data->file_io[0] = open(data->tmp_file, O_RDONLY);
 	if (data->file_io[0] == -1)
 		handle_error(data, data->tmp_file, 0);
+	return (1);
 }
