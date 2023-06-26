@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 23:12:22 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 19:09:53 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:42:01 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@ void	open_file(t_data *data, char *file, int oflag, int *fd_io)
 {
 	if (*fd_io)
 		close(*fd_io);
-	*fd_io = open(file, oflag, S_IRWXU);
+	if (access(data->tmp_file, F_OK) == 0)
+		*fd_io = open(file, oflag, S_IRWXU);
+	else
+	{
+		*fd_io = open(file, oflag, S_IRWXU);
+		write(*fd_io, "\0", 1);
+	}
 	if (*fd_io == -1)
 		handle_error(data, file, 0);
 }
