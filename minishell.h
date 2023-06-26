@@ -91,6 +91,7 @@ typedef struct s_data
 int		darr_len(void **arr);
 int		iarr_len(const int *arr);
 int		check_tokens(t_data *data);
+int		heredoc(t_data *data, int id);
 int		init_pipe_child(t_data *data);
 int		count_char(const char *prompt);
 int		count_group(const char *prompt);
@@ -122,7 +123,6 @@ void	clear_temp(t_data *data);
 void	clear_argv(t_data *data);
 void	set_heredoc_handler(void);
 void	regroup_argv(t_data *data);
-void	heredoc(t_data *data, int id);
 void	env(t_data *data, char **argv);
 void	echo(t_data *data, char **argv);
 void	print_argv(t_data *data, int id);
