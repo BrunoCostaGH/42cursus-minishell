@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:14:23 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/20 16:42:13 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/26 23:32:21 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ int	set_existing_env(t_data *data, char **argv, int *index, int index_argv)
 		{
 			free(data->envp.envp[*index][1]);
 			data->envp.envp[*index][1] = ft_strdup(temp[1]);
+		}
+		else if (ft_strchr(argv[index_argv], '='))
+		{
+			free(data->envp.envp[*index][1]);
+			data->envp.envp[*index][1] = ft_calloc(1, sizeof(char));
 		}
 		status = 1;
 	}
