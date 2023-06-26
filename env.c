@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/05/29 18:21:57 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/21 15:33:29 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,6 @@ void	unset(t_data *data, char **argv)
 		ft_strlen(argv[index_argv]) + 1))
 			index_env++;
 		do_unset(data, &index_env);
-	}
-	if (!argv[1])
-	{
-		handle_error(data, argv[0], 0);
-		return ;
 	}
 }
 

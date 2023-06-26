@@ -1,58 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   heredoc_signals.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/25 18:17:40 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/22 19:50:19 by bsilva-c         ###   ########.fr       */
+/*   Created: 2023/06/22 20:01:18 by bsilva-c          #+#    #+#             */
+/*   Updated: 2023/06/23 14:09:47 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_sig_action(int sig, void *data)
+void	execute_sig_int(int sig, void *data)
 {
 	static t_data	*static_data;
 
 	if (!static_data && data)
 		static_data = (t_data *)data;
-	if (static_data && static_data->interactive)
+	if (static_data)
 	{
 		if (sig == SIGINT)
 		{
-			printf("\b\b  \b\b");
 			printf("\n");
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-		}
-		if (sig == SIGQUIT)
-		{
-			printf("\b\b  \b\b");
-			rl_redisplay();
+			close(static_data->file_io[0]);
+			close(static_data->file_io[1]);
+			exit_shell(static_data, 0);
 		}
 	}
-	if (!(static_data->interactive))
-		if (sig == SIGINT)
-			write(1, &"\n", 1);
-	if (sig == SIGINT)
-		static_data->exit_status = 130;
 }
 
 static void	handle(int sig)
 {
-	execute_sig_action(sig, 0);
+	execute_sig_int(sig, 0);
 }
 
-void	set_handle_struct(void)
+void	set_heredoc_handler(void)
 {
 	struct sigaction	sa;
 
 	sa.sa_handler = &handle;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
+	signal(SIGKILL, SIG_DFL);
 	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
 }

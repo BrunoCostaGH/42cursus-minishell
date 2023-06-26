@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:32:29 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/17 16:04:26 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:22:11 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	handle_quote(const char *prompt, int *index, int *quote)
 {
-	if (*prompt == *quote)
+	if (prompt[0] == *quote)
 		*quote = FALSE;
-	else if ((*prompt == 34 || *prompt == 39) && \
-		ft_strchr(prompt + 1, *prompt) && !*quote)
-		*quote = (int)*prompt;
+	else if ((prompt[0] == 34 || prompt[0] == 39) && \
+		ft_strchr(prompt + 1, prompt[0]) && !*quote)
+		*quote = (int)prompt[0];
 	else
 		return (0);
 	if (index)
@@ -84,12 +84,13 @@ void	set_argv(t_data *data)
 	const char	*prompt;
 
 	id = 0;
-	check_variables(data);
+	check_variables(data, &data->prompt, TRUE);
 	prompt = data->prompt;
 	data->argv.args = ft_calloc(count_group(prompt) + 1, sizeof(char **));
 	data->argv.args[0] = ft_calloc(count_string(prompt) + 1, sizeof(char *));
 	data->argv.type = ft_calloc(count_group(prompt) + 2, sizeof(int));
-	if (!data->argv.args || !data->argv.type)
+	data->pipe_fd = ft_calloc(count_group(prompt) + 1, sizeof(int *));
+	if (!data->argv.args || !data->argv.type || !data->pipe_fd)
 		return ;
 	set_result(data, prompt, data->argv.args);
 	while (data->argv.type[id++])

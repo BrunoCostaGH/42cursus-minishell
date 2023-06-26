@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/19 20:53:14 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:39:36 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,78 +25,72 @@ static void	close_pipes(int **pipe_fd, int id)
 	}
 }
 
-static void	run_token_logic(t_data *data, int **pipe_fd, int id, int pipe_index)
+static void	run_command(t_data *data, int *pid, int pipe_index, int id)
 {
-	while (id > 0 && pipe_fd[pipe_index])
+	*pid = fork();
+	if (*pid == 0)
+	{
+		data->exit_status = 0;
+		if (data->file_io[1])
+			dup2(data->file_io[1], STDOUT_FILENO);
+		else if (data->argv.type[id] == PIPE)
+			dup2(data->pipe_fd[pipe_index][1], STDOUT_FILENO);
+		close_pipes(data->pipe_fd, pipe_index);
+		find_command(data, data->argv.args[id]);
+		reset_io(data);
+		exit_shell(data, 0);
+	}
+}
+
+static int	run_token_logic(t_data *data, int *pid, int id)
+{
+	int	pipe_index;
+	int	status;
+
+	pipe_index = 0;
+	while (id > 0 && data->pipe_fd[pipe_index])
 		pipe_index++;
-	data->exit_status = 0;
 	(void)get_fd_out(data, id);
-	if (get_fd_in(data, pipe_fd, id) == 0)
+	status = get_fd_in(data, id);
+	if (status == 0)
 	{
 		if (id > 0 && data->argv.type[id - 1] == PIPE)
 		{
 			if (data->argv.type[id] == PIPE)
 				pipe_index--;
-			dup2(pipe_fd[pipe_index - 1][0], STDIN_FILENO);
+			dup2(data->pipe_fd[pipe_index - 1][0], STDIN_FILENO);
 		}
 	}
-	if (data->file_io[1])
-		dup2(data->file_io[1], STDOUT_FILENO);
-	else if (data->argv.type[id] == PIPE)
-		dup2(pipe_fd[pipe_index][1], STDOUT_FILENO);
-	close_pipes(pipe_fd, pipe_index);
-	find_command(data, data->argv.args[id]);
-	if (data->file_io[0])
-		close(data->file_io[0]);
-	if (data->file_io[1])
-		close(data->file_io[1]);
-	free_darr((void **)pipe_fd);
-	exit_shell(data, 0);
+	else if (status == 2)
+		return (1);
+	run_command(data, pid, pipe_index, id);
+	return (0);
 }
 
-static void	run_token_logic_chil(t_data *data, int **pipe_fd, int *pid)
+int	create_token_logic(t_data *data, int *pid)
 {
 	int	id;
 	int	pipe_index;
 
 	id = 0;
-	while (data->argv.args[++id])
+	while (data->argv.args[id] || data->argv.type[id])
 	{
 		pipe_index = id;
-		if (data->argv.type[id - 1] != PIPE)
+		if (id > 0 && data->argv.type[id - 1] != PIPE)
+		{
+			id++;
 			continue ;
+		}
 		while (data->argv.type[pipe_index] && data->argv.type[pipe_index] != 1)
 			pipe_index++;
 		if (data->argv.type[pipe_index] == PIPE)
-		{
-			pipe_index = 0;
-			while (pipe_fd[pipe_index])
-				pipe_index++;
-			pipe_fd[pipe_index] = ft_calloc(2 + 1, sizeof(int));
-			if (!pipe_fd[pipe_index])
-				return ;
-			pipe(pipe_fd[pipe_index]);
-		}
-		*pid = fork();
-		if (*pid == 0)
-			run_token_logic(data, pipe_fd, id, 0);
+			if (init_pipe_child(data))
+				return (1);
+		if (run_token_logic(data, pid, id) == 1)
+			return (1);
+		reset_io(data);
+		id++;
 	}
-}
-
-int	create_token_logic(t_data *data, int **pipe_fd, int *pid)
-{
-	int	id;
-
-	id = 0;
-	pipe_fd[id] = ft_calloc(2 + 1, sizeof(int));
-	if (!pipe_fd[id])
-		return (1);
-	pipe(pipe_fd[id]);
-	*pid = fork();
-	if (*pid == 0)
-		run_token_logic(data, pipe_fd, id, 0);
-	else
-		run_token_logic_chil(data, pipe_fd, pid);
 	return (0);
 }
 
@@ -104,25 +98,22 @@ int	check_tokens(t_data *data)
 {
 	int		pid;
 	int		pipe_amount;
-	int		**pipe_fd;
 
 	if (!data->argv.args)
 		return (0);
 	pipe_amount = iarr_len(data->argv.type);
 	if (pipe_amount)
 	{
-		pipe_fd = ft_calloc(pipe_amount + 2, sizeof(int *));
-		if (!pipe_fd)
-			return (0);
-		if (create_token_logic(data, pipe_fd, &pid))
-			return (1);
-		close_pipes(pipe_fd, iarr_len(data->argv.type));
-		while (waitpid(pid, &data->exit_status, WUNTRACED) != -1)
-			;
-		set_error_status(data, 0);
-		while (waitpid(-1, 0, 0) != -1)
-			;
-		free_darr((void **)pipe_fd);
+		if (create_token_logic(data, &pid) == 0)
+		{
+			close_pipes(data->pipe_fd, iarr_len(data->argv.type));
+			while (waitpid(pid, &data->exit_status, WNOHANG) == 0)
+				;
+			set_error_status(data, 0);
+			while (waitpid(-1, 0, 0) != -1)
+				;
+		}
+		reset_io(data);
 		return (1);
 	}
 	return (0);

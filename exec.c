@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/20 15:30:05 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/06/23 14:17:52 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,27 @@ void	set_error_status(t_data *data, char **argv)
 		write(2, "minishell: Quit (core dump)\n", 28);
 	else if (argv && access(argv[0], F_OK))
 	{
-		write(2, argv[0], ft_strlen(argv[0]));
-		write(2, ": command not found\n", 20);
+		if (!ft_strchr(argv[0], '/'))
+		{
+			write(2, argv[0], ft_strlen(argv[0]));
+			write(2, ": command not found\n", 20);
+		}
+		else
+		{
+			write(2, "minishell: ", 11);
+			write(2, argv[0], ft_strlen(argv[0]));
+			write(2, ": No such file or directory\n", 28);
+		}
 		data->exit_status = 127;
 		return ;
 	}
-	data->exit_status >>= 8;
+	if ((((data->exit_status) & 0x7f) + 1) >> 1)
+	{
+		if (((data->exit_status) & 0x7f) == 2)
+			data->exit_status = 130;
+	}
+	else
+		data->exit_status >>= 8;
 }
 
 static void	build_envp(t_data *data)
@@ -32,17 +47,21 @@ static void	build_envp(t_data *data)
 	char	*temp;
 
 	len = 0;
-	while (data->envp.envp[len] && data->envp.envp[len][1])
+	while (data->envp.envp[len])
 		len++;
 	if (data->envp.exec_envp)
 		free_darr((void **)data->envp.exec_envp);
-	data->envp.exec_envp = ft_calloc(sizeof(char *), len + 1);
+	data->envp.exec_envp = ft_calloc(len + 1, sizeof(char *));
 	if (!data->envp.exec_envp)
 		return ;
 	while (len > 0 && data->envp.envp[--len])
 	{
 		temp = ft_strjoin(data->envp.envp[len][0], "=");
-		data->envp.exec_envp[len] = ft_strjoin(temp, data->envp.envp[len][1]);
+		if (data->envp.envp[len][1])
+			data->envp.exec_envp[len] = ft_strjoin(temp, \
+			data->envp.envp[len][1]);
+		else
+			data->envp.exec_envp[len] = ft_strdup(temp);
 		free(temp);
 	}
 }
@@ -85,7 +104,8 @@ void	run_executable(t_data *data, char **argv)
 
 	if (argv && *argv)
 	{
-		argv[0] = check_environment(data, argv[0]);
+		if (!ft_strchr(argv[0], '/'))
+			argv[0] = check_environment(data, argv[0]);
 		build_envp(data);
 		pid = fork();
 		if (pid == -1)
@@ -100,7 +120,7 @@ void	run_executable(t_data *data, char **argv)
 		}
 		else
 		{
-			while (waitpid(pid, &data->exit_status, WUNTRACED) == -1)
+			while (waitpid(pid, &data->exit_status, WNOHANG) == 0)
 				;
 			set_error_status(data, argv);
 		}
