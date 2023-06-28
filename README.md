@@ -1,4 +1,4 @@
-# 42cursus-minishell ([Subject](https://cdn.intra.42.fr/pdf/pdf/65718/en.subject.pdf))
+# 42cursus-minishell ([Subject](/.github/en.subject.pdf))
 
 ## Description
 
