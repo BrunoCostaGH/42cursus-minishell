@@ -77,7 +77,7 @@ static void	do_check_variable(t_data *data, char **prompt, int for_argv)
 		remove_invalid_var(prompt);
 		check_variables(data, prompt, for_argv);
 	}
-	if (!temp)
+	else if (!temp)
 	{
 		if (set_env_var(data, prompt))
 			return ;
