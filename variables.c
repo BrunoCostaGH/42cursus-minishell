@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:16:07 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 19:17:53 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/07/03 20:08:12 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,21 @@ static int	set_env_var(t_data *data, char **prompt)
 	return (0);
 }
 
-static void	do_check_variable(t_data *data, char **prompt)
+static void	do_check_variable(t_data *data, char **prompt, int for_argv)
 {
 	int	temp;
 
-	temp = check_var_within_quotes(prompt);
+	temp = check_var_within_quotes(prompt, for_argv);
 	if (temp == 2)
 	{
 		remove_invalid_var(prompt);
-		check_variables(data, prompt, 0);
+		check_variables(data, prompt, for_argv);
 	}
 	else if (!temp)
 	{
 		if (set_env_var(data, prompt))
 			return ;
-		check_variables(data, prompt, 0);
+		check_variables(data, prompt, for_argv);
 	}
 }
 
@@ -92,15 +92,15 @@ void	check_variables(t_data *data, char **prompt, int for_argv)
 		if (for_argv && ft_strnstr(*prompt, "~/", ft_strlen(*prompt)))
 		{
 			set_home_var(data, prompt);
-			check_variables(data, prompt, 0);
+			check_variables(data, prompt, for_argv);
 		}
 		else if (ft_strchr(*prompt, '$') && \
 		(ft_strchr(*prompt, '$') + 1)[0] != '?')
-			do_check_variable(data, prompt);
+			do_check_variable(data, prompt, for_argv);
 		else if (ft_strnstr(*prompt, "$?", ft_strlen(*prompt)))
 		{
 			set_exit_status(data, prompt);
-			check_variables(data, prompt, 0);
+			check_variables(data, prompt, for_argv);
 		}
 	}
 }
