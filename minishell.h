@@ -99,7 +99,7 @@ int		count_string(const char *prompt);
 int		get_fd_in(t_data *data, int s_id);
 int		get_fd_out(t_data *data, int s_id);
 int		check_envp(t_data *data, char **argv);
-int		check_var_within_quotes(char **prompt);
+int		check_var_within_quotes(char **prompt, int for_argv);
 int		handle_error(t_data *data, char *command, int error);
 int		handle_quote(const char *prompt, int *index, int *quote);
 int		check_identifier(t_data *data, char *command, char *arg);

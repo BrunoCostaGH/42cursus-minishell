@@ -6,13 +6,13 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 14:39:02 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/25 10:51:31 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/07/03 20:07:39 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_var_within_quotes(char **prompt)
+int	check_var_within_quotes(char **prompt, int for_argv)
 {
 	int	i;
 	int	quote;
@@ -21,7 +21,7 @@ int	check_var_within_quotes(char **prompt)
 	quote = FALSE;
 	while (*prompt && (*prompt)[i])
 	{
-		if (handle_quote(*prompt + i, &i, &quote))
+		if (for_argv && handle_quote(*prompt + i, &i, &quote))
 			continue ;
 		if (quote == 39 && (*prompt)[i] == '$')
 			return (TRUE);
