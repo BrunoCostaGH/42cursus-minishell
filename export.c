@@ -41,10 +41,10 @@ static int	check_argv(t_data *data, char *arg, int initial)
 		build_sorted_env(data, data->envp.sorted_envp);
 		while (data->envp.sorted_envp[++index - 1])
 		{
-			printf("declare -x %s", data->envp.sorted_envp[index - 1][0]);
+			ft_printf("declare -x %s", data->envp.sorted_envp[index - 1][0]);
 			if (data->envp.sorted_envp[index - 1][1])
-				printf("=\"%s\"", data->envp.sorted_envp[index - 1][1]);
-			printf("\n");
+				ft_printf("=\"%s\"", data->envp.sorted_envp[index - 1][1]);
+			ft_printf("\n");
 		}
 		return (1);
 	}

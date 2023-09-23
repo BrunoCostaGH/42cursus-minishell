@@ -22,7 +22,7 @@ void	execute_sig_int(int sig, void *data)
 	{
 		if (sig == SIGINT)
 		{
-			printf("\n");
+			ft_printf("\n");
 			close(static_data->file_io[0]);
 			close(static_data->file_io[1]);
 			exit_shell(static_data, 0);

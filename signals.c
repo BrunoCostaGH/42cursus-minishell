@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:17:40 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/22 19:50:19 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/23 16:29:11 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,15 @@ void	execute_sig_action(int sig, void *data)
 	{
 		if (sig == SIGINT)
 		{
-			printf("\b\b  \b\b");
-			printf("\n");
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
+			ft_printf("\b\b  \b\b");
+			ft_printf("\n");
 		}
 		if (sig == SIGQUIT)
-		{
-			printf("\b\b  \b\b");
-			rl_redisplay();
-		}
+			ft_printf("\b\b  \b\b");
 	}
 	if (!(static_data->interactive))
 		if (sig == SIGINT)
-			write(1, &"\n", 1);
+			ft_printf("\n");
 	if (sig == SIGINT)
 		static_data->exit_status = 130;
 }

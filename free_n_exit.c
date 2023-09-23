@@ -94,7 +94,7 @@ void	exit_shell(t_data *data, char **argv)
 	check_return = 0;
 	if (argv)
 	{
-		printf("exit\n");
+		ft_printf("exit\n");
 		check_return = check_argv(data, argv);
 	}
 	if (check_return == 1)

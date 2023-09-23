@@ -84,21 +84,3 @@ void	regroup_argv(t_data *data)
 		i++;
 	}
 }
-
-void	print_argv(t_data *data, int id)
-{
-	int	i;
-	int	j;
-
-	i = id - 1;
-	while (data->argv.args[++i])
-	{
-		j = -1;
-		while (data->argv.args[i][++j])
-		{
-			fprintf(stderr, "%s ", data->argv.args[i][j]);
-		}
-		fprintf(stderr, "[%d](%s) ", i, get_token(data, i));
-	}
-	fprintf(stderr, "\n");
-}

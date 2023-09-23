@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/16 18:31:54 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/23 16:48:20 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		data->interactive = TRUE;
-		data->prompt = readline("\001\e[1;32m\002(Minishell)$ \001\e[0m\002");
+		data->prompt = ft_readline("\001\e[1;32m\002(Minishell)$ \001\e[0m\002");
+		ft_printf("\n============ %s ============\n", data->prompt);
 		data->interactive = FALSE;
 		if (data->prompt == NULL)
 			data->prompt = ft_strdup("exit");

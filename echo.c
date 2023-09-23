@@ -44,17 +44,17 @@ void	echo(t_data *data, char **argv)
 			argv[i][ft_strlen(argv[i]) - 1] == '\r')
 				break ;
 			if (argv[i + 1])
-				printf("%s ", argv[i++]);
+				ft_printf("%s ", argv[i++]);
 			else
-				printf("%s", argv[i++]);
+				ft_printf("%s", argv[i++]);
 		}
 	}
 	else if (argv[i])
 	{
 		while (argv[i + 1])
-			printf("%s ", argv[i++]);
-		printf("%s\n", argv[i]);
+			ft_printf("%s ", argv[i++]);
+		ft_printf("%s\n", argv[i]);
 	}
 	else
-		printf("\n");
+		ft_printf("\n");
 }

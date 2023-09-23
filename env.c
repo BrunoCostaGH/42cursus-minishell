@@ -75,7 +75,7 @@ void	env(t_data *data, char **argv)
 	while (data->envp.envp[i] != NULL)
 	{
 		if (data->envp.envp[i][1])
-			printf("%s=%s\n", data->envp.envp[i][0], data->envp.envp[i][1]);
+			ft_printf("%s=%s\n", data->envp.envp[i][0], data->envp.envp[i][1]);
 		i++;
 	}
 }
