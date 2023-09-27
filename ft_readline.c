@@ -6,40 +6,76 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/09/26 19:51:27 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/27 00:57:50 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <termios.h> /* tcgetattr() and tcsetattr() */
+#include <termios.h>
 #include "libft/libft.h"
+
+/* TODO
+ * fix text overwrite with arrow keys
+ * add delete key
+ */
+static void	print_char(char *_return, char c)
+{
+	char	buf[2];
+
+	if (!c)
+		return ;
+	if (c == '\x1b')
+	{
+		read(0, &buf[0], 1);
+		read(0, &buf[1], 1);
+		/*if (ft_tolower(buf[1]) == 'a')
+			;//ft_printf("\x1b[1A");
+		else if (ft_tolower(buf[1]) == 'b')
+			;//ft_printf("\x1b[1B");
+		else if (ft_tolower(buf[1]) == 'c')
+			;//ft_printf("\x1b[1C");
+		else if (ft_tolower(buf[1]) == 'd')
+			;//ft_printf("\x1b[1D");*/
+	}
+	else if (c == 0x7f)
+	{
+		ft_printf("\b \b");
+		_return[ft_strlen(_return) - 2] = 0;
+		return ;
+	}
+	else
+	{
+		ft_printf("%c", _return[ft_strlen(_return) - 1]);
+		return ;
+	}
+	_return[ft_strlen(_return) - 1] = 0;
+}
 
 /*
  * RETURN VALUE
- * Returns a malloc'd string with the user input;
+ * Returns a memory allocated string with the user input
  */
 static char	*get_user_input(void)
 {
 	char	*temp;
 	char	*_return;
-	char	*buf;
+	char	buf[1];
 	ssize_t	read_bytes;
 
 	_return = ft_calloc(1, sizeof(char));
-	buf = ft_calloc(2, sizeof(char));
-	read_bytes = read(0, buf, 1);
+	read_bytes = read(0, &buf, 1);
 	buf[read_bytes] = '\0';
-	while (read_bytes > 0)
+	while (read_bytes >= 0)
 	{
 		temp = _return;
 		_return = ft_strjoin(temp, buf);
 		if (temp)
 			free(temp);
+		print_char(_return, *buf);
 		if (ft_strchr(buf, '\n'))
 			break ;
-		read_bytes = read(0, buf, 1);
+		read_bytes = read(0, &buf, 1);
 		buf[read_bytes] = '\0';
 	}
-	free(buf);
 	return (_return);
 }
 
@@ -47,7 +83,7 @@ static char	*get_user_input(void)
  * RETURN VALUE
  * Returns the current input, without waiting for user prompt
  */
-static char	*get_current_input(void)
+static char	*get_input(void)
 {
 	struct termios	old;
 	struct termios	new;
@@ -55,7 +91,7 @@ static char	*get_current_input(void)
 
 	tcgetattr(STDIN_FILENO, &old);
 	new = old;
-	new.c_lflag &= ~ICANON;
+	new.c_lflag &= ~(ICANON | ECHO | ECHOE);
 	new.c_cc[VMIN] = 0;
 	new.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSANOW, &new);
@@ -64,28 +100,19 @@ static char	*get_current_input(void)
 	return (ch);
 }
 
-//TODO on multi-line, only display the text that is executing and
-// not the whole block
+/*
+ * TODO
+ * fix prompt able to be overwritten or deleted
+ */
+
 char	*ft_readline(char *prompt)
 {
-	char	*temp[2];
+	char	*temp;
 	char	*_return;
 
 	ft_printf("%s", prompt);
-	temp[0] = get_current_input();
-	if (ft_strlen(temp[0]) > 0 && ft_strchr(temp[0], '\n'))
-	{
-		ft_printf("%s", temp[0]);
-		_return = ft_fndnrepl(temp[0], "\n", "\0");
-		free(temp[0]);
-		return (_return);
-	}
-	ft_printf("%s", temp[0]);
-	temp[1] = get_user_input();
-	_return = ft_strjoin(temp[0], temp[1]);
-	free(temp[0]);
-	temp[0] = ft_fndnrepl(_return, "\n", "\0");
-	free(_return);
-	free(temp[1]);
-	return (temp[0]);
+	temp = get_input();
+	_return = ft_fndnrepl(temp, "\n", "\0");
+	free(temp);
+	return (_return);
 }
