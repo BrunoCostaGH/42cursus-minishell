@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/09/25 19:09:36 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/27 18:41:15 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <dirent.h>
 # include <unistd.h>
 # include <signal.h>
+# include <stdbool.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -66,6 +67,13 @@
 #  define REDR_DELIM 4
 # endif
 
+typedef struct s_readline
+{
+	t_list	history;
+	char	*input;
+	int		cursor_pos;
+}	t_readline;
+
 typedef struct s_envp
 {
 	char	**exec_envp;
@@ -110,7 +118,7 @@ int		check_identifier(t_data *data, char *command, char *arg);
 int		check_for_special_char(t_data *data, const char *prompt, int *i, \
 int id);
 
-char	*ft_readline(char *prompt);
+char	*ft_readline(const char* prompt);
 char	*ft_chrjoin(char c1, char c2);
 char	*get_token(t_data *data, int id);
 char	*get_env_var(t_data *data, const char *var_name);
