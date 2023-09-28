@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/24 18:18:30 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:54:56 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	exit_shell(t_data *data, char **argv)
 		exit_status = ft_atoi(argv[1]);
 	else
 		exit_status = data->exit_status;
-	rl_clear_history();
+	// TODO rl_clear_history();
 	free(data->file_io);
 	free(data->std_io);
 	if (data->tmp_file)

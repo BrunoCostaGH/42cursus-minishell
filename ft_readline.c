@@ -6,13 +6,12 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/09/28 19:48:38 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:56:38 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <termios.h>
 #include "minishell.h"
-
 
 /*
  * RETURN VALUE
@@ -34,11 +33,11 @@ static char	*ft_strinsert(const char *string, char *to_insert, size_t pos)
 	return (_return);
 }
 
-/* TODO
- * fix printing after writing within string
- * fix cursor after using tab [tab is disabled for now]
- * add history
- * add tab autocomplete
+/*
+ * TODO fix printing after writing within string
+ * TODO fix cursor after using tab [tab is disabled for now]
+ * TODO add history
+ * TODO add tab autocomplete
  */
 static void	print_char(t_readline *rl_data, char *string)
 {
@@ -149,7 +148,7 @@ static char	*get_input(const char *prompt)
 	rl_data.cursor_pos = 0;
 	get_user_input(&rl_data, prompt);
 	tcsetattr(STDIN_FILENO, TCSANOW, &old);
-	return (ft_strdup(rl_data.input));
+	return (rl_data.input);
 }
 
 char	*ft_readline(const char *prompt)
