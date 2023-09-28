@@ -20,7 +20,7 @@ static void	run_heredoc(t_data *data, int id)
 	set_heredoc_handler();
 	while (1)
 	{
-		str = readline("heredoc> ");
+		str = ft_readline("heredoc> ");
 		if (!str || !ft_strncmp(data->argv.args[id + 1][0], \
 			str, ft_strlen(data->argv.args[id + 1][0]) + 1))
 			break ;

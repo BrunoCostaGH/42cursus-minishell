@@ -6,26 +6,47 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/09/27 19:58:22 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:48:38 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <termios.h>
 #include "minishell.h"
 
+
+/*
+ * RETURN VALUE
+ * Returns a memory allocated string with the updated string
+ */
+static char	*ft_strinsert(const char *string, char *to_insert, size_t pos)
+{
+	char	*temp;
+	char	*_return;
+
+	_return = ft_calloc(pos + 1, sizeof(char));
+	(void)ft_strlcpy(_return, string, pos + 1);
+	temp = ft_strjoin(_return, to_insert);
+	if (_return)
+		free(_return);
+	_return = ft_strjoin(temp, string + pos);
+	if (temp)
+		free(temp);
+	return (_return);
+}
+
 /* TODO
- * fix writing in the written prompt
+ * fix printing after writing within string
  * fix cursor after using tab [tab is disabled for now]
  * add history
  * add tab autocomplete
  */
-static void	print_char(t_readline *rl_data, char *c)
+static void	print_char(t_readline *rl_data, char *string)
 {
 	char	buf[3];
 
-	if (!*c)
+	if (!*string)
 		return ;
-	if (*c == '\x1b' && read(0, &buf[0], 1) && read(0, &buf[1], 1))
+	if (*string == '\x1b' && read(0, &buf[0], 1) && read(0, &buf[1], 1))
 	{
 		if (ft_tolower(buf[1]) == 'a')
 			;//ft_printf("\x1b[1A");
@@ -47,9 +68,9 @@ static void	print_char(t_readline *rl_data, char *c)
 		else if (ft_tolower(buf[1]) == '3')
 			;//TODO DELETE KEY
 	}
-	else if (*c == 0x04)
-		*c = 0;
-	else if (*c == 0x7f && ft_strlen(rl_data->input))
+	else if (*string == 0x04)
+		*string = 0;
+	else if (*string == 0x7f && ft_strlen(rl_data->input))
 	{
 		ft_printf("\b \b");
 		rl_data->input[ft_strlen(rl_data->input) - 1] = 0;
@@ -83,8 +104,12 @@ static void	get_user_input(t_readline *rl_data, const char *prompt)
 			if (ft_isprint(buf[0]) || (buf[0] >= 7 && buf[0] <= 13 && buf[0] != 9))
 			{
 				temp = rl_data->input;
-				rl_data->input = ft_strjoin(temp, buf); //TODO replace with insert at specific cursor pos
-				ft_printf("%c", *buf);
+				rl_data->input = ft_strinsert(rl_data->input, buf, rl_data->cursor_pos);
+				for (int i = rl_data->cursor_pos; i < ft_strlen(rl_data->input) - 1; i++)
+				{
+					ft_printf("\x1b[1D");
+				}
+				ft_printf("%s", rl_data->input + rl_data->cursor_pos);
 				rl_data->cursor_pos++;
 				free(temp);
 			}
