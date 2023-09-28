@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:03:13 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/09/26 16:36:51 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:54:20 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	main(int ac, char **av, char **envp)
 		data->interactive = FALSE;
 		if (data->prompt == NULL)
 			data->prompt = ft_strdup("exit");
-		if (data->prompt && *data->prompt)
-			add_history(data->prompt);
+		//if (data->prompt && *data->prompt)
+			//TODO add_history(data->prompt);
 		set_argv(data);
 		if (!check_tokens(data) && data->argv.args)
 			find_command(data, *data->argv.args);

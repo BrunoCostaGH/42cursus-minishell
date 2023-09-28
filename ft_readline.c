@@ -6,13 +6,12 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/09/28 19:48:38 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:52:35 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <termios.h>
 #include "minishell.h"
-
 
 /*
  * RETURN VALUE
@@ -149,7 +148,7 @@ static char	*get_input(const char *prompt)
 	rl_data.cursor_pos = 0;
 	get_user_input(&rl_data, prompt);
 	tcsetattr(STDIN_FILENO, TCSANOW, &old);
-	return (ft_strdup(rl_data.input));
+	return (rl_data.input);
 }
 
 char	*ft_readline(const char *prompt)

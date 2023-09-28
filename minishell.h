@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/09/27 18:41:15 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:53:56 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <sys/wait.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
