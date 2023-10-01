@@ -6,13 +6,14 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 19:24:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/09/28 19:53:56 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/30 17:00:51 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "ft_readline.h"
 # include "libft/libft.h"
 # include <stdio.h>
 # include <errno.h>
@@ -65,12 +66,6 @@
 #  define REDR_DELIM 4
 # endif
 
-typedef struct s_readline
-{
-	t_list	history;
-	char	*input;
-	int		cursor_pos;
-}	t_readline;
 
 typedef struct s_envp
 {
@@ -116,7 +111,6 @@ int		check_identifier(t_data *data, char *command, char *arg);
 int		check_for_special_char(t_data *data, const char *prompt, int *i, \
 int id);
 
-char	*ft_readline(const char* prompt);
 char	*ft_chrjoin(char c1, char c2);
 char	*get_token(t_data *data, int id);
 char	*get_env_var(t_data *data, const char *var_name);

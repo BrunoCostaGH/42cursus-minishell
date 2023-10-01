@@ -103,7 +103,7 @@ void	exit_shell(t_data *data, char **argv)
 		exit_status = ft_atoi(argv[1]);
 	else
 		exit_status = data->exit_status;
-	// TODO rl_clear_history();
+	rl_clear_history();
 	free(data->file_io);
 	free(data->std_io);
 	if (data->tmp_file)
