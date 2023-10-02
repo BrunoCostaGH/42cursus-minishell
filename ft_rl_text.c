@@ -70,8 +70,8 @@ void	m_rl_insert_text(void *p_data, char *text)
 		rl_data->input = ft_calloc(1, sizeof(char));
 	before_str = ft_calloc(ft_strlen(rl_data->input) + ft_strlen(text) + 1, \
 		sizeof(char));
-	ft_strlcpy(before_str, rl_data->input, rl_data->cursor_pos + 1);
-	after_str = ft_strdup(rl_data->input + rl_data->cursor_pos);
+	ft_strlcpy(before_str, rl_data->input, rl_data->cursor_offset + 1);
+	after_str = ft_strdup(rl_data->input + rl_data->cursor_offset);
 	free(rl_data->input);
 	rl_data->input = ft_strjoin(before_str, text);
 	if (before_str)

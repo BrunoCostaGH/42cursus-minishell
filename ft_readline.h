@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 16:58:39 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/01 19:30:53 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/02 15:36:02 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@
 
 typedef struct s_readline
 {
-	t_list	**history;
-	char	*input;
-	int		cursor_pos;
+	t_list			**history;
+	unsigned int	history_offset;
+	char			*input;
+	int				cursor_offset;
 }	t_readline;
 
 char	*ft_readline(const char *prompt);

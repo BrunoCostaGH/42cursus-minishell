@@ -6,13 +6,42 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 16:57:54 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/01 20:01:25 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/02 15:56:37 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_readline.h"
 
-//TODO fix logic, not working.
+char	*previous_history(t_readline *rl_data)
+{
+	unsigned int	index;
+	t_list			*lst;
+
+	if (rl_data->history_offset >= (unsigned int)ft_lstsize(*rl_data->history))
+		return (0);
+	index = 0;
+	rl_data->history_offset++;
+	lst = *rl_data->history;
+	while (lst && ++index < rl_data->history_offset)
+		lst = lst->next;
+	return (lst->content);
+}
+
+char	*next_history(t_readline *rl_data)
+{
+	unsigned int	index;
+	t_list			*lst;
+
+	if (!rl_data->history_offset || \
+		(rl_data->history_offset && !--rl_data->history_offset))
+		return (0);
+	index = 0;
+	lst = *rl_data->history;
+	while (lst && ++index < rl_data->history_offset)
+		lst = lst->next;
+	return (lst->content);
+}
+
 void	m_rl_clear_history(void *p_data)
 {
 	static t_readline	*rl_data;
@@ -36,11 +65,9 @@ void	rl_clear_history(void)
 	m_rl_clear_history(0);
 }
 
-//TODO fix logic, not working.
 void	m_add_history(void *p_data, char *string)
 {
 	static t_readline	*rl_data;
-	t_list				**temp;
 
 	if (!rl_data || p_data)
 	{
@@ -51,21 +78,7 @@ void	m_add_history(void *p_data, char *string)
 		}
 		return ;
 	}
-	temp = ft_calloc(((sizeof(rl_data->history) / sizeof(t_list *)) + 1), \
-		sizeof(t_list *));
-	*temp = *rl_data->history;
-	ft_lstadd_front(temp, ft_lstnew(string));
-	if (rl_data->history)
-	{
-		ft_lstclear(rl_data->history, &free);
-		free(rl_data->history);
-	}
-	rl_data->history = temp;
-	for (t_list *p_history = (*rl_data->history); p_history;)
-	{
-		ft_printf("%s\n", p_history->content);
-		p_history = p_history->next;
-	}
+	ft_lstadd_front(rl_data->history, ft_lstnew(ft_strdup(string)));
 }
 
 void	add_history(char *string)
