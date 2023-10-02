@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/02 15:58:22 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/02 21:44:43 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,21 @@ void	m_rl_delete_text(void *p_data, int start, int end);
 char	*previous_history(t_readline *rl_data);
 char	*next_history(t_readline *rl_data);
 
+static void	clear_prompt(t_readline *rl_data)
+{
+	if (!rl_data->input)
+		return ;
+	rl_data->cursor_offset = ft_strlen(rl_data->input);
+	while (rl_data->cursor_offset-- > 0)
+	{
+		ft_printf("\b \b");
+	}
+	if (rl_data->input)
+		free(rl_data->input);
+	rl_data->input = 0;
+}
+
 /*
- * TODO fix history not turning into prompt, and history not deleting prompt
  * TODO add redraw of terminal window, for deleting multi-line prompts
  * TODO fix cursor after using tab [tab is disabled for now]
  * TODO add tab autocomplete
@@ -28,23 +41,33 @@ char	*next_history(t_readline *rl_data);
 static void	print_char(t_readline *rl_data, const char *string)
 {
 	char	buf[3];
-	char 	*temp;
+	char	*history;
 
 	if (!*string)
 		return ;
 	if (*string == '\x1b' && read(0, &buf[0], 1) && read(0, &buf[1], 1))
 	{
-		if (ft_tolower(buf[1]) == 'a') // up
+		if (ft_tolower(buf[1]) == 'a')
 		{
-			temp = previous_history(rl_data);
-			if (temp)
-				ft_printf("%s", temp);
+			history = previous_history(rl_data);
+			if (history)
+			{
+				clear_prompt(rl_data);
+				rl_data->input = ft_strdup(history);
+				rl_data->cursor_offset = ft_strlen(rl_data->input);
+				ft_printf("%s", rl_data->input);
+			}
 		}
-		else if (ft_tolower(buf[1]) == 'b') // down
+		else if (ft_tolower(buf[1]) == 'b')
 		{
-			temp = next_history(rl_data);
-			if (temp)
-				ft_printf("%s", temp);
+			history = next_history(rl_data);
+			clear_prompt(rl_data);
+			if (history)
+			{
+				rl_data->input = ft_strdup(history);
+				rl_data->cursor_offset = ft_strlen(rl_data->input);
+				ft_printf("%s", rl_data->input);
+			}
 		}
 		else if (ft_tolower(buf[1]) == 'c' && rl_data->input && \
 			rl_data->cursor_offset + 1 <= ft_strlen(rl_data->input))
