@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:10:17 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/20 16:52:32 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:54:50 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	change_dir(t_data *data, char **argv)
 {
 	char	*old_path;
 	char	*path;
+	char	buf[256];
 
 	if (argv[1] && argv[2])
 	{
@@ -47,7 +48,7 @@ void	change_dir(t_data *data, char **argv)
 		handle_error(data, path, 0);
 		return ;
 	}
-	path = getcwd(NULL, 0);
+	path = getcwd(buf, 256);
 	update_env(data, old_path, path);
 	free(path);
 }

@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/04 15:33:29 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/04 22:30:30 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,91 +21,154 @@ char	*next_history(t_readline *rl_data);
 
 static void	clear_prompt(t_readline *rl_data)
 {
-	if (!rl_data->input)
-		return ;
-	ft_printf("\033[u\033[0J");
+	ft_printf("%s%s%s%s", RL_ESCAPE, RL_RESTORE_POS, \
+							RL_ESCAPE, RL_DELETE_TO_END);
 	if (rl_data->input)
 		free(rl_data->input);
 	rl_data->input = 0;
+	rl_data->cursor_offset = 0;
+}
+
+static void	reset_cursor(t_readline *rl_data)
+{
+	int	index;
+
+	index = 0;
+	ft_printf("%s%s", RL_ESCAPE, RL_RESTORE_POS);
+	while (index++ < rl_data->cursor_offset)
+	{
+		ft_printf("%s%s", RL_ESCAPE, RL_MOVE_RIGHT);
+	}
 }
 
 /*
  * TODO fix cursor after using tab [tab is disabled for now]
- * TODO add tab autocomplete
  */
 static void	print_char(t_readline *rl_data, const char *string)
 {
+	int		n;
 	char	buf[3];
-	char	*history;
+	char	*temp;
 
 	if (!*string)
 		return ;
-	if (*string == '\033' && read(0, &buf[0], 1) && read(0, &buf[1], 1))
+	if (*string == *RL_ESCAPE && read(0, &buf[0], 1) && read(0, &buf[1], 1))
 	{
-		if (buf[0] == '[' && ft_tolower(buf[1]) == 'a')
+		if (buf[0] == RL_MOVE_UP[0] && ft_toupper(buf[1]) == RL_MOVE_UP[1])
 		{
-			history = previous_history(rl_data);
-			if (history)
+			temp = previous_history(rl_data);
+			if (temp)
 			{
 				clear_prompt(rl_data);
-				rl_data->input = ft_strdup(history);
+				rl_data->input = ft_strdup(temp);
 				rl_data->cursor_offset = ft_strlen(rl_data->input);
 				ft_printf("%s", rl_data->input);
 			}
 		}
-		else if (buf[0] == '[' && ft_tolower(buf[1]) == 'b')
+		else if (buf[0] == RL_MOVE_DOWN[0] && \
+			ft_toupper(buf[1]) == RL_MOVE_DOWN[1])
 		{
-			history = next_history(rl_data);
+			temp = next_history(rl_data);
 			clear_prompt(rl_data);
-			if (history)
+			if (temp)
 			{
-				rl_data->input = ft_strdup(history);
+				rl_data->input = ft_strdup(temp);
 				rl_data->cursor_offset = ft_strlen(rl_data->input);
 				ft_printf("%s", rl_data->input);
 			}
 		}
-		else if (buf[0] == '[' && ft_tolower(buf[1]) == 'c' && \
-			rl_data->input && \
+		else if (buf[0] == RL_MOVE_RIGHT[0] && \
+			ft_toupper(buf[1]) == RL_MOVE_RIGHT[1] && rl_data->input && \
 			rl_data->cursor_offset + 1 <= ft_strlen(rl_data->input))
 		{
-			ft_printf("\033[1C");
+			ft_printf("%s%s", RL_ESCAPE, RL_MOVE_RIGHT);
 			rl_data->cursor_offset++;
 		}
-		else if (buf[0] == '[' && ft_tolower(buf[1]) == 'd' && \
+		else if (buf[0] == RL_MOVE_LEFT[0] && \
+			ft_toupper(buf[1]) == RL_MOVE_LEFT[1] && \
 			rl_data->cursor_offset - 1 >= 0)
 		{
-			ft_printf("\033[1D");
+			ft_printf("%s%s", RL_ESCAPE, RL_MOVE_LEFT);
 			rl_data->cursor_offset--;
 		}
-		else if (buf[0] == '[' && ft_tolower(buf[1]) == '2' && \
-			read(0, &buf[0], 1))
+		else if (buf[0] == RL_INSERT_KEY[0] && \
+			ft_toupper(buf[1]) == RL_INSERT_KEY[1] && read(0, &buf[0], 1))
 			;
-		else if (buf[0] == '[' && ft_tolower(buf[1]) == '3' && \
-			read(0, &buf[0], 1) && rl_data->input && \
+		else if (buf[0] == RL_DELETE_KEY[0] && \
+			ft_toupper(buf[1]) == RL_DELETE_KEY[1] && read(0, &buf[0], 1) && \
+			rl_data->input && \
 			ft_strlen(rl_data->input) > rl_data->cursor_offset)
 		{
 			ft_rl_delete_text(rl_data->cursor_offset, rl_data->cursor_offset);
 			ft_printf("%s \b", rl_data->input + rl_data->cursor_offset);
 			for (int i = rl_data->cursor_offset; i < ft_strlen(rl_data->input); i++)
 			{
-				ft_printf("\033[1D");
+				ft_printf("%s%s", RL_ESCAPE, RL_MOVE_LEFT);
 			}
 		}
 	}
-	else if (*string == 0x7f && rl_data->cursor_offset > 0)
+	else if (*string == 127 && rl_data->cursor_offset > 0)
 	{
 		ft_rl_delete_text(rl_data->cursor_offset - 1, \
 			rl_data->cursor_offset - 1);
 		rl_data->cursor_offset--;
+		if (!rl_data->input)
+		{
+			ft_printf("\b \b");
+			return ;
+		}
 		ft_printf("\b \b%s \b", rl_data->input + rl_data->cursor_offset);
 		for (int i = rl_data->cursor_offset; i < ft_strlen(rl_data->input); i++)
 		{
-			ft_printf("\033[1D");
+			ft_printf("%s%s", RL_ESCAPE, RL_MOVE_LEFT);
 		}
 	}
-	else if (*string == 0x09 && rl_data->input && \
+	else if (*string == 9 && rl_data->input && \
 		rl_data->cursor_offset == ft_strlen(rl_data->input))
-		ft_rl_autocomplete(rl_data->input);
+	{
+		ft_printf("\n");
+		n = 0;
+		if (ft_strrchr(rl_data->input, ' '))
+			while (rl_data->input + n != ft_strrchr(rl_data->input, ' ') \
+					+ 1)
+				n++;
+		if (ft_strrchr(rl_data->input + n, '/'))
+			while (rl_data->input + n != ft_strrchr(rl_data->input, '/') \
+					+ 1)
+				n++;
+		n = ft_rl_autocomplete(rl_data->input + n);
+		if (n == 0)
+		{
+			reset_cursor(rl_data);
+			ft_printf("%s%s", RL_ESCAPE, RL_DELETE_TO_END);
+		}
+		else if (n == 1)
+		{
+			n = 0;
+			if (ft_strrchr(rl_data->input, ' '))
+				while (rl_data->input + n != ft_strrchr(rl_data->input, ' ') \
+					+ 1)
+					n++;
+			if (ft_strrchr(rl_data->input + n, '/'))
+				while (rl_data->input + n != ft_strrchr(rl_data->input, '/') \
+					+ 1)
+					n++;
+			rl_data->cursor_offset = n;
+			temp = ft_rl_input_autocomplete(rl_data->input + n);
+			ft_rl_delete_text(n, ft_strlen(rl_data->input) - 1);
+			ft_rl_insert_text(temp);
+			ft_printf("%s%s%s%s%s", RL_ESCAPE, RL_RESTORE_POS, \
+				RL_ESCAPE, RL_DELETE_TO_END, rl_data->input);
+			free(temp);
+			rl_data->cursor_offset = ft_strlen(rl_data->input);
+		}
+		reset_cursor(rl_data);
+	}
+	else if (*string == 9 || *string == 10)
+	{
+		reset_cursor(rl_data);
+		ft_printf("%s%s", RL_ESCAPE, RL_DELETE_TO_END);
+	}
 }
 
 /*
@@ -127,7 +190,7 @@ static void	get_user_input(t_readline *rl_data, const char *prompt)
 			rl_data->input = 0;
 		}
 		ft_printf("%s", prompt);
-		ft_printf("\033[s");
+		ft_printf("%s%s", RL_ESCAPE, RL_SAVE_POS);
 		read_bytes = read(0, &buf, 1);
 		buf[read_bytes] = '\0';
 		while (read_bytes > 0)
@@ -139,7 +202,7 @@ static void	get_user_input(t_readline *rl_data, const char *prompt)
 				ft_printf("%s", rl_data->input + rl_data->cursor_offset);
 				for (int i = rl_data->cursor_offset; i < ft_strlen(rl_data->input) - 1; i++)
 				{
-					ft_printf("\033[1D");
+					ft_printf("%s%s", RL_ESCAPE, RL_MOVE_LEFT);
 				}
 				rl_data->cursor_offset++;
 			}

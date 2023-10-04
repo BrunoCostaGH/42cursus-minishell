@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 16:58:39 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/04 14:30:57 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/04 21:33:49 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,47 @@
 # include <sys/types.h>
 # include <dirent.h>
 
+# ifndef RL_ESCAPE
+#  define RL_ESCAPE "\033"
+# endif
+
+# ifndef RL_SAVE_POS
+#  define RL_SAVE_POS "7"
+# endif
+
+# ifndef RL_RESTORE_POS
+#  define RL_RESTORE_POS "8"
+# endif
+
+# ifndef RL_DELETE_TO_END
+#  define RL_DELETE_TO_END "[0J"
+# endif
+
+
+# ifndef RL_MOVE_UP
+#  define RL_MOVE_UP "[A"
+# endif
+
+# ifndef RL_MOVE_DOWN
+#  define RL_MOVE_DOWN "[B"
+# endif
+
+# ifndef RL_MOVE_LEFT
+#  define RL_MOVE_LEFT "[D"
+# endif
+
+# ifndef RL_MOVE_RIGHT
+#  define RL_MOVE_RIGHT "[C"
+# endif
+
+# ifndef RL_INSERT_KEY
+#  define RL_INSERT_KEY "[2"
+# endif
+
+# ifndef RL_DELETE_KEY
+#  define RL_DELETE_KEY "[3"
+# endif
+
 typedef struct s_readline
 {
 	t_list			**history;
@@ -27,10 +68,11 @@ typedef struct s_readline
 	int				cursor_offset;
 }	t_readline;
 
-char	*ft_rl_autocomplete(char *string);
 char	*ft_readline(const char *prompt);
+char	*ft_rl_input_autocomplete(char *string);
 
 int		ft_rl_insert_text(char *text);
+int		ft_rl_autocomplete(char *string);
 int		ft_rl_delete_text(int start, int end);
 
 void	ft_rl_clear_history(void);

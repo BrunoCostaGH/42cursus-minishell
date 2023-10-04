@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 19:33:43 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/01 19:34:14 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:38:54 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ void	m_rl_delete_text(void *p_data, int start, int end)
 		free(before_str);
 	if (after_str)
 		free(after_str);
+	if (ft_strlen(rl_data->input) == 0)
+	{
+		free(rl_data->input);
+		rl_data->input = 0;
+	}
 }
 
 /*
