@@ -52,7 +52,7 @@ int	main(int ac, char **av, char **envp)
 		if (data->prompt == NULL)
 			data->prompt = ft_strdup("exit");
 		if (data->prompt && *data->prompt)
-			add_history(data->prompt);
+			ft_add_history(data->prompt);
 		set_argv(data);
 		if (!check_tokens(data) && data->argv.args)
 			find_command(data, *data->argv.args);

@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/03 18:10:56 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/04 15:33:29 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	print_char(t_readline *rl_data, const char *string)
 			read(0, &buf[0], 1) && rl_data->input && \
 			ft_strlen(rl_data->input) > rl_data->cursor_offset)
 		{
-			rl_delete_text(rl_data->cursor_offset, rl_data->cursor_offset);
+			ft_rl_delete_text(rl_data->cursor_offset, rl_data->cursor_offset);
 			ft_printf("%s \b", rl_data->input + rl_data->cursor_offset);
 			for (int i = rl_data->cursor_offset; i < ft_strlen(rl_data->input); i++)
 			{
@@ -94,7 +94,8 @@ static void	print_char(t_readline *rl_data, const char *string)
 	}
 	else if (*string == 0x7f && rl_data->cursor_offset > 0)
 	{
-		rl_delete_text(rl_data->cursor_offset - 1, rl_data->cursor_offset - 1);
+		ft_rl_delete_text(rl_data->cursor_offset - 1, \
+			rl_data->cursor_offset - 1);
 		rl_data->cursor_offset--;
 		ft_printf("\b \b%s \b", rl_data->input + rl_data->cursor_offset);
 		for (int i = rl_data->cursor_offset; i < ft_strlen(rl_data->input); i++)
@@ -102,6 +103,9 @@ static void	print_char(t_readline *rl_data, const char *string)
 			ft_printf("\033[1D");
 		}
 	}
+	else if (*string == 0x09 && rl_data->input && \
+		rl_data->cursor_offset == ft_strlen(rl_data->input))
+		ft_rl_autocomplete(rl_data->input);
 }
 
 /*
@@ -131,7 +135,7 @@ static void	get_user_input(t_readline *rl_data, const char *prompt)
 			if (ft_isprint(buf[0]) || \
 				(buf[0] >= 7 && buf[0] <= 13 && buf[0] != 9 && buf[0] != 10))
 			{
-				(void)rl_insert_text(buf);
+				(void)ft_rl_insert_text(buf);
 				ft_printf("%s", rl_data->input + rl_data->cursor_offset);
 				for (int i = rl_data->cursor_offset; i < ft_strlen(rl_data->input) - 1; i++)
 				{

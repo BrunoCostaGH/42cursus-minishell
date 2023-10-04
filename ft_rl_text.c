@@ -46,7 +46,7 @@ void	m_rl_delete_text(void *p_data, int start, int end)
  * RETURN VALUE
  * Returns a memory allocated string with the updated string
  */
-int	rl_delete_text(int start, int end)
+int	ft_rl_delete_text(int start, int end)
 {
 	m_rl_delete_text(0, start, end);
 	return (0);
@@ -88,7 +88,7 @@ void	m_rl_insert_text(void *p_data, char *text)
  * RETURN VALUE
  * Returns a memory allocated string with the updated string
  */
-int	rl_insert_text(char *text)
+int	ft_rl_insert_text(char *text)
 {
 	m_rl_insert_text(0, text);
 	return (0);

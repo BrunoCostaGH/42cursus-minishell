@@ -60,7 +60,7 @@ void	m_rl_clear_history(void *p_data)
 	rl_data->history = 0;
 }
 
-void	rl_clear_history(void)
+void	ft_rl_clear_history(void)
 {
 	m_rl_clear_history(0);
 }
@@ -81,7 +81,7 @@ void	m_add_history(void *p_data, char *string)
 	ft_lstadd_front(rl_data->history, ft_lstnew(ft_strdup(string)));
 }
 
-void	add_history(char *string)
+void	ft_add_history(char *string)
 {
 	m_add_history(0, string);
 }
