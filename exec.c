@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 21:13:32 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/09/23 16:47:26 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:19:45 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	set_error_status(t_data *data, char **argv)
 {
 	if ((data->exit_status >> 7) & 0x01)
 		write(2, "minishell: Quit (core dump)\n", 28);
-	else if (argv && access(argv[0], F_OK))
+	else if (argv && access(argv[0], 0))
 	{
 		if (!ft_strchr(argv[0], '/'))
 		{
@@ -84,7 +84,7 @@ static char	*check_environment(t_data *data, char *fname)
 		path = ft_strjoin(little_path[i], "/");
 		name = ft_strjoin(path, fname);
 		free(path);
-		if (access(name, F_OK) == 0)
+		if (access(name, 0) == 0)
 			break ;
 		free(name);
 		name = 0;
@@ -120,7 +120,7 @@ void	run_executable(t_data *data, char **argv)
 		}
 		else
 		{
-			while (waitpid(pid, &data->exit_status, WNOHANG) == 0)
+			while (waitpid(pid, &data->exit_status, 1) == 0)
 				;
 			set_error_status(data, argv);
 		}

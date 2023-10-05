@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:36:35 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/06/24 19:39:36 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:24:47 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static void	run_command(t_data *data, int *pid, int pipe_index, int id)
 	{
 		data->exit_status = 0;
 		if (data->file_io[1])
-			dup2(data->file_io[1], STDOUT_FILENO);
+			dup2(data->file_io[1], 1);
 		else if (data->argv.type[id] == PIPE)
-			dup2(data->pipe_fd[pipe_index][1], STDOUT_FILENO);
+			dup2(data->pipe_fd[pipe_index][1], 1);
 		close_pipes(data->pipe_fd, pipe_index);
 		find_command(data, data->argv.args[id]);
 		reset_io(data);
@@ -58,7 +58,7 @@ static int	run_token_logic(t_data *data, int *pid, int id)
 		{
 			if (data->argv.type[id] == PIPE)
 				pipe_index--;
-			dup2(data->pipe_fd[pipe_index - 1][0], STDIN_FILENO);
+			dup2(data->pipe_fd[pipe_index - 1][0], 0);
 		}
 	}
 	else if (status == 2)
@@ -107,7 +107,7 @@ int	check_tokens(t_data *data)
 		if (create_token_logic(data, &pid) == 0)
 		{
 			close_pipes(data->pipe_fd, iarr_len(data->argv.type));
-			while (waitpid(pid, &data->exit_status, WNOHANG) == 0)
+			while (waitpid(pid, &data->exit_status, 1) == 0)
 				;
 			set_error_status(data, 0);
 			while (waitpid(-1, 0, 0) != -1)

@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:14 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/21 15:33:29 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:19:45 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	do_unset(t_data *data, int *index_env)
 			data->envp.envp[*index_env] = data->envp.envp[*index_env + 1];
 			*index_env = *index_env + 1;
 		}
-		data->envp.envp[*index_env] = NULL;
+		data->envp.envp[*index_env] = 0;
 	}
 }
 
@@ -72,7 +72,7 @@ void	env(t_data *data, char **argv)
 		data->exit_status = 1;
 		return ;
 	}
-	while (data->envp.envp[i] != NULL)
+	while (data->envp.envp[i])
 	{
 		if (data->envp.envp[i][1])
 			ft_printf("%s=%s\n", data->envp.envp[i][0], data->envp.envp[i][1]);

@@ -6,7 +6,7 @@
 #    By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/20 19:20:05 by bsilva-c          #+#    #+#              #
-#    Updated: 2023/10/04 14:26:29 by bsilva-c         ###   ########.fr        #
+#    Updated: 2023/10/05 19:26:10 by bsilva-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ all: deps $(NAME)
 deps:
 	$(MAKE) -C ./libft
 $(NAME): $(OBJS) $(DEPS)
-	@$(CC) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
+	@$(CC) $(OBJS) $(LIBFT) -o $(NAME)
 clean:
 	$(MAKE) $@ -C ./libft
 	@rm $(OBJS)

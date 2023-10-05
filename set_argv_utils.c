@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:51:41 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/17 16:04:42 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:24:47 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	count_string(const char *prompt)
 	quote = FALSE;
 	while (prompt && *prompt)
 	{
-		if (handle_quote(prompt, NULL, &quote))
+		if (handle_quote(prompt, 0, &quote))
 		{
 			prompt++;
 			continue ;
@@ -91,7 +91,7 @@ int	count_char(const char *prompt)
 	quote = FALSE;
 	while (prompt && *prompt && (*prompt != ' ' || quote))
 	{
-		if (handle_quote(prompt, NULL, &quote))
+		if (handle_quote(prompt, 0, &quote))
 		{
 			prompt++;
 			continue ;

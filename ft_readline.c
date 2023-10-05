@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/04 22:30:30 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/05 20:32:54 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,11 @@ static void	print_char(t_readline *rl_data, const char *string)
 			ft_strlen(rl_data->input) > rl_data->cursor_offset)
 		{
 			ft_rl_delete_text(rl_data->cursor_offset, rl_data->cursor_offset);
+			if (!rl_data->input)
+			{
+				ft_printf(" \b");
+				return ;
+			}
 			ft_printf("%s \b", rl_data->input + rl_data->cursor_offset);
 			for (int i = rl_data->cursor_offset; i < ft_strlen(rl_data->input); i++)
 			{
@@ -107,7 +112,7 @@ static void	print_char(t_readline *rl_data, const char *string)
 			}
 		}
 	}
-	else if (*string == 127 && rl_data->cursor_offset > 0)
+	else if ((*string == 8 || *string == 127) && rl_data->cursor_offset > 0)
 	{
 		ft_rl_delete_text(rl_data->cursor_offset - 1, \
 			rl_data->cursor_offset - 1);
@@ -164,8 +169,10 @@ static void	print_char(t_readline *rl_data, const char *string)
 		}
 		reset_cursor(rl_data);
 	}
-	else if (*string == 9 || *string == 10)
+	else if ((*string == 9 && rl_data->cursor_offset == 0) || *string == 10)
 	{
+		if (rl_data->input)
+			rl_data->cursor_offset = ft_strlen(rl_data->input);
 		reset_cursor(rl_data);
 		ft_printf("%s%s", RL_ESCAPE, RL_DELETE_TO_END);
 	}
@@ -195,8 +202,8 @@ static void	get_user_input(t_readline *rl_data, const char *prompt)
 		buf[read_bytes] = '\0';
 		while (read_bytes > 0)
 		{
-			if (ft_isprint(buf[0]) || \
-				(buf[0] >= 7 && buf[0] <= 13 && buf[0] != 9 && buf[0] != 10))
+			if (ft_isprint(buf[0]) || (buf[0] >= 7 && buf[0] <= 13 && \
+				buf[0] != 8 && buf[0] != 9 && buf[0] != 10 && buf[0] != 127))
 			{
 				(void)ft_rl_insert_text(buf);
 				ft_printf("%s", rl_data->input + rl_data->cursor_offset);
@@ -233,19 +240,17 @@ static void	get_input(t_readline *rl_data, const char *prompt)
 	struct termios	old;
 	struct termios	new;
 
-	tcgetattr(STDIN_FILENO, &old);
+	tcgetattr(0, &old);
 	new = old;
-	new.c_lflag &= ~(ICANON | ECHO | ECHOE);
+	new.c_lflag &= ~(ICANON | ECHO);
 	new.c_cc[VMIN] = 1;
 	new.c_cc[VTIME] = 0;
 	new.c_cc[VERASE] = 0;
-	new.c_cc[VWERASE] = 0;
 	new.c_cc[VQUIT] = 0;
 	new.c_cc[VSUSP] = 0;
-	new.c_cc[VLNEXT] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &new);
+	tcsetattr(0, TCSANOW, &new);
 	get_user_input(rl_data, prompt);
-	tcsetattr(STDIN_FILENO, TCSANOW, &old);
+	tcsetattr(0, TCSANOW, &old);
 }
 
 char	*ft_readline(const char *prompt)

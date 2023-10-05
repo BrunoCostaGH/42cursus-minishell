@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:16:15 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/06/25 11:16:40 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:24:47 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static void	init_envp(t_data *data, char **envp)
 	len = 0;
 	while (envp[len])
 		len++;
-	data->envp.sorted_envp = NULL;
-	data->envp.exec_envp = NULL;
+	data->envp.sorted_envp = 0;
+	data->envp.exec_envp = 0;
 	data->envp.envp = ft_calloc(len + 1, sizeof(char **));
 	if (!data->envp.envp)
 		return ;
@@ -77,7 +77,7 @@ void	init_tmp(t_data *data)
 	if (data->tmp_file)
 		delete_tmp_file(data);
 	data->tmp_file = ft_strdup(".tmp1");
-	while (access(data->tmp_file, F_OK) == 0)
+	while (access(data->tmp_file, 0) == 0)
 	{
 		if (data->tmp_file)
 			free(data->tmp_file);
@@ -100,14 +100,14 @@ void	*init_struct(char **envp)
 	data->std_io = ft_calloc(2 + 1, sizeof(int));
 	if (!data->std_io)
 		return (0);
-	data->std_io[0] = dup(STDIN_FILENO);
-	data->std_io[1] = dup(STDOUT_FILENO);
+	data->std_io[0] = dup(0);
+	data->std_io[1] = dup(1);
 	data->interactive = TRUE;
 	data->exit_status = 0;
-	data->prompt = NULL;
-	data->argv.args = NULL;
-	data->argv.type = NULL;
-	data->tmp_file = NULL;
+	data->prompt = 0;
+	data->argv.args = 0;
+	data->argv.type = 0;
+	data->tmp_file = 0;
 	init_envp(data, envp);
 	return (data);
 }

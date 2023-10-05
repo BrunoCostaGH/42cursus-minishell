@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:31:46 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/09/28 19:54:56 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:24:47 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	check_argv(t_data *data, char **argv)
 
 void	clear_temp(t_data *data)
 {
-	if (access(data->tmp_file, F_OK) == 0)
+	if (access(data->tmp_file, 0) == 0)
 	{
 		clear_argv(data);
 		data->prompt = ft_strjoin("rm ", data->tmp_file);

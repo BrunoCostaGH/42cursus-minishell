@@ -6,7 +6,7 @@
 /*   By: tabreia- <tabreia-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:17:40 by tabreia-          #+#    #+#             */
-/*   Updated: 2023/09/30 16:51:23 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:24:47 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	execute_sig_action(int sig, void *data)
 		static_data = (t_data *)data;
 	if (static_data && static_data->interactive)
 	{
-		if (sig == SIGINT)
+		if (sig == 2)
 			ft_printf("\n");
 	}
-	if (sig == SIGINT)
+	if (sig == 2)
 		static_data->exit_status = 130;
 }
 
@@ -39,6 +39,6 @@ void	set_handle_struct(void)
 	sa.sa_handler = &handle;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(2, &sa, 0);
+	sigaction(3, &sa, 0);
 }
