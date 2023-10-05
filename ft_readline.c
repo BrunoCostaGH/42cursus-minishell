@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/05 20:32:54 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/05 21:33:01 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,13 +141,13 @@ static void	print_char(t_readline *rl_data, const char *string)
 			while (rl_data->input + n != ft_strrchr(rl_data->input, '/') \
 					+ 1)
 				n++;
-		n = ft_rl_autocomplete(rl_data->input + n);
-		if (n == 0)
+		if (!*(rl_data->input + n))
 		{
 			reset_cursor(rl_data);
-			ft_printf("%s%s", RL_ESCAPE, RL_DELETE_TO_END);
+			return ;
 		}
-		else if (n == 1)
+		n = ft_rl_autocomplete(rl_data->input + n);
+		if (n == 1)
 		{
 			n = 0;
 			if (ft_strrchr(rl_data->input, ' '))
@@ -162,8 +162,8 @@ static void	print_char(t_readline *rl_data, const char *string)
 			temp = ft_rl_input_autocomplete(rl_data->input + n);
 			ft_rl_delete_text(n, ft_strlen(rl_data->input) - 1);
 			ft_rl_insert_text(temp);
-			ft_printf("%s%s%s%s%s", RL_ESCAPE, RL_RESTORE_POS, \
-				RL_ESCAPE, RL_DELETE_TO_END, rl_data->input);
+			ft_printf("%s%s", RL_ESCAPE, RL_RESTORE_POS);
+			ft_printf("%s%s%s", RL_ESCAPE, RL_DELETE_TO_END, rl_data->input);
 			free(temp);
 			rl_data->cursor_offset = ft_strlen(rl_data->input);
 		}
@@ -192,18 +192,17 @@ static void	get_user_input(t_readline *rl_data, const char *prompt)
 	while (!_exit)
 	{
 		if (rl_data->input)
-		{
 			free(rl_data->input);
-			rl_data->input = 0;
-		}
+		rl_data->input = 0;
+		rl_data->cursor_offset = 0;
+		rl_data->history_offset = 0;
 		ft_printf("%s", prompt);
 		ft_printf("%s%s", RL_ESCAPE, RL_SAVE_POS);
 		read_bytes = read(0, &buf, 1);
 		buf[read_bytes] = '\0';
 		while (read_bytes > 0)
 		{
-			if (ft_isprint(buf[0]) || (buf[0] >= 7 && buf[0] <= 13 && \
-				buf[0] != 8 && buf[0] != 9 && buf[0] != 10 && buf[0] != 127))
+			if (ft_isprint(buf[0]))
 			{
 				(void)ft_rl_insert_text(buf);
 				ft_printf("%s", rl_data->input + rl_data->cursor_offset);
@@ -214,20 +213,20 @@ static void	get_user_input(t_readline *rl_data, const char *prompt)
 				rl_data->cursor_offset++;
 			}
 			print_char(rl_data, &buf[0]);
-			if ((buf[0] == '\n' && !rl_data->input))
-			{
-				ft_printf("\n");
-				break ;
-			}
-			if (buf[0] == '\n' || (buf[0] == 0x04 && !rl_data->input))
-			{
-				ft_printf("%c", buf[0]);
+			if ((buf[0] == 10 && rl_data->input) || \
+				(buf[0] == 4 && !rl_data->input))
 				_exit = true;
+			if (_exit || buf[0] == 10)
 				break ;
-			}
 			read_bytes = read(0, &buf, 1);
 			buf[read_bytes] = '\0';
 		}
+		if (rl_data->input)
+			rl_data->cursor_offset = ft_strlen(rl_data->input);
+		reset_cursor(rl_data);
+		ft_printf("%s%s", RL_ESCAPE, RL_DELETE_TO_END);
+		if (buf[0] == 10 || !_exit)
+			ft_printf("\n");
 	}
 }
 
@@ -258,8 +257,6 @@ char	*ft_readline(const char *prompt)
 	static t_readline	rl_data;
 
 	rl_data.input = 0;
-	rl_data.cursor_offset = 0;
-	rl_data.history_offset = 0;
 	m_rl_delete_text(&rl_data, 0, 0);
 	m_rl_insert_text(&rl_data, 0);
 	m_add_history(&rl_data, 0);
