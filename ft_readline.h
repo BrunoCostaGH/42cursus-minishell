@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 16:58:39 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/04 21:33:49 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:32:29 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <dirent.h>
 
 # ifndef RL_ESCAPE
-#  define RL_ESCAPE "\033"
+#  define RL_ESCAPE 27
 # endif
 
 # ifndef RL_SAVE_POS

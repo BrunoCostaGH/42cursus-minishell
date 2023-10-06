@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:26:20 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/05 21:22:38 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:59:38 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_rl_autocomplete(char *string)
 	getcwd(buf, 256);
 	dir = opendir(buf);
 	dir_info = readdir(dir);
-	ft_printf("%s%s", RL_ESCAPE, RL_DELETE_TO_END);
+	ft_printf("%c%s", RL_ESCAPE, RL_DELETE_TO_END);
 	while (dir_info)
 	{
 		if (*dir_info->d_name != '.' && ft_strncmp(string, dir_info->d_name, \
