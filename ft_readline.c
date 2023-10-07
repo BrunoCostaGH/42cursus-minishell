@@ -6,11 +6,10 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/06 18:26:49 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/07 18:42:15 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "ft_readline.h"
 
 void	m_rl_clear_history(void *p_data);
@@ -153,16 +152,20 @@ static void	print_char(t_readline *rl_data, char *string)
 				while (rl_data->input + n != ft_strrchr(rl_data->input, '/') \
 					+ 1)
 					n++;
-			temp = ft_rl_input_autocomplete(rl_data->input + n);
+			temp = ft_rl_print_autocomplete(0);
 			ft_rl_delete_text(n, ft_strlen(rl_data->input) - 1);
 			rl_data->cursor_offset = n;
 			ft_rl_insert_text(temp);
 			ft_printf("%c%s", RL_ESCAPE, RL_RESTORE_POS);
 			ft_printf("%c%s", RL_ESCAPE, RL_DELETE_TO_END);
 			if (rl_data->input)
+			{
 				ft_printf("%s", rl_data->input);
-			rl_data->cursor_offset = ft_strlen(rl_data->input);
+				rl_data->cursor_offset = ft_strlen(rl_data->input);
+			}
 		}
+		else if (n > 1)
+			(void)ft_rl_print_autocomplete(0);
 		reset_cursor(rl_data);
 		*string = 0;
 	}

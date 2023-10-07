@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 16:58:39 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/06 17:32:29 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/07 18:20:51 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 # define FT_READLINE_H
 
 # include "libft/libft.h"
+# include <stdio.h>
+# include <dirent.h>
 # include <termios.h>
 # include <stdbool.h>
+# include <sys/ioctl.h>
 # include <sys/types.h>
-# include <dirent.h>
 
 # ifndef RL_ESCAPE
 #  define RL_ESCAPE 27
@@ -69,7 +71,7 @@ typedef struct s_readline
 }	t_readline;
 
 char	*ft_readline(const char *prompt);
-char	*ft_rl_input_autocomplete(char *string);
+char	*ft_rl_print_autocomplete(char *string);
 
 int		ft_rl_insert_text(char *text);
 int		ft_rl_autocomplete(char *string);
