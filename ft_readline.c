@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:56:27 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/07 18:42:15 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/07 21:58:55 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ static void	print_char(t_readline *rl_data, char *string)
 			ft_rl_delete_text(n, ft_strlen(rl_data->input) - 1);
 			rl_data->cursor_offset = n;
 			ft_rl_insert_text(temp);
+			free(temp);
 			ft_printf("%c%s", RL_ESCAPE, RL_RESTORE_POS);
 			ft_printf("%c%s", RL_ESCAPE, RL_DELETE_TO_END);
 			if (rl_data->input)

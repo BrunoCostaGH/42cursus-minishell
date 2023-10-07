@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:26:20 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/10/07 20:33:22 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/10/07 21:52:39 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static int	darr_len(void **arr)
 	return (i);
 }
 
-// TODO fix missing last file when printing to terminal
 char	*ft_rl_print_autocomplete(char *string)
 {
 	static char	**file_arr;
@@ -131,7 +130,7 @@ char	*ft_rl_print_autocomplete(char *string)
 				while (col_width[1]-- > 0)
 					ft_printf(" ");
 				index[1] += (darr_len((void **)file_arr) / \
-					((int)get_term_width() / col_width[0]));
+				((int)get_term_width() / col_width[0]) + 1);
 			}
 			ft_printf("\n");
 			index[0]++;
